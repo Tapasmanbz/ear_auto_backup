@@ -50,13 +50,13 @@ public class CartPage extends BasePage {
 
 	@FindBy(how = How.XPATH, using = "//button[contains(text(),'REMOVE')]")
 	public WebElement btnRemoveCoupon;
+	
+	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Apply')]")
+	public WebElement btnApplyVisible;
 
 	@FindBy(how = How.CLASS_NAME, using = "coupon_error")
 	public WebElement invalidCouponErrorMSG;
 
-	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Other Available Discounts')]")
-	public WebElement linkOtherAvailableDiscounts;
-	
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Referred by a friend?')]")
 	public WebElement linkReferredByFriend;
 
@@ -65,10 +65,14 @@ public class CartPage extends BasePage {
 
 	@FindBy(how = How.XPATH, using = "//output[contains(text(),'2')]")
 	public WebElement prodAfterIncrement;
+	
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Other Available Discounts')]")
+	public WebElement linkOtherAvailableDiscounts;
 
 	public CheckoutPage clickCheckoutButton() throws InterruptedException {
 
-		
+		scrollToCartBottom();
+		Thread.sleep(3000);
 		btnCheckout.click();
 		Thread.sleep(3000);
 
@@ -102,7 +106,19 @@ public class CartPage extends BasePage {
 		Thread.sleep(2000);
 
 	}
-
+	
+	public boolean checkDefaultCouponApplied() throws InterruptedException {
+		boolean appliedCoupon;
+		appliedCoupon = btnApplyVisible.isDisplayed();
+		Thread.sleep(1000);
+		if(appliedCoupon==true) {
+			System.out.println("No Default coupon is applied");
+		}else {
+			System.out.println("Default coupon is applied");
+		}
+		return appliedCoupon;
+	}
+	
 	public boolean removeCoupon() throws InterruptedException {
 
 		scrollToCartBottom();
@@ -125,14 +141,15 @@ public class CartPage extends BasePage {
 	}
 
 	public MentionMePage clickReferByFriend() throws InterruptedException {
-		
-		scrollToElement(linkOtherAvailableDiscounts);
-		// click on refer friend code
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-		wait.until(ExpectedConditions.elementToBeClickable(linkOtherAvailableDiscounts)).click();
-		wait.until(ExpectedConditions.elementToBeClickable(linkReferredByFriend)).click();
-		return mentionMe;
-	}
+	    
+	    scrollToElement(linkOtherAvailableDiscounts);
+	    // click on refer friend code
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+	    wait.until(ExpectedConditions.elementToBeClickable(linkOtherAvailableDiscounts)).click();
+	    Thread.sleep(2000);
+	    wait.until(ExpectedConditions.elementToBeClickable(linkReferredByFriend)).click();
+	    return mentionMe;
+	  }
 
 	public String afterIncrement() throws InterruptedException {
 

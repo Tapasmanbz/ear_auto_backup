@@ -4,11 +4,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -34,7 +30,10 @@ public class OrderConfirmationPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//div[@class='shippingInformation']/div[1]/span[1]/following-sibling::span")
 	public WebElement willBeShippedTo;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='columnContainer estimated_delivery_container']")
+//	@FindBy(how = How.XPATH, using = "//div[@class='columnContainer estimated_delivery_container']")
+//	public WebElement estimationDeliveryDate;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='columnContainer estimated_delivery_container']//span[1]")
 	public WebElement estimationDeliveryDate;
 
 	@FindBy(how = How.XPATH, using = "//span[@class='body1_regular orderNumber']")
@@ -48,15 +47,14 @@ public class OrderConfirmationPage extends BasePage {
 
 	@FindBy(how = How.XPATH, using = "//div[@class='tax']//div[1]//span[1]")
 	public WebElement taxApplied;
-
+	
 	@FindBy(how = How.XPATH, using = "//div[@class='tax']//div[2]//span[1]")
 	public WebElement shippingPrice;
 
 	@FindBy(how = How.XPATH, using = "//div[@class='orderSummary']//div[3]//span[1]")
 	public WebElement discountApplied;
 
-	@FindBy(how = How.XPATH, using = "//li[contains(@class,'d-list-item')]/div[@class='d-flex']")
-	public List<WebElement> allProductsSummary;
+	
 
 	public String getDiscountValue() {
 
@@ -81,6 +79,8 @@ public class OrderConfirmationPage extends BasePage {
 
 	}
 
+	
+
 	public String getShippingAddress() throws InterruptedException {
 
 		String shippingAddress = null;
@@ -92,6 +92,9 @@ public class OrderConfirmationPage extends BasePage {
 		return shippingAddress;
 
 	}
+
+	
+	
 
 	public String getOriginalProductPrice() throws InterruptedException {
 
@@ -106,6 +109,10 @@ public class OrderConfirmationPage extends BasePage {
 
 	}
 
+	
+
+	
+
 	public String getOriginalProductQuantity() throws InterruptedException {
 		String quantity = null;
 		productQuantity.isDisplayed();
@@ -114,28 +121,6 @@ public class OrderConfirmationPage extends BasePage {
 		System.out.println(quantity);
 
 		return quantity;
-	}
-
-	public HashMap<String,String> getOrderProducts() throws InterruptedException {
-
-		HashMap<String, String> productOrderTable = new HashMap<String,String>();
-		
-		Iterator productIterator= allProductsSummary.iterator();
-		
-		while(productIterator.hasNext()){ 
-			Map.Entry<Integer,String> m=i.next(); 
-			int key = m.getKey(); 
-			String value=m.getValue(); 
-			System.out.println("Key :"+key+" value :"+value); 
-			}
-
-		
-	}
-	
-	public String getProductsSubtotal() throws InterruptedException {
-		
-
-		
 	}
 
 	public String getProductSubtotalAmt(String price, String quantity) throws InterruptedException {
@@ -149,9 +134,9 @@ public class OrderConfirmationPage extends BasePage {
 		NumberFormat defaultFormat = NumberFormat.getCurrencyInstance(usa);
 		return defaultFormat.format(productSubtotal);
 	}
-
-	// Method to get "Order_Number" from order confirmation page
-
+	
+//	Method to get "Order_Number" from order confirmation page
+	
 	public String getOrderNumber() {
 
 		String orderNo = null;
@@ -163,9 +148,10 @@ public class OrderConfirmationPage extends BasePage {
 		return orderNo;
 
 	}
+	
 
-	// Method to get "Email_ID" from order confirmation page
-
+//	Method to get "Email_ID" from order confirmation page
+	
 	public String getEmailID() {
 
 		String email = null;
@@ -187,9 +173,10 @@ public class OrderConfirmationPage extends BasePage {
 		return email;
 
 	}
+	
 
-	// Method to get "Estimation_Delivery_date" from order confirmation page
-
+//	Method to get "Estimation_Delivery_date" from order confirmation page
+	
 	public String getDeliveryDate() throws InterruptedException {
 
 		String deliveryDate = null;
@@ -201,9 +188,10 @@ public class OrderConfirmationPage extends BasePage {
 		return deliveryDate;
 
 	}
+		
 
-	// Method to get "order_Summary / Total_Price" from order confirmation page
-
+//	Method to get "order_Summary / Total_Price" from order confirmation page
+	
 	public String getOrderSummaryAmount() {
 
 		String orderSummaryAmount = null;
@@ -222,10 +210,10 @@ public class OrderConfirmationPage extends BasePage {
 
 		return orderSummaryAmount;
 	}
+	
 
-	// Method to get "Tax / Order Tax" (with respect to the given state and zipcode)
-	// from order confirmation page
-
+//	Method to get "Tax / Order Tax" (with respect to the given state and zipcode) from order confirmation page
+	
 	public String getTaxAmount() throws InterruptedException {
 
 		String taxAmount = null;
@@ -239,9 +227,9 @@ public class OrderConfirmationPage extends BasePage {
 		return taxAmount;
 
 	}
+		
 
-	// Method to get "Shipping / Order_Shipping_&_Handling_Cost" from order
-	// confirmation page
+//	Method to get "Shipping / Order_Shipping_&_Handling_Cost" from order confirmation page
 
 	public String getShippingCharges() throws InterruptedException {
 
@@ -254,9 +242,14 @@ public class OrderConfirmationPage extends BasePage {
 		return shippingCharges;
 
 	}
-
-	// ---------------------------------------------------------------------------
-
+	
+	
+	
+	
+	
+	
+//---------------------------------------------------------------------------		
+		
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Eargo Neo HiFi')]")
 	public WebElement check_eargo_Neo_Hifi;
 
@@ -268,182 +261,187 @@ public class OrderConfirmationPage extends BasePage {
 
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Wax Guard Replacement Tool')]")
 	public WebElement check_wax;
-
+	
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Flexi Fibers')]")
 	public WebElement check_flexiFiber;
-
+	
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Flexi Fibers')]//ancestor::li//descendant::div[contains(text(),'Regular')]")
 	public WebElement check_flexiFiber_regular;
-
+	
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Flexi Fibers')]//ancestor::li//descendant::div[contains(text(),'Large')]")
 	public WebElement check_flexiFiber_large;
-
+	
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Flexi Domes')]")
 	public WebElement check_flexiDomes;
-
+	
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Flexi Domes')]//ancestor::li//descendant::div[contains(text(),'Regular')]")
 	public WebElement check_flexiDomes_regular;
-
+	
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Flexi Domes')]//ancestor::li//descendant::div[contains(text(),'Large')]")
 	public WebElement check_flexiDomes_large;
 
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Flexi Palms')]")
 	public WebElement check_flexiPalms;
-
+	
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Flexi Palms')]//ancestor::li//descendant::div[contains(text(),'Regular')]")
 	public WebElement check_flexiPalms_regular;
-
+	
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Flexi Palms')]//ancestor::li//descendant::div[contains(text(),'Large')]")
 	public WebElement check_flexiPalms_large;
-
+	
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Flexi Palms')]")
 	public WebElement check_flexiTetraPalms;
-
+	
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Flexi Palms')]//ancestor::li//descendant::div[contains(text(),'Regular')]")
 	public WebElement check_flexiTetraPalms_regular;
-
+	
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Flexi Palms')]//ancestor::li//descendant::div[contains(text(),'Large')]")
 	public WebElement check_flexiTetraPalms_large;
 
-	// Method to get "Products_Name" from order confirmation page
-
+	
+// Method to get "Products_Name" from order confirmation page
+	
 	public ArrayList<String> prodsOnConfirmPage() throws InterruptedException {
+		
+	ArrayList<String> prods_on_confirm_page = new ArrayList<String>();
 
-		ArrayList<String> prods_on_confirm_page = new ArrayList<String>();
+	String[] products = {"Eargo Neo HiFi", "Eargo Neo", "Eargo Max", "Flexi TetraPalms Regular", "Flexi TetraPalms Large","Flexi Palms Large",
+			"Flexi Palms Regular", "Flexi Domes Large", "Flexi Domes Regular", "Flexi Fibers Large", "Flexi Fibers Regular", "Wax Guard Replacement Tool"};
 
-		String[] products = { "Eargo Neo HiFi", "Eargo Neo", "Eargo Max", "Flexi TetraPalms Regular",
-				"Flexi TetraPalms Large", "Flexi Palms Large", "Flexi Palms Regular", "Flexi Domes Large",
-				"Flexi Domes Regular", "Flexi Fibers Large", "Flexi Fibers Regular", "Wax Guard Replacement Tool" };
 
-		for (int i = 0; i < products.length; i++) {
+	for (int i = 0; i < products.length; i++) {
+	  
+	String prod = products[i];
+	boolean prod_Available;
+	boolean regular;
+	boolean large;
+	
+	switch (prod.toLowerCase()) {
 
-			String prod = products[i];
-			boolean prod_Available;
-			boolean regular;
-			boolean large;
-
-			switch (prod.toLowerCase()) {
-
-			case "eargo neo hifi":
-				prod_Available = check_eargo_Neo_Hifi.isDisplayed();
-				if (prod_Available == true) {
+		case "eargo neo hifi":
+			prod_Available = check_eargo_Neo_Hifi.isDisplayed();
+				if(prod_Available == true){
 					prods_on_confirm_page.add("Eargo Neo HiFi");
 				}
-				break;
+		break;
 
-			case "eargo neo":
-				prod_Available = check_eargo_Neo.isDisplayed();
-				if (prod_Available == true) {
+		case "eargo neo":
+			prod_Available = check_eargo_Neo.isDisplayed();
+				if(prod_Available == true){
 					prods_on_confirm_page.add("Eargo Neo");
 				}
-				break;
-
-			case "eargo max":
-				prod_Available = check_eargo_Max.isDisplayed();
-				if (prod_Available == true) {
+		break;
+	
+		
+		case "eargo max":
+			prod_Available = check_eargo_Max.isDisplayed();
+				if(prod_Available == true){
 					prods_on_confirm_page.add("Eargo Max");
 				}
-				break;
-
-			case "flexi tetraPalms regular":
-				prod_Available = check_flexiTetraPalms.isDisplayed();
-
-				if (prod_Available == true) {
+		break;
+		
+		case "flexi tetraPalms regular":
+			prod_Available = check_flexiTetraPalms.isDisplayed();
+				
+				if(prod_Available == true){
 					regular = check_flexiTetraPalms_regular.isDisplayed();
-					if (regular == true) {
-						prods_on_confirm_page.add("Flexi TetraPalms Regular");
-					}
+						if(regular==true) {	
+							prods_on_confirm_page.add("Flexi TetraPalms Regular");
+						}
 				}
-				break;
-
-			case "flexi tetraPalms large":
-				prod_Available = check_flexiTetraPalms.isDisplayed();
-
-				if (prod_Available == true) {
+		break;
+		
+		case "flexi tetraPalms large":
+			prod_Available = check_flexiTetraPalms.isDisplayed();
+				
+				if(prod_Available == true){
 					large = check_flexiTetraPalms_large.isDisplayed();
-					if (large == true) {
-						prods_on_confirm_page.add("Flexi TetraPalms Large");
-					}
+						if(large==true) {	
+							prods_on_confirm_page.add("Flexi TetraPalms Large");
+						}
 				}
-				break;
-
-			case "flexi palms large":
-				prod_Available = check_flexiPalms.isDisplayed();
-
-				if (prod_Available == true) {
+		break;
+		
+		case "flexi palms large":
+			prod_Available = check_flexiPalms.isDisplayed();
+				
+				if(prod_Available == true){
 					large = check_flexiPalms_large.isDisplayed();
-					if (large == true) {
-						prods_on_confirm_page.add("Flexi Palms Large");
-					}
+						if(large==true) {	
+							prods_on_confirm_page.add("Flexi Palms Large");
+						}
 				}
-				break;
-
-			case "flexi palms regular":
-				prod_Available = check_flexiPalms.isDisplayed();
-
-				if (prod_Available == true) {
+		break;
+		
+		case "flexi palms regular":
+			prod_Available = check_flexiPalms.isDisplayed();
+				
+				if(prod_Available == true){
 					regular = check_flexiPalms_regular.isDisplayed();
-					if (regular == true) {
-						prods_on_confirm_page.add("Flexi Fibers Regular");
-					}
+						if(regular==true) {	
+							prods_on_confirm_page.add("Flexi Fibers Regular");
+						}
 				}
-				break;
-
-			case "flexi domes large":
-				prod_Available = check_flexiDomes.isDisplayed();
-
-				if (prod_Available == true) {
+		break;
+		
+		case "flexi domes large":
+			prod_Available = check_flexiDomes.isDisplayed();
+				
+				if(prod_Available == true){
 					large = check_flexiDomes_large.isDisplayed();
-					if (large == true) {
-						prods_on_confirm_page.add("Flexi Domes Large");
-					}
+						if(large==true) {	
+							prods_on_confirm_page.add("Flexi Domes Large");
+						}
 				}
-				break;
-
-			case "flexi domes regular":
-				prod_Available = check_flexiDomes.isDisplayed();
-
-				if (prod_Available == true) {
+		break;
+		
+		case "flexi domes regular":
+			prod_Available = check_flexiDomes.isDisplayed();
+				
+				if(prod_Available == true){
 					regular = check_flexiDomes_regular.isDisplayed();
-					if (regular == true) {
-						prods_on_confirm_page.add("Flexi Domes Regular");
-					}
+						if(regular==true) {	
+							prods_on_confirm_page.add("Flexi Domes Regular");
+						}
 				}
-				break;
-
-			case "flexi fibers regular":
-				prod_Available = check_flexiFiber.isDisplayed();
-
-				if (prod_Available == true) {
+		break;
+		
+		case "flexi fibers regular":
+			prod_Available = check_flexiFiber.isDisplayed();
+				
+				if(prod_Available == true){
 					regular = check_flexiFiber_regular.isDisplayed();
-					if (regular == true) {
-						prods_on_confirm_page.add("Flexi Fibers Regular");
-					}
+						if(regular==true) {	
+							prods_on_confirm_page.add("Flexi Fibers Regular");
+						}
 				}
-				break;
-
-			case "flexi fibers large":
-				prod_Available = check_flexiFiber.isDisplayed();
-
-				if (prod_Available == true) {
+		break;
+		
+		case "flexi fibers large":
+			prod_Available = check_flexiFiber.isDisplayed();
+				
+				if(prod_Available == true){
 					large = check_flexiFiber_large.isDisplayed();
-					if (large == true) {
-						prods_on_confirm_page.add("Flexi Fibers Large");
-					}
+						if(large==true) {	
+							prods_on_confirm_page.add("Flexi Fibers Large");
+						}
 				}
-				break;
-
-			case "wax guard replacement tool":
-				prod_Available = check_wax.isDisplayed();
-				if (prod_Available == true) {
+		break;	
+		
+		case "wax guard replacement tool":
+			prod_Available = check_wax.isDisplayed();
+				if(prod_Available == true){
 					prods_on_confirm_page.add("Wax Guard Replacement Tool");
 				}
-				break;
-
+		break;
+	
+		
 			}
 		}
-
-		return (prods_on_confirm_page);
+	 
+	return(prods_on_confirm_page);
 	}
-
+	
+	
+	
 }

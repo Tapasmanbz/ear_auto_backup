@@ -15,16 +15,17 @@ import io.cucumber.junit.CucumberOptions;
 		"html:target/site/cucumber-pretty" }, glue = "com/eargo/automation/steps", tags = {
 				"" }, monochrome = true, strict = true, dryRun = false)
 
-public class TestRunner {
+ public class TestRunner {
 
-}
+ }
+
 
 // TestNG
-// public class TestRunner extends AbstractTestNGCucumberTests {
+//public class TestRunner extends AbstractTestNGCucumberTests {
 //
-// @Override
-// @DataProvider
-// public Object[][] scenarios() {
-// return super.scenarios();
-// }
-// }
+//	@Override
+//	@DataProvider
+//	public Object[][] scenarios() {
+//		return super.scenarios();
+//	}
+//}

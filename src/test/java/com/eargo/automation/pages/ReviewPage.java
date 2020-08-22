@@ -99,7 +99,7 @@ public class ReviewPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//div[@class='checkout_form_left']/div[1]/div[1]/button[1]")
 	public WebElement editAccountInfo;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='paymentContainer']/div[1]/button[1]")
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'I would like to pay with')]//parent::div//child::button[contains(text(),'Edit')]")
 	public WebElement editPaymentInfo;
 
 	@FindBy(how = How.ID, using = "radio-2")
@@ -128,6 +128,9 @@ public class ReviewPage extends BasePage {
 
 	@FindBy(how = How.XPATH, using = "//div[@id='buttons-container']/div/div/div[@role='button']")
 	public WebElement payPalOrderComplete;
+	
+//	@FindBy(how = How.XPATH, using = "//div[@id='buttons-container']/div/div[@role='button']")
+//	public WebElement payPalOrderComplete;
 
 	// Paypal related xpaths
 	@FindBy(how = How.XPATH, using = "//div[contains(@class,'spinner')]")
@@ -387,12 +390,20 @@ public class ReviewPage extends BasePage {
 	}
 
 	public CheckoutPage editPaymentInfo() throws InterruptedException {
-		CheckoutPage checkoutPage = new CheckoutPage();
-		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", editPaymentInfo);
-		((JavascriptExecutor) driver).executeScript("arguments[0].click();", editPaymentInfo);
-		// editPaymentInfo.click();
-		Thread.sleep(3000);
-
+		CheckoutPage checkoutPage = new CheckoutPage();	
+		
+		try {
+			boolean editPaymentInfoDisplayed =editPaymentInfo.isDisplayed();
+			if(editPaymentInfoDisplayed==true) {
+				((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", editPaymentInfo);
+				((JavascriptExecutor) driver).executeScript("arguments[0].click();", editPaymentInfo);
+				// editPaymentInfo.click();
+				Thread.sleep(3000);	
+			}
+		}catch(Exception e) {
+			System.out.println("editPaymentInfoDisplayed = false");
+		}
+		
 		return checkoutPage;
 
 	}

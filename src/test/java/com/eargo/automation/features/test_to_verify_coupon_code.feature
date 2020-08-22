@@ -27,7 +27,6 @@ Feature:
 @smokeTest @regressionTest @singleProductUsingInvalidCoupon @couponValidation
 		Scenario Outline: Place a normal order with one product, invalid coupon and verify error messsage is displayed on cart page
 			Given I have a product <prod> at a price of <price>
-#			And a default coupon <couponCode> is applied
 			And as a user with a default email
 			When I add a product <prod> in cart
 			And I applied coupon code <couponCode> on cart page
@@ -68,7 +67,7 @@ Feature:
 			Given I have a accessory <acc> at a price of <price>
 			And as a user with a default email
 			When I add a accessory <acc> in cart
-			And I applied coupon code <couponCode> on cart page
+			#And I applied coupon code <couponCode> on cart page
 			And I click on checkout
 			And I select state as <state> with zipcode <zipCode>
 			And I opt for <deliverBy> delivery
@@ -99,7 +98,7 @@ Feature:
 			And I add a accessory <accessory2> in cart
 			And I add a accessory <accessory3> in cart
 			And I add a accessory <accessory4> in cart
-			And I applied coupon code <couponCode> on cart page
+			#And I applied coupon code <couponCode> on cart page
 			And I click on checkout
 			And I select state as <state> with zipcode <zipCode>
 			And I opt for <deliverBy> delivery

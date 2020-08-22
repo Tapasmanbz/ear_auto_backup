@@ -27,7 +27,7 @@ Feature:
 @smokeTest @regressionTest @verifyAddresPageFields @singleProductUsingInvalidCC 
 		Scenario Outline: Place a normal order with one product, default coupon and verify error messsage is displayed on checkout page
 			Given I have a product <prod> at a price of <price>
-#			And a default coupon <couponCode> is applied
+			And a default coupon <couponCode> is applied
 			And as a user with a default email
 			When I add a product <prod> in cart
 			And I click on checkout

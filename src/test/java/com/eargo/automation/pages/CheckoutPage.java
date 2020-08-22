@@ -494,8 +494,8 @@ public class CheckoutPage extends BasePage {
 
 		System.out.println("inside enterBillingDetails");
 		selectDifferentBillingAddress.click();
-		inputDiffShippingFirstName.sendKeys("TestDifferentShippingFirst");
-		inputDiffShippingLastName.sendKeys("TestDifferentShippingLast");
+		inputDiffShippingFirstName.sendKeys("please");
+		inputDiffShippingLastName.sendKeys("do not call");
 		inputDiffShippingAddress.sendKeys("295 N Bernardo Ave Suite 100");
 		inputDiffShippingCity.sendKeys("Mountain View");
 

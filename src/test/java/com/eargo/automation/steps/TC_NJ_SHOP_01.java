@@ -277,42 +277,70 @@ public class TC_NJ_SHOP_01 extends TestBase {
 
 		if (prop.getProperty("environment").equalsIgnoreCase("staging")) {
 
-			discountValue = orderConfirmationPage.getDiscountValue();
+//---------Getting data from Confirmation Page ----------------- 
 			orderNumber = orderConfirmationPage.getOrderNumber();
-			email = orderConfirmationPage.getEmailID();
-
 			shippingAddress = orderConfirmationPage.getShippingAddress();
-			deliveryDate = orderConfirmationPage.getDeliveryDate();
 			orderSummaryAmount = orderConfirmationPage.getOrderSummaryAmount();
-			originalProductPrice = orderConfirmationPage.getOriginalProductPrice();
-			originalProductQuantity = orderConfirmationPage.getOriginalProductQuantity();
+			//Product details <array needs to be developed>
 			taxAmount = orderConfirmationPage.getTaxAmount();
-			shippingCharges = orderConfirmationPage.getShippingCharges();
-
-			String productSubtotal = orderConfirmationPage.getProductSubtotalAmt(originalProductPrice,
-					originalProductQuantity);
-
-			String orderNumber = orderConfirmationPage.getOrderNumber();
+			shippingCharges = orderConfirmationPage.getShippingCharges();			
+			
+//Following are needs to be commented as we can not verify the same on salesforce 
+			email = orderConfirmationPage.getEmailID();
+			deliveryDate = orderConfirmationPage.getDeliveryDate();
+			discountValue = orderConfirmationPage.getDiscountValue();
+			
+// Following needs be replaced by product details from <array list>			
+	//		originalProductPrice = orderConfirmationPage.getOriginalProductPrice();
+	//		originalProductQuantity = orderConfirmationPage.getOriginalProductQuantity();
+			
+//Not clear with the functionality of below two lines	so commented		
+//			String productSubtotal = orderConfirmationPage.getProductSubtotalAmt(originalProductPrice,originalProductQuantity);
+			
+			
+//---------Into salesforce verification ---------------------
+			
+			// String orderNumber = orderConfirmationPage.getOrderNumber();
 			SalesforcePage salesforcePage = new SalesforcePage();
-
 			salesforcePage.salesforceLogin(orderNumber);
+			
+			
+//1. verifying the order number
+			
 			Assert.assertEquals(orderNumber, salesforcePage.orderNum.getText());
+			
+//2. Verifying shipping address
+			
+			//Needs to be developed 
+			
+//3. Verifying the order total price (Order Summary)
+			
 			Assert.assertEquals(orderSummaryAmount, salesforcePage.finalProductPrice.getText());
-			Assert.assertEquals(productSubtotal, salesforcePage.actualproductPrice.getText());
+		
+//4. Verifying Product details
+			
+			// Needs to be developed
+			
+//5. Verifying the Tax (which applied with respect to State address)
+			
 			Assert.assertEquals(taxAmount, salesforcePage.sfOrderTax());
+
+//Not clear with the below functionality
 			
-		//----------------------------------------------------------------------------------
+//			Assert.assertEquals(productSubtotal, salesforcePage.actualproductPrice.getText());
 			
+
 			
-			
+
+//---------------------product details from <array list>-------------------------------------------------------------
+
 //			ArrayList<String> prods_On_ConfirmationPage = orderConfirmationPage.prodsOnConfirmPage();
+//			
 //			ArrayList<String> prods_On_SalesForcePage = salesforcePage.prodsOn_SF_Page();
 //			
 //			boolean prod_list_matched = prods_On_ConfirmationPage.equals(prods_On_SalesForcePage);
 //			
-//			Assert.assertTrue(prod_list_matched);
-			
-			
+//			Assert.assertTrue(prod_list_matched);			
 
 		}
 
@@ -320,38 +348,63 @@ public class TC_NJ_SHOP_01 extends TestBase {
 
 	@When("a coupon {string} is applied")
 	public void a_coupon_is_applied(String couponCode) throws InterruptedException {
+		
+	boolean isDefaultCouponApplied;	
+		
+	isDefaultCouponApplied = cartPage.checkDefaultCouponApplied();
+		
+	ArrayList<String> allProductName = cartPage.getAllCartProductName();
+	boolean isCouponRemoved = false;
 
-		ArrayList<String> allProductName = cartPage.getAllCartProductName();
-		boolean isCouponRemoved = false;
+	for (String productName : allProductName) {
+		switch (productName.toUpperCase().trim()) {
+			case "EARGO NEO HIFI":
+				  if(isDefaultCouponApplied==true) {
+					  isCouponRemoved = isDefaultCouponApplied ;
+				  }else {
+					  isCouponRemoved = cartPage.removeCoupon();  
+				  }
+					break;
+	
+			default:
+					break;
+				}
 
-// Commented as there is no default coupon applied now.		
-//		for (String productName : allProductName) {
-//			switch (productName.toUpperCase().trim()) {
-//			case "EARGO NEO HIFI":
-//				isCouponRemoved = cartPage.removeCoupon();
-//				break;
-//			default:
-//				break;
-//			}
-//
-//			if (isCouponRemoved)
-//				break;
-//		}
+			if (isCouponRemoved)
+				break;
+			}
 
-		cartPage.applyCoupon(couponCode);
+			cartPage.applyCoupon(couponCode);
+		
 
 	}
 
 	@When("I used a friend referral {string}")
 	public void i_used_a_friend_referral(String friendReferral) throws InterruptedException {
 
-		String refreeEmail = basePage.getDefaultEmail();
-		cartPage.removeCoupon();
-		mentionMe = cartPage.clickReferByFriend();
-		mentionMe.findFriend();
-		mentionMe.submitFriendDetails();
-		mentionMe.submitRefreeDetails(refreeEmail);
+		boolean isDefaultCouponApplied;	
 
+		String refreeEmail = basePage.getDefaultEmail();
+
+		isDefaultCouponApplied = cartPage.checkDefaultCouponApplied();
+
+		if(isDefaultCouponApplied==true) {
+	    	  
+	    	mentionMe = cartPage.clickReferByFriend();
+	  		mentionMe.findFriend();
+	  		mentionMe.submitFriendDetails();
+	  		mentionMe.submitRefreeDetails(refreeEmail);
+
+    	  }else {
+    		cartPage.removeCoupon();
+    		mentionMe = cartPage.clickReferByFriend();
+  	  		mentionMe.findFriend();
+  	  		mentionMe.submitFriendDetails();
+  	  		mentionMe.submitRefreeDetails(refreeEmail);
+  	  		
+    	  }
+		
+		
 	}
 
 	@Given("a referal coupon with existing user {string}")
@@ -472,10 +525,13 @@ public class TC_NJ_SHOP_01 extends TestBase {
 
 	}
 
+	
+	
 	@When("I edit payment method as {string}")
 	public void i_edit_payment_info(String paymentMethod) throws InterruptedException {
 
-		// ReviewPage reviewPage = new ReviewPage();
+		ReviewPage reviewPage = new ReviewPage();
+		reviewPage.editPaymentInfo();
 		Thread.sleep(2000);
 		// CheckoutPage checkoutPage = reviewPage.editPaymentInfo();
 

@@ -40,6 +40,9 @@ public class MentionMePage extends BasePage {
 
 	@FindBy(how = How.NAME, using = "ButtonRegister")
 	public WebElement btnGet15PercentOff;
+	
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Referred by a friend?')]")
+	public WebElement linkReferredByFriend;
 
 	public void findFriend() throws InterruptedException {
 		System.out.println("Inside findFriend()");
@@ -64,6 +67,7 @@ public class MentionMePage extends BasePage {
 		driver.switchTo().frame(iFrameMentionMe);
 		enterEmail(email);
 		clickGetFifteenPercentOffButton();
+		
 		driver.switchTo().defaultContent();
 	}
 

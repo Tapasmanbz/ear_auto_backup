@@ -9,7 +9,7 @@ Feature:
 #@smokeTest @regressionTest @oneProductWithBread @production @tc_njshop_07 
 		Scenario Outline: TC-NJSHOP-07
 			Given I have a product <prod> at a price of <price>
-#			And a default coupon <couponCode> is applied
+			And a default coupon <couponCode> is applied
 			And as a user with a default email
 			When I add a product <prod> in cart
 			And I click on checkout
@@ -29,7 +29,7 @@ Feature:
 #@smokeTest @regressionTest @oneProductWithBread @production @testOne 
     Scenario Outline: TC-NJSHOP-51
       Given I have a product <prod> at a price of <price>
-#			And a default coupon <couponCode> is applied
+			And a default coupon <couponCode> is applied
 			And as a user with a default email
 			When I add a product <prod> in cart
 			And I click on checkout
@@ -50,7 +50,7 @@ Feature:
 #@smokeTest @regressionTest @oneProductWithBread @production @tc_njshop_69
     Scenario Outline: TC-NJSHOP-69
       Given I have a product <prod> at a price of <price>
-#			And a default coupon <couponCode> is applied
+			And a default coupon <couponCode> is applied
 			And as a user with a default email
 			When I add a product <prod> in cart
 			And I click on checkout

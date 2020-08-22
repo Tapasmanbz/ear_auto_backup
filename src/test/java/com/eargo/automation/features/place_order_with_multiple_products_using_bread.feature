@@ -11,13 +11,13 @@ Feature:
 		Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have multiple products <prod1>, <prod2>, <prod3> at a price of <price1>, <price2> and <price3>
 			And I have a accessory <acc> at a price of <accPrice>
-#			And a default coupon <couponCode> is applied
+			And a default coupon <couponCode> is applied
 			And as a user with a default email
 			When I add a product <prod1> in cart
 			And I add a product <prod2> in cart
 			And I add a product <prod3> twice in cart
 			And I add a accessory <acc> in cart
-			And a coupon <couponCode> is applied
+#			And a coupon <couponCode> is applied
 			And I click on checkout
 			And I select state as <state> with zipcode <zipCode>
 			And I opt for <deliverBy> delivery
@@ -75,7 +75,7 @@ Feature:
 		Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And I have a accessory <acc> at a price of <accPrice>
-#			And a default coupon <couponCode> is applied
+			And a default coupon <couponCode> is applied
 			And as a user with a default email
 			When I add a product <prod> in cart
 			And I add a accessory <acc> in cart
@@ -97,7 +97,7 @@ Feature:
 		Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And I have a accessory <acc> at a price of <accPrice>
-#			And a default coupon <couponCode> is applied
+			And a default coupon <couponCode> is applied
 			And as a user with a default email
 			When I add a product <prod> in cart
 			And I add a accessory <acc> in cart
@@ -121,7 +121,7 @@ Feature:
 		Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have multiple products <prod1>, <prod2>, <prod3> at a price of <price1>, <price2> and <price3>
 			And I have a accessory <acc> at a price of <accPrice>
-#			And a default coupon <couponCode> is applied
+			And a default coupon <couponCode> is applied
 			And as a user with a default email
 			When I add a product <prod1> in cart
 			And I add a product <prod2> in cart

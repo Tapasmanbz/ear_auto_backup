@@ -1,7 +1,6 @@
 package com.eargo.automation.pages;
 
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import java.util.ArrayList;
@@ -64,7 +63,7 @@ public class SalesforcePage extends BasePage {
 	@FindBy(how = How.ID, using = "00NA000000BDBvq_ileinner")
 	public WebElement actualproductPrice;
 
-	@FindBy(how = How.ID, using = "00NA000000BDBvb_ileinner")
+	@FindBy(how = How.ID, using = "00NA000000BxUfa_ileinner")
 	public WebElement deliveryTax;
 
 	@FindBy(how = How.ID, using = "00NA000000BDBvg_ileinner")
@@ -101,7 +100,7 @@ public class SalesforcePage extends BasePage {
 
 		return this.neoHifiProdPrice;
 	}
-
+	
 	public void setAccessoryName(String accessoryName) {
 
 		this.accessoryName = accessoryName;
@@ -143,26 +142,26 @@ public class SalesforcePage extends BasePage {
 
 		driver.get(prop.getProperty("saleforceURL"));
 
-		SFuserName.sendKeys(prop.getProperty("SFUserName"));
-		SFpassWord.sendKeys(prop.getProperty("SFPassword"));
+		SFuserName.sendKeys("sabaris@bandwidth-usa.com.webstore");
+		SFpassWord.sendKeys("Techy@321");
 
 		SFLogInToSanbox.click();
 
-		// SFskipRegisterMobileNumber.click();
+//		SFskipRegisterMobileNumber.click();
 
 		Thread.sleep(3000);
 		ordersTab.click();
 
 		Thread.sleep(2000);
 		searchOrderNumber.sendKeys(orderNumber);
-		wait.until(ExpectedConditions.elementToBeClickable(searchOrderButton)).click();
+		searchOrderButton.click();
 		Thread.sleep(3000);
 
 		System.out.println("in order details");
 		Thread.sleep(3000);
 
-		wait.until(ExpectedConditions.elementToBeClickable(openOrderDetails)).click();
-		
+		openOrderDetails.click();
+
 		System.out.println("Order Summary =" + finalProductPrice.getText());
 
 		System.out.println("Product Price =" + actualproductPrice.getText());
@@ -180,16 +179,17 @@ public class SalesforcePage extends BasePage {
 
 	public String sfOrderTax() {
 		deliveryTaxValue = deliveryTax.getText();
-		deliveryTaxValue1 = "$" + deliveryTaxValue + "0";
+//		deliveryTaxValue1 = "$" + deliveryTaxValue + "0";
+		deliveryTaxValue1 = "$" + deliveryTaxValue;
 		System.out.println("sfOrderTax=" + deliveryTaxValue1);
 		return this.deliveryTaxValue1;
 	}
-
-	// -------------------------------------------------------------------------------------------------------------------
-
+	
+	//-------------------------------------------------------------------------------------------------------------------
+	
 	@FindBy(how = How.ID, using = "//div[@class='pShowMore']//child::a[2]")
 	public WebElement show_more_prods;
-
+	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'EARGO 2.1, HIFI, NEW SYSTEM')]")
 	public WebElement check_eargo_Neo_Hifi;
 
@@ -201,143 +201,147 @@ public class SalesforcePage extends BasePage {
 
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Eargo Wax Guard Replacement Tool')]")
 	public WebElement check_wax;
-
+	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Eargo Flexi Fiber Bundle, Size Regular')]")
 	public WebElement check_flexiFiber_regular;
-
+	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Eargo Flexi Fiber Bundle, Size Large')]")
 	public WebElement check_flexiFiber_large;
-
+	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'EARGO PLUS ACCESSORY KIT FLEXI DOME, REGULAR')]")
 	public WebElement check_flexiDomes_regular;
-
+	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'EARGO PLUS ACCESSORY KIT FLEXI DOME, LARGE')]")
 	public WebElement check_flexiDomes_large;
-
+	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Eargo Neo Flexi Palm Accessory Kit, Regular')]")
 	public WebElement check_flexiPalms_regular;
-
+	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Eargo Neo Flexi Palm Accessory Kit, Large')]")
 	public WebElement check_flexiPalms_large;
-
+	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'EARGO HIFI, ACCESSORY KIT, TETRA FLEXI PALM, SIZE REGULAR')]")
 	public WebElement check_flexiTetraPalms_regular;
-
+	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'EARGO HIFI, ACCESSORY KIT, TETRA FLEXI PALM, SIZE LARGE')]")
 	public WebElement check_flexiTetraPalms_large;
-
+	
+	
+	
+	
 	public ArrayList<String> prodsOn_SF_Page() throws InterruptedException {
+	
+	show_more_prods.click();
+		
+	ArrayList<String> prods_on_salesForce_page = new ArrayList<String>();
 
-		show_more_prods.click();
+	String[] products = {"Eargo Neo HiFi", "Eargo Neo", "Eargo Max", "Flexi TetraPalms Regular", "Flexi TetraPalms Large","Flexi Palms Large",
+			"Flexi Palms Regular", "Flexi Domes Large", "Flexi Domes Regular", "Flexi Fibers Large", "Flexi Fibers Regular", "Wax Guard Replacement Tool"};
 
-		ArrayList<String> prods_on_salesForce_page = new ArrayList<String>();
 
-		String[] products = { "Eargo Neo HiFi", "Eargo Neo", "Eargo Max", "Flexi TetraPalms Regular",
-				"Flexi TetraPalms Large", "Flexi Palms Large", "Flexi Palms Regular", "Flexi Domes Large",
-				"Flexi Domes Regular", "Flexi Fibers Large", "Flexi Fibers Regular", "Wax Guard Replacement Tool" };
+	for (int i = 0; i < products.length; i++) {
+	  
+	String prod = products[i];
+	boolean prod_Available;
+	
+	switch (prod.toLowerCase()) {
 
-		for (int i = 0; i < products.length; i++) {
-
-			String prod = products[i];
-			boolean prod_Available;
-
-			switch (prod.toLowerCase()) {
-
-			case "eargo neo hifi":
-				prod_Available = check_eargo_Neo_Hifi.isDisplayed();
-				if (prod_Available == true) {
+		case "eargo neo hifi":
+			prod_Available = check_eargo_Neo_Hifi.isDisplayed();
+				if(prod_Available == true){
 					prods_on_salesForce_page.add("Eargo Neo HiFi");
 				}
-				break;
-
-			case "eargo neo":
-				prod_Available = check_eargo_Neo.isDisplayed();
-				if (prod_Available == true) {
+		break;
+		
+		case "eargo neo":
+			prod_Available = check_eargo_Neo.isDisplayed();
+				if(prod_Available == true){
 					prods_on_salesForce_page.add("Eargo Neo");
 				}
-				break;
-
-			case "eargo max":
-				prod_Available = check_eargo_Max.isDisplayed();
-				if (prod_Available == true) {
+		break;
+		
+		case "eargo max":
+			prod_Available = check_eargo_Max.isDisplayed();
+				if(prod_Available == true){
 					prods_on_salesForce_page.add("Eargo Max");
 				}
-				break;
-
-			case "flexi tetraPalms regular":
-				prod_Available = check_flexiTetraPalms_regular.isDisplayed();
-
-				if (prod_Available == true) {
+		break;
+		
+		case "flexi tetraPalms regular":
+			prod_Available = check_flexiTetraPalms_regular.isDisplayed();
+				
+				if(prod_Available == true){
 					prods_on_salesForce_page.add("Flexi TetraPalms Regular");
-				}
-				break;
-
-			case "flexi tetraPalms large":
-				prod_Available = check_flexiTetraPalms_large.isDisplayed();
-
-				if (prod_Available == true) {
+				}				
+		break;
+		
+		case "flexi tetraPalms large":
+			prod_Available = check_flexiTetraPalms_large.isDisplayed();
+				
+				if(prod_Available == true){	
 					prods_on_salesForce_page.add("Flexi TetraPalms Large");
 				}
-				break;
-
-			case "flexi palms large":
-				prod_Available = check_flexiPalms_large.isDisplayed();
-
-				if (prod_Available == true) {
+		break;
+		
+		case "flexi palms large":
+			prod_Available = check_flexiPalms_large.isDisplayed();
+				
+				if(prod_Available == true){
 					prods_on_salesForce_page.add("Flexi Palms Large");
 				}
-				break;
-
-			case "flexi palms regular":
-				prod_Available = check_flexiPalms_regular.isDisplayed();
-
-				if (prod_Available == true) {
+		break;
+		
+		case "flexi palms regular":
+			prod_Available = check_flexiPalms_regular.isDisplayed();
+				
+				if(prod_Available == true){
 					prods_on_salesForce_page.add("Flexi Fibers Regular");
 				}
-				break;
-
-			case "flexi domes large":
-				prod_Available = check_flexiDomes_large.isDisplayed();
-
-				if (prod_Available == true) {
+		break;
+		
+		case "flexi domes large":
+			prod_Available = check_flexiDomes_large.isDisplayed();
+				
+				if(prod_Available == true){
 					prods_on_salesForce_page.add("Flexi Domes Large");
 				}
-				break;
-
-			case "flexi domes regular":
-				prod_Available = check_flexiDomes_regular.isDisplayed();
-
-				if (prod_Available == true) {
+		break;
+		
+		case "flexi domes regular":
+			prod_Available = check_flexiDomes_regular.isDisplayed();
+				
+				if(prod_Available == true){
 					prods_on_salesForce_page.add("Flexi Domes Regular");
 				}
-				break;
-
-			case "flexi fibers regular":
-				prod_Available = check_flexiFiber_regular.isDisplayed();
-
-				if (prod_Available == true) {
+		break;
+		
+		case "flexi fibers regular":
+			prod_Available = check_flexiFiber_regular.isDisplayed();
+				
+				if(prod_Available == true){
 					prods_on_salesForce_page.add("Flexi Fibers Regular");
 				}
-				break;
-
-			case "flexi fibers large":
-				prod_Available = check_flexiFiber_large.isDisplayed();
-
-				if (prod_Available == true) {
+		break;
+		
+		
+		case "flexi fibers large":
+			prod_Available = check_flexiFiber_large.isDisplayed();
+				
+				if(prod_Available == true){	
 					prods_on_salesForce_page.add("Flexi Fibers Large");
 				}
-				break;
-
-			case "wax guard replacement tool":
-				prod_Available = check_wax.isDisplayed();
-				if (prod_Available == true) {
+		break;	
+		
+		case "wax guard replacement tool":
+			prod_Available = check_wax.isDisplayed();
+				if(prod_Available == true){
 					prods_on_salesForce_page.add("Wax Guard Replacement Tool");
 				}
-				break;
-
-			}
+		break;
+		
 		}
-		return (prods_on_salesForce_page);
+	  }
+	return(prods_on_salesForce_page);
 	}
-
+	
 }

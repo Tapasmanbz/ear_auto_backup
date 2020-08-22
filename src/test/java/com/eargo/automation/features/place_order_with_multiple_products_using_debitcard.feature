@@ -11,7 +11,7 @@ Feature:
 		Scenario Outline: Place a order with multiple product using debit card and verify the order details in Salesforce
 			Given I have multiple products <prod1>, <prod2>, <prod3> at a price of <price1>, <price2> and <price3>
 			And I have a accessory <acc> at a price of <accPrice>
-#			And a default coupon <couponCode> is applied
+			#And a default coupon <couponCode> is applied
 			And as a user with a default email
 			When I add a product <prod1> in cart
 			And I add a product <prod2> in cart
@@ -28,7 +28,7 @@ Feature:
    	@normalOrder @TC-NJSHOP-02
     Examples: 
       | prod1 		| prod2 | prod3 | acc 					| price1	 |price2	 |price3	|accPrice| couponCode			|	state					|	zipCode		|	deliverBy 					| payment	| 
-      | "Neo HIFI"|"Neo"	|"Max"	|"Wax"					| "$2950"  |"$2350"  |"$1850" |	"$25"  | "HIFILAUNCH" 	|	"California"	|	"95112"		|	"3-4 business days"	| "Amex"	|	#TC-NJSHOP-02 (Normal order)		
+      | "Neo HIFI"|"Neo"	|"Max"	|"Wax"					| "$2950"  |"$2350"  |"$1850" |	"$25"  | "HIFILAUNCH" 	|	"California"	|	"95112"		|	"1-2 business days"	| "Amex"	|	#TC-NJSHOP-02 (Normal order)		
 
 		@taxOrder @TC-NJSHOP-09
 		Examples: 
@@ -48,7 +48,7 @@ Feature:
 	 	@1-2BusinessDays @TC-NJSHOP-29
 		Examples: 
       | prod1 		| prod2 | prod3 | acc 					| price1	 |price2	 |price3	|accPrice| couponCode			|	state					|	zipCode		|	deliverBy 					| payment	| 
-      | "Neo HIFI"|"Neo"	|"Max"	|"Flexi fiber"	| "$2950"  |"$2350"  |"$1850" |	"$25"  | "HIFILAUNCH"		|	"MAINE"				|	"04098"		|	"1-2 business days"	| "Amex"	|	#TC-NJSHOP-29 (1-2 business days)
+      | "Neo HIFI"|"Neo"	|"Max"	|"Flexi fiber"	| "$2950"  |"$2350"  |"$1850" |	"$25"  | "MothersDay20"	|	"MAINE"				|	"04098"		|	"1-2 business days"	| "Amex"	|	#TC-NJSHOP-29 (1-2 business days)
       
 
 
@@ -59,7 +59,7 @@ Feature:
 #			And a default coupon <couponCode> is applied
 			And as a user with a default email
 			When I add a accessory <acc1>, <acc2>, <acc3>, <acc4> and <acc5> in cart
-			And a coupon <couponCode> is applied
+#			And a coupon <couponCode> is applied
 			And I click on checkout
 			And I select state as <state> with zipcode <zipCode>
 			And I opt for <deliverBy> delivery
@@ -74,11 +74,11 @@ Feature:
 	    
 	    
 #This scenario works with Mention ME (Referal Coupon)
-@smokeTest @regressionTest @multipleProductOrderWithDebitCard @mentionMe 
+#@smokeTest @regressionTest @multipleProductOrderWithDebitCard @mentionMe 
 		Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have multiple products <prod1>, <prod2>, <prod3> at a price of <price1>, <price2> and <price3>
 			And I have a accessory <acc> at a price of <accPrice>
-#			And a default coupon <couponCode> is applied
+			And a default coupon <couponCode> is applied
 			And as a user with a default email
 			When I add a product <prod1> in cart
 			And I add a product <prod2> in cart
@@ -122,7 +122,7 @@ Feature:
     @TC-NJSHOP-45 
     Examples: 
       | prod1 		| prod2 | prod3 | acc 	| price1	 |price2	 |price3	|accPrice| couponCode			|	state					|	zipCode		|	deliverBy 					| billingState	|	billingZipCode	|	 payment| 
-      | "Neo HIFI"|"Neo"	|"Max"	|"Wax"	| "$2950"  |"$2350"  |"$1850" |	"$25"  | "HIFILAUNCH" 	|	"California"	|	"95112"		|	"3-4 business days"	|  "FLORIDA"		|	"32003"    			|	"Amex"	|	#TC-NJSHOP-45 (Different Shipping Address)
+      | "Neo HIFI"|"Neo"	|"Max"	|"Wax"	| "$2950"  |"$2350"  |"$1850" |	"$25"  | "MothersDay20"	|	"California"	|	"95112"		|	"3-4 business days"	|  "FLORIDA"		|	"32003"    			|	"Amex"	|	#TC-NJSHOP-45 (Different Shipping Address)
      
      
 

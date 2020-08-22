@@ -116,8 +116,13 @@ public class BasePage extends TestBase {
 			if (!driver.getCurrentUrl().equalsIgnoreCase(prop.getProperty("accessoriesPageURL"))) {
 				// driver.get(prop.getProperty("accessoriesPageURL"));
 				CartPage cartPage = new CartPage();
-				if (cartPage.isCartOpen()) {
-					cartPage.closeCart();
+				try {
+					if (cartPage.isCartOpen()) {
+						Thread.sleep(3000);
+						cartPage.closeCart();
+					}	
+				}catch (Exception e) {
+					System.out.println("CartPage is not opened");
 				}
 				wait.until(ExpectedConditions.visibilityOf(dropDwnShop));
 				Actions action = new Actions(driver);
