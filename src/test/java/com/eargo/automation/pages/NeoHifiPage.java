@@ -26,13 +26,13 @@ public class NeoHifiPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//button[text()='GET YOUR RATE']")
 	public WebElement hifiGetYourRate;
 	
-	@FindBy(how = How.XPATH, using = "//div[@id='bread-checkout-btn']")
+	@FindBy(how = How.ID, using = "bread-checkout-btn")
 	public WebElement hifiCheckYourRate;
 	
 
 	public CartPage click_add_to_cart() throws InterruptedException {
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 		wait.until(ExpectedConditions.elementToBeClickable(btnAddToCart)).click();
 		Thread.sleep(3000);
 
@@ -41,13 +41,16 @@ public class NeoHifiPage extends BasePage {
 	
 	
 	public void hifi_get_your_rate() throws InterruptedException {
-
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		wait.until(ExpectedConditions.elementToBeClickable(hifiGetYourRate)).click();
+		Thread.sleep(2000);
+		waitForPageLoad();
 		((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", hifiCheckYourRate);
-//		hifiCheckYourRate.click();
+		Thread.sleep(2000);
+		wait.until(ExpectedConditions.visibilityOf(nortonPopUp));
 		wait.until(ExpectedConditions.elementToBeClickable(hifiCheckYourRate)).click();
-		Thread.sleep(3000);
+//		((JavascriptExecutor) driver).executeScript("arguments[0].click();", hifiCheckYourRate);
+		Thread.sleep(5000);
 		
 	}
 

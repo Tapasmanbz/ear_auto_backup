@@ -1,6 +1,8 @@
 package com.eargo.automation.pages;
 
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Calendar;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -20,7 +22,10 @@ public class CheckoutPage extends BasePage {
 
 	private boolean isBreadPaymentMethodDisplayed;
 	String couponErrorMessage;
-
+	String enteredCustomerEmailID;
+	public String expectedDeliveryDate; 
+	
+	ReviewPage salesforcePage = new ReviewPage();
 	ReviewPage reviewPage = new ReviewPage();
 
 	@FindBy(name = "email")
@@ -303,6 +308,7 @@ public class CheckoutPage extends BasePage {
 
 		wait.until(ExpectedConditions.visibilityOf(inputAccountEmail));
 		inputAccountEmail.sendKeys(prop.getProperty("defaultEmail"));
+		setEnteredCustomerEmailID(prop.getProperty("defaultEmail"));
 	}
 
 	public void enterFirstName() {
@@ -358,8 +364,10 @@ public class CheckoutPage extends BasePage {
 		dropdownBillingZipCode.sendKeys(zipCode);
 	}
 
-	public void enterMasterCardFullName() {
-
+	public void enterMasterCardFullName() throws InterruptedException {
+		wait.until(ExpectedConditions.visibilityOf(inputPaymentFullName));
+		inputPaymentFullName.clear();
+		Thread.sleep(500);
 		inputPaymentFullName.sendKeys(prop.getProperty("masterCardFullName"));
 	}
 
@@ -432,10 +440,8 @@ public class CheckoutPage extends BasePage {
 	}
 
 	public void clickShippingStateDropdown() throws InterruptedException {
-		Thread.sleep(1000);
-		dropdownShippingState.click();
-		Thread.sleep(1000);
-
+		scrollToElement(dropdownShippingState);
+		wait.until(ExpectedConditions.elementToBeClickable(dropdownShippingState)).click();
 	}
 
 	/**
@@ -463,21 +469,26 @@ public class CheckoutPage extends BasePage {
 
 		// Enter edited Shipping Details
 		inputShippingFirstName.clear();
+		Thread.sleep(500);
 		inputShippingFirstName.sendKeys(prop.getProperty("editedShippingFirstName"));
 
 		inputShippingLastName.clear();
+		Thread.sleep(500);
 		inputShippingLastName.sendKeys(prop.getProperty("editedShippingLastName"));
 
 		inputShippingAddress.clear();
+		Thread.sleep(500);
 		inputShippingAddress.sendKeys(prop.getProperty("editedShippingStreetAddress"));
 
 		inputShippingCity.clear();
+		Thread.sleep(500);
 		inputShippingCity.sendKeys(prop.getProperty("editedShippingCity"));
 
 		clickShippingStateDropdown();
 		selectState(state);
 
 		dropdownShippingZipCode.clear();
+		Thread.sleep(1000);
 		dropdownShippingZipCode.sendKeys(zipCode);
 
 	}
@@ -494,32 +505,27 @@ public class CheckoutPage extends BasePage {
 
 		System.out.println("inside enterBillingDetails");
 		selectDifferentBillingAddress.click();
-		inputDiffShippingFirstName.sendKeys("TestDifferentShippingFirst");
-		inputDiffShippingLastName.sendKeys("TestDifferentShippingLast");
+		inputDiffShippingFirstName.sendKeys("TestBillingFirst");
+		inputDiffShippingLastName.sendKeys("TestBillingLast");
 		inputDiffShippingAddress.sendKeys("295 N Bernardo Ave Suite 100");
 		inputDiffShippingCity.sendKeys("Mountain View");
 
-		Thread.sleep(2000);
 		clickBillingStateDropdown();
 		System.out.println("clicked on dropdown");
 		selectState(state);
 		enterBillingZipCode(zipCode);
-		Thread.sleep(1000);
-
 	}
 
 	public void clickBillingStateDropdown() throws InterruptedException {
-		Thread.sleep(1000);
-		dropdownBillingState.click();
-		Thread.sleep(1000);
-
+		scrollToElement(dropdownBillingState);
+		wait.until(ExpectedConditions.elementToBeClickable(dropdownBillingState)).click();
 	}
 
 	public void enterPaymentDetails(String cardType) throws InterruptedException {
 
 		// Enter Payment Details
 		System.out.println("card type = " + cardType);
-		inputPaymentFullName.clear();
+
 		enterMasterCardFullName();
 
 		scrollToElement(iFrameStripeCardNumber);
@@ -584,14 +590,14 @@ public class CheckoutPage extends BasePage {
 		scrollToElement(tabAcceleratedShipping);
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(ExpectedConditions.elementToBeClickable(tabAcceleratedShipping)).click();
-		Thread.sleep(3000);
+		Thread.sleep(1000);
 	}
 
 	public void selectNormalShipping() throws InterruptedException {
 		scrollToElement(tabNormalShipping);
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(ExpectedConditions.elementToBeClickable(tabNormalShipping)).click();
-		Thread.sleep(3000);
+		Thread.sleep(1000);
 	}
 
 	public void acceptMedicalWaiver() throws InterruptedException {
@@ -611,262 +617,264 @@ public class CheckoutPage extends BasePage {
 
 	private void selectState(String state) throws InterruptedException {
 
-		Thread.sleep(1500);
+		// Thread.sleep(1500);
+		WebDriverWait stateWait = new WebDriverWait(driver, Duration.ofSeconds(3));
+
 		switch (state.toUpperCase()) {
 
 		case "AL":
 		case "ALABAMA":
-			dropdownStateOptionAlbama.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionAlbama)).click();
 			break;
 
 		case "AK":
 		case "ALASKA":
-			dropdownStateOptionAlaska.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionAlaska)).click();
 			break;
 
 		case "AZ":
 		case "ARIZONA":
-			dropdownStateOptionArizona.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionArizona)).click();
 			break;
 
 		case "AR":
 		case "ARKANSAS":
-			dropdownStateOptionArkansas.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionArkansas)).click();
 			break;
 
 		case "CA":
 		case "CALIFORNIA":
-			dropdownStateOptionCalifornia.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionCalifornia)).click();
 			break;
 
 		case "CO":
 		case "COLORADO":
-			dropdownStateOptionColorado.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionColorado)).click();
 			break;
 
 		case "CT":
 		case "CONNECTICUT":
-			dropdownStateOptionConnecticut.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionConnecticut)).click();
 			break;
 
 		case "DE":
 		case "DELAWARE":
-			dropdownStateOptionDelaware.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionDelaware)).click();
 			break;
 
 		case "DC":
 		case "DISTRICT OF COLUMBIA":
-			dropdownStateOptionDistrictOfColumbia.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionDistrictOfColumbia)).click();
 			break;
 
 		case "FL":
 		case "FLORIDA":
-			dropdownStateOptionFlorida.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionFlorida)).click();
 			break;
 
 		case "GA":
 		case "GEORGIA":
-			dropdownStateOptionGeorgia.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionGeorgia)).click();
 			break;
 
 		case "HI":
 		case "HAWAII":
-			dropdownStateOptionHawaii.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionHawaii)).click();
 			break;
 
 		case "ID":
 		case "IDAHO":
-			dropdownStateOptionIdaho.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionIdaho)).click();
 			break;
 
 		case "IL":
 		case "ILLINOIS":
-			dropdownStateOptionIllinois.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionIllinois)).click();
 			break;
 
 		case "IN":
 		case "INDIANA":
-			dropdownStateOptionIndiana.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionIndiana)).click();
 			break;
 
 		case "IA":
 		case "IOWA":
-			dropdownStateOptionIowa.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionIowa)).click();
 			break;
 
 		case "KS":
 		case "KANSAS":
-			dropdownStateOptionKansas.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionKansas)).click();
 			break;
 
 		case "KY":
 		case "KENTUCKY":
-			dropdownStateOptionKentucky.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionKentucky)).click();
 			break;
 
 		case "LA":
 		case "LOUISIANA":
-			dropdownStateOptionLouisiana.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionLouisiana)).click();
 			break;
 
 		case "ME":
 		case "MAINE":
-			dropdownStateOptionMaine.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionMaine)).click();
 			break;
 
 		case "MD":
 		case "MARYLAND":
-			dropdownStateOptionMaryland.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionMaryland)).click();
 			break;
 
 		case "MA":
 		case "MASSACHUSETTS":
-			dropdownStateOptionMassachusetts.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionMassachusetts)).click();
 			break;
 
 		case "MI":
 		case "MICHIGAN":
-			dropdownStateOptionMichigan.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionMichigan)).click();
 			break;
 
 		case "MN":
 		case "MINNESOTA":
-			dropdownStateOptionMinnesota.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionMinnesota)).click();
 			break;
 
 		case "MS":
 		case "MISSISSIPPI":
-			dropdownStateOptionMississippi.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionMississippi)).click();
 			break;
 
 		case "MO":
 		case "MISSOURI":
-			dropdownStateOptionMissouri.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionMissouri)).click();
 			break;
 
 		case "MT":
 		case "MONTANA":
-			dropdownStateOptionMontana.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionMontana)).click();
 			break;
 
 		case "NE":
 		case "NEBRASKA":
-			dropdownStateOptionNebraska.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionNebraska)).click();
 			break;
 
 		case "NV":
 		case "NEVADA":
-			dropdownStateOptionNevada.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionNevada)).click();
 			break;
 
 		case "NH":
 		case "NEW HAMPSHIRE":
-			dropdownStateOptionNewhampshire.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionNewhampshire)).click();
 			break;
 
 		case "NJ":
 		case "NEW JERSEY":
-			dropdownStateOptionNewjersey.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionNewjersey)).click();
 			break;
 
 		case "NM":
 		case "NEW MEXICO":
-			dropdownStateOptionNewmexico.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionNewmexico)).click();
 			break;
 
 		case "NY":
 		case "NEW YORK":
-			dropdownStateOptionNewyork.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionNewyork)).click();
 			break;
 
 		case "NC":
 		case "NORTH CAROLINA":
-			dropdownStateOptionNorthcarolina.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionNorthcarolina)).click();
 			break;
 
 		case "ND":
 		case "NORTH DAKOTA":
-			dropdownStateOptionNorthdakota.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionNorthdakota)).click();
 			break;
 
 		case "OH":
 		case "OHIO":
-			dropdownStateOptionOhio.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionOhio)).click();
 			break;
 
 		case "OK":
 		case "OKLAHOMA":
-			dropdownStateOptionOklahoma.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionOklahoma)).click();
 			break;
 
 		case "OR":
 		case "OREGON":
-			dropdownStateOptionOregon.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionOregon)).click();
 			break;
 
 		case "PA":
 		case "PENNSYLVANIA":
-			dropdownStateOptionPennsylvania.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionPennsylvania)).click();
 			break;
 
 		case "RI":
 		case "RHODE ISLAND":
-			dropdownStateOptionRhodeisland.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionRhodeisland)).click();
 			break;
 
 		case "SC":
 		case "SOUTH CAROLINA":
-			dropdownStateOptionSouthcarolina.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionSouthcarolina)).click();
 			break;
 
 		case "SD":
 		case "SOUTH DAKOTA":
-			dropdownStateOptionSouthdakota.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionSouthdakota)).click();
 			break;
 
 		case "TN":
 		case "TENNESSEE":
-			dropdownStateOptionTennessee.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionTennessee)).click();
 			break;
 
 		case "TX":
 		case "TEXAS":
-			dropdownStateOptionTexas.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionTexas)).click();
 			break;
 
 		case "UT":
 		case "UTAH":
-			dropdownStateOptionUtah.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionUtah)).click();
 			break;
 
 		case "VT":
 		case "VERMONT":
-			dropdownStateOptionVermont.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionVermont)).click();
 			break;
 
 		case "VA":
 		case "VIRGINIA":
-			dropdownStateOptionVirginia.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionVirginia)).click();
 			break;
 
 		case "WA":
 		case "WASHINGTON":
-			dropdownStateOptionWashington.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionWashington)).click();
 			break;
 
 		case "WV":
 		case "WEST VIRGINIA":
-			dropdownStateOptionWestvirginia.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionWestvirginia)).click();
 			break;
 
 		case "WI":
 		case "WISCONSIN":
-			dropdownStateOptionWisconsin.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionWisconsin)).click();
 			break;
 
 		case "WY":
 		case "WYOMING":
-			dropdownStateOptionWyoming.click();
+			stateWait.until(ExpectedConditions.elementToBeClickable(dropdownStateOptionWyoming)).click();
 			break;
 
 		}
@@ -878,6 +886,7 @@ public class CheckoutPage extends BasePage {
 		wait.until(ExpectedConditions.visibilityOf(inputAccountEmail));
 		inputAccountEmail.clear();
 		inputAccountEmail.sendKeys(prop.getProperty("EditedEmail"));
+		setEnteredCustomerEmailID(prop.getProperty("EditedEmail"));
 	}
 
 	public void editPersonalDeatils() throws InterruptedException {
@@ -898,21 +907,20 @@ public class CheckoutPage extends BasePage {
 
 	public void selectBreadFinancing() throws InterruptedException {
 
-		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", breadFinancing);
-
-		Thread.sleep(1000);
+		wait.until(ExpectedConditions.visibilityOf(breadFinancing));
+		scrollToElement(breadFinancing);
 		System.out.println("after scroll to finance button");
-		breadFinancing.click();
+		wait.until(ExpectedConditions.elementToBeClickable(breadFinancing)).click();
 
 	}
 
 	public void selectPaypalFinancing() throws InterruptedException {
 
-		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", paypalRadioButton);
+		wait.until(ExpectedConditions.visibilityOf(paypalRadioButton));
+		scrollToElement(paypalRadioButton);
 
-		Thread.sleep(1000);
 		System.out.println("after scroll to paypal radio button");
-		paypalRadioButton.click();
+		wait.until(ExpectedConditions.elementToBeClickable(paypalRadioButton)).click();
 
 	}
 
@@ -939,7 +947,7 @@ public class CheckoutPage extends BasePage {
 		return this.GivenPaymentMethod;
 	}
 
-	public void selectPaymentDeatils(String paymentMethod) throws InterruptedException {
+	public void selectPaymentDetails(String paymentMethod) throws InterruptedException {
 
 		System.out.println("inside select paymentdetails =" + paymentMethod);
 
@@ -948,18 +956,18 @@ public class CheckoutPage extends BasePage {
 
 		switch (paymentMethod.toUpperCase()) {
 		case "BREAD":
-			System.out.println("inside selectpaymentdetails - fro BREAD");
+			System.out.println("inside selectpaymentdetails - for BREAD");
 			selectBreadFinancing();
 			System.out.println("After selecting BREAD radiobutton");
 			break;
 		case "PAYPAL":
-			System.out.println("inside selectpaymentdetails - fro PAYPAL");
+			System.out.println("inside selectpaymentdetails - for PAYPAL");
 			selectPaypalFinancing();
 			System.out.println("After selecting PAYPAL radiobutton");
 			break;
 		case "INVALID CARD":
 			selectCreditCardPayment();
-			System.out.println("Inside select payment details visa / master / amex / credeitcard = " + paymentMethod);
+			System.out.println("Inside select payment details visa / master / amex / creditcard = " + paymentMethod);
 			enterPaymentDetails(paymentMethod);
 			break;
 		case "WRONG CVC":
@@ -972,7 +980,7 @@ public class CheckoutPage extends BasePage {
 		case "JCB":
 		default:
 			selectCreditCardPayment();
-			System.out.println("Inside select payment details visa / master / amex / credeitcard = " + paymentMethod);
+			System.out.println("Inside select payment details visa / master / amex / creditcard = " + paymentMethod);
 			enterPaymentDetails(paymentMethod);
 			break;
 		}
@@ -1049,5 +1057,95 @@ public class CheckoutPage extends BasePage {
 
 	public String getCouponErrorMessage() {
 		return this.couponErrorMessage;
+	}
+
+	public void setEnteredCustomerEmailID(String emailID) {
+		this.enteredCustomerEmailID = emailID ;
+	}
+	
+	public String getEnteredCustomerEmailID() {
+		return enteredCustomerEmailID;
+	}
+
+	public void setExpectedDeliveryDate(String expectedDeliveryDate) {
+		System.out.println("setexpectedDeliveryDate = " + expectedDeliveryDate);
+		this.expectedDeliveryDate = expectedDeliveryDate;
+	}
+	
+	public String getExpectedDeliveryDate() {
+		System.out.println("getexpectedDeliveryDate = " + expectedDeliveryDate);
+		return expectedDeliveryDate;
+	}
+	
+	public void calculateEstimatedDeliveryDate(String deliveryBy) throws InterruptedException {
+				
+		SimpleDateFormat sdf = new SimpleDateFormat("EEEEE, MMMMM d, yyyy");
+		Calendar cal = Calendar.getInstance();
+		
+		
+		if(deliveryBy.equalsIgnoreCase("1-2 business days")) {
+			
+			int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+			
+			System.out.println("dayOfWeek =" +dayOfWeek);
+			
+				if(dayOfWeek > 4 ) {
+					
+					cal.add(Calendar.DAY_OF_MONTH, 4);  
+					
+					//Date after adding 4 day to the current date
+					String newDate = sdf.format(cal.getTime());  
+					
+					//Displaying the new Date after addition of 1 Day
+					System.out.println("Date after adding 4 day to the current date = "+newDate);
+					
+					setExpectedDeliveryDate(newDate);
+					
+				}else if(dayOfWeek <= 4 ) {
+					
+					cal.add(Calendar.DAY_OF_MONTH, 3);  
+					
+					//Date after adding 3 day to the current date
+					String newDate = sdf.format(cal.getTime());  
+					
+					//Displaying the new Date after addition of 1 Day
+					System.out.println("Date after adding 3 day to the current date = "+newDate);
+					
+					setExpectedDeliveryDate(newDate);
+				
+				}
+			
+		}else {
+			
+			int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+			
+			if(dayOfWeek > 4 ) {
+				
+				cal.add(Calendar.DATE, 6);
+				
+				//Date after adding 4 day to the current date
+				String newDate = sdf.format(cal.getTime());  
+				
+				//Displaying the new Date after addition of 1 Day
+				System.out.println("Date after adding 6 day to the current date = "+newDate);
+				
+				setExpectedDeliveryDate(newDate);
+				
+			}else if(dayOfWeek <= 4 ) {
+				
+				cal.add(Calendar.DATE, 5);
+				//Date after adding 4 day to the current date
+				String newDate = sdf.format(cal.getTime());  
+				
+				//Displaying the new Date after addition of 1 Day
+				System.out.println("Date after adding 5 day to the current date = "+newDate);
+				
+				setExpectedDeliveryDate(newDate);
+				
+			}
+			
+				
+		}
+	
 	}
 }

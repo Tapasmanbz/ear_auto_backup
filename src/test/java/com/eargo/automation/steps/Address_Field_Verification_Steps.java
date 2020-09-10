@@ -47,11 +47,11 @@ public class Address_Field_Verification_Steps extends TestBase {
 		System.out.println("verify_that_the_error_message_displayed_for_payment " + paymentType);
 
 		checkoutPage = new CheckoutPage();
-		checkoutPage.setGivenPaymentMethod(paymentType);
-
-		checkoutPage.selectPaymentDeatils(paymentType);
-		checkoutPage.acceptMedicalWaiver();
-		checkoutPage.clickContinueToReviewButton();
+//		checkoutPage.setGivenPaymentMethod(paymentType);
+//
+//		checkoutPage.selectPaymentDetails(paymentType);
+//		checkoutPage.acceptMedicalWaiver();
+//		checkoutPage.clickContinueToReviewButton();
 
 		String errorMsg = null;
 

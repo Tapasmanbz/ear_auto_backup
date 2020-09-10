@@ -1,6 +1,10 @@
 package com.eargo.automation.pages;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Date;
+import java.util.Random;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -20,20 +24,23 @@ public class BasePage extends TestBase {
 	 * 
 	 * @return
 	 */
-	// public static String getUniqueEmail() {
-	//
-	// Date dNow = new Date();
-	// SimpleDateFormat ft = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss");
-	//
-	// String uniqueEmail = "automn_" + ft.format(dNow) + "@eargo.com";
-	// return uniqueEmail;
-	// }
+	public static String generateUniqueEmail() {
+
+		Date dNow = new Date();
+		SimpleDateFormat ft = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss");
+
+		String uniqueEmail = "automn_" + ft.format(dNow) + "@eargo.com";
+		return uniqueEmail;
+	}
 
 	private String defaultEmail;
 	private String firstName;
 	private String lastName;
 	private String phoneNumber;
-	
+
+	@FindBy(how = How.XPATH, using = "//span[@id='_GUARANTEE_SealSpan']/img[@alt='Norton Shopping Guarantee']")
+	public WebElement nortonPopUp;
+
 	@FindBy(how = How.ID, using = "firstName")
 	public WebElement breadPopUp;
 
@@ -43,9 +50,9 @@ public class BasePage extends TestBase {
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Accessories')]")
 	public WebElement linkAccessories;
 
-	public void setDefaultEmail() {
+	public void setDefaultEmail(String email) {
 
-		this.defaultEmail = prop.getProperty("defaultEmail");
+		this.defaultEmail = email;
 
 	}
 
@@ -101,16 +108,22 @@ public class BasePage extends TestBase {
 	public void navigateToProductPage(String productName) throws InterruptedException {
 		switch (productName.toUpperCase()) {
 		case "NEO":
-			if (!driver.getCurrentUrl().equalsIgnoreCase(prop.getProperty("neoPageURL")))
+			if (!driver.getCurrentUrl().equalsIgnoreCase(prop.getProperty("neoPageURL"))) {
 				driver.get(prop.getProperty("neoPageURL"));
+				Thread.sleep(2000);
+			}
 			break;
 		case "MAX":
-			if (!driver.getCurrentUrl().equalsIgnoreCase(prop.getProperty("maxPageURL")))
+			if (!driver.getCurrentUrl().equalsIgnoreCase(prop.getProperty("maxPageURL"))) {
 				driver.get(prop.getProperty("maxPageURL"));
+				Thread.sleep(2000);
+			}
 			break;
 		case "NEO HIFI":
-			if (!driver.getCurrentUrl().equalsIgnoreCase(prop.getProperty("neoHifiPageURL")))
+			if (!driver.getCurrentUrl().equalsIgnoreCase(prop.getProperty("neoHifiPageURL"))) {
 				driver.get(prop.getProperty("neoHifiPageURL"));
+				Thread.sleep(2000);
+			}
 			break;
 		case "ACCESSORIES":
 			if (!driver.getCurrentUrl().equalsIgnoreCase(prop.getProperty("accessoriesPageURL"))) {
@@ -130,23 +143,32 @@ public class BasePage extends TestBase {
 		}
 		Thread.sleep(1000);
 	}
-	
-	
+
 	public void bread_popup() throws InterruptedException {
-		
-		Thread.sleep(3000);
-		
-		driver.switchTo().frame("bread-modal");
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("bread-modal"));
+		Thread.sleep(2000);
 		driver.switchTo().defaultContent();
-//		breadPopUp.isDisplayed();
-		
-//		Assert.assertTrue(breadPopUp.isDisplayed());
-		
+		// breadPopUp.isDisplayed();
+
+		// Assert.assertTrue(breadPopUp.isDisplayed());
+
 	}
-	
-	
-	
-	
-	
-	
+
+	public String generatePhoneNumber() throws InterruptedException {
+
+		Random rand = new Random();
+		int num1 = (rand.nextInt(7) + 1) * 100 + (rand.nextInt(8) * 10) + rand.nextInt(8);
+		int num2 = rand.nextInt(743);
+		int num3 = rand.nextInt(10000);
+
+		DecimalFormat df3 = new DecimalFormat("000"); // 3 zeros
+		DecimalFormat df4 = new DecimalFormat("0000"); // 4 zeros
+
+		String phoneNumber = df3.format(num1) + df3.format(num2) + df4.format(num3);
+
+		return phoneNumber;
+
+	}
+
 }

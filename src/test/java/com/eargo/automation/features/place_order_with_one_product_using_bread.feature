@@ -35,9 +35,10 @@ Feature:
 			And I click on checkout
 			And I select state as <state> with zipcode <zipCode>
       And use <payment> for payment
+      And I click on Edit under "Account Info" on review page
       And I edit account info
       And I edit payment method as <editedPayment>
-      And I should be able to place the order with payment <payment> on a discounted price
+      And I should be able to place the order with payment <editedPayment> on a discounted price
       Then verify that the order details should be present in Salesforce
      
     @TC-NJSHOP-51 @verifyEdit
@@ -79,5 +80,13 @@ Feature:
     Examples: 
       | prod1       | prod2	| prod3  |   
       | "Neo Hifi"	| "Neo"	| "Max"  |  #TC-NJSHOP-57
-
-
+      
+#		Given I have a product <prod> at a price of <price>
+#		When I click on get your rate for <prod>
+#		
+#		@TC-NJSHOP-57 
+#		Examples: 
+      #| prod  			| price   |
+      #| "Neo Hifi"	| "$2950"	|
+      #| "Neo"				| "$2350"	|
+      #| "Max"				| "$1850"	|	#TC-NJSHOP-57

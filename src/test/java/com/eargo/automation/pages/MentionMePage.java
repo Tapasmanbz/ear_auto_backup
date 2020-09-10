@@ -2,6 +2,7 @@ package com.eargo.automation.pages;
 
 import java.time.Duration;
 
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -41,14 +42,26 @@ public class MentionMePage extends BasePage {
 	@FindBy(how = How.NAME, using = "ButtonRegister")
 	public WebElement btnGet15PercentOff;
 
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Referred by a friend?')]")
+	public WebElement linkReferredByFriend;
+
+	@FindBy(how = How.XPATH, using = "//button[@id='copy-button']")
+	public WebElement btnCopyCode;
+
+	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Continue shopping')]")
+	public WebElement btnContinueShopping;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='mm-explainer']/h1")
+	public WebElement alreadyAvailedRefreeErrorMSG;
+	
+
 	public void findFriend() throws InterruptedException {
 		System.out.println("Inside findFriend()");
-		Thread.sleep(5000);
+		
 		WebDriverWait mentionMePopUPWait = new WebDriverWait(driver, Duration.ofSeconds(30));
-		mentionMePopUPWait.until(ExpectedConditions.visibilityOf(popupMentionMe));
-		Thread.sleep(5000);
-		driver.switchTo().frame(iFrameMentionMe);
+		mentionMePopUPWait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(iFrameMentionMe));
 		enterFriendName(prop.getProperty("friendName"));
+		Thread.sleep(1500);		
 		clickFindThemButton();
 		driver.switchTo().defaultContent();
 	}
@@ -65,6 +78,21 @@ public class MentionMePage extends BasePage {
 		enterEmail(email);
 		clickGetFifteenPercentOffButton();
 		driver.switchTo().defaultContent();
+	}
+
+	public void continueShopping() {
+		driver.switchTo().frame(iFrameMentionMe);
+		clickCopyCodeButton();
+		clickContinueShoppingButton();
+		driver.switchTo().defaultContent();
+	}
+	
+	public String getMentionMeErrorMessage() throws InterruptedException {
+		driver.switchTo().frame(iFrameMentionMe);
+		wait.until(ExpectedConditions.visibilityOf(alreadyAvailedRefreeErrorMSG));
+		String errorMsg = alreadyAvailedRefreeErrorMSG.getText();
+		driver.switchTo().defaultContent();
+		return errorMsg;
 	}
 
 	private void enterFriendName(String friendName) {
@@ -89,6 +117,14 @@ public class MentionMePage extends BasePage {
 
 	private void clickGetFifteenPercentOffButton() {
 		wait.until(ExpectedConditions.elementToBeClickable(btnGet15PercentOff)).click();
+	}
+
+	private void clickCopyCodeButton() {
+		wait.until(ExpectedConditions.elementToBeClickable(btnCopyCode)).click();
+	}
+
+	private void clickContinueShoppingButton() {
+		wait.until(ExpectedConditions.elementToBeClickable(btnContinueShopping)).click();
 	}
 
 }

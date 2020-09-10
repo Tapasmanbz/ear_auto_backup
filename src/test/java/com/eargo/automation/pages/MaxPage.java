@@ -24,25 +24,28 @@ public class MaxPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//button[text()='GET YOUR RATE']")
 	public WebElement maxGetYourRate;
 	
-	@FindBy(how = How.XPATH, using = "//div[@id='bread-checkout-btn']")
+	@FindBy(how = How.ID, using = "bread-checkout-btn")
 	public WebElement maxCheckYourRate;
 
 	public CartPage click_add_to_cart() throws InterruptedException {
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		wait.until(ExpectedConditions.elementToBeClickable(btnAddToCart)).click();
-		Thread.sleep(3000);
+		Thread.sleep(2000);
 
 		return cartPage;
 	}
 	
 	public void max_get_your_rate() throws InterruptedException {
-
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		wait.until(ExpectedConditions.elementToBeClickable(maxGetYourRate)).click();
+		Thread.sleep(2000);
+		waitForPageLoad();
 		((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", maxCheckYourRate);
+		Thread.sleep(2000);	
+		wait.until(ExpectedConditions.visibilityOf(nortonPopUp));
 		wait.until(ExpectedConditions.elementToBeClickable(maxCheckYourRate)).click();
-		Thread.sleep(3000);
+		Thread.sleep(5000);
 
 		
 	}

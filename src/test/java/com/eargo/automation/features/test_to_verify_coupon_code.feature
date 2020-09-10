@@ -44,23 +44,23 @@ Feature:
     
     @TC-NJSHOP-65 @negativeScenario
     Examples: 
-      | prod  			| price		 | couponCode			| couponType		|	state					|	zipCode		|	deliverBy 					| payment				| 
-      | "Neo HIFI"	| "$2950"  | "FATHERSDAY20"	| "Expired"			|	"California"	|	"95112"		|	"3-5 business days"	| "Master Card"	|	#TC-NJSHOP-65
+      | prod  			| price		 | couponCode			| couponType	|	state					|	zipCode		|	deliverBy 					| payment				| 
+      | "Neo HIFI"	| "$2950"  | "FATHERSDAY20"	| "Invalid"		|	"California"	|	"95112"		|	"3-5 business days"	| "Master Card"	|	#TC-NJSHOP-65
     
     @TC-NJSHOP-66 @negativeScenario
     Examples: 
-      | prod  			| price		 | couponCode			| couponType		|	state					|	zipCode		|	deliverBy 					| payment				|   
-      | "Neo"				| "$2350"  | "NEOLAUNCH"		| "invalid"			|	"Arkansas"		|	"71730"		|	"1-2 business days"	| "Master Card"	|	#TC-NJSHOP-66
+      | prod  			| price		 | couponCode			| couponType	|	state					|	zipCode		|	deliverBy 					| payment				|   
+      | "Neo"				| "$2350"  | "NEOLAUNCH"		| "Invalid"		|	"Arkansas"		|	"71730"		|	"1-2 business days"	| "Master Card"	|	#TC-NJSHOP-66
     
     @TC-NJSHOP-67 @negativeScenario
     Examples: 
-      | prod  			| price		 | couponCode			| couponType		|	state					|	zipCode		|	deliverBy 					| payment				|      
-      | "Max"				| "$1850"  | "HIFILAUNCH"		| "Ineligible"	|	"Arkansas"		|	"71730"		|	"1-2 business days"	| "Master Card"	|	#TC-NJSHOP-67
+      | prod  			| price		 | couponCode			| couponType	|	state					|	zipCode		|	deliverBy 					| payment				|      
+      | "Max"				| "$1850"  | "HIFILAUNCH"		| "Expired"		|	"Arkansas"		|	"71730"		|	"1-2 business days"	| "Master Card"	|	#TC-NJSHOP-67
     
     @TC-NJSHOP-27 @HIFILAUNCH
     Examples: 
-      | prod  			| price		 | couponCode			| couponType		|	state					|	zipCode		|	deliverBy 					| payment				|           
-			| "Neo"				| "$1850"  | "HIFILAUNCH"		| "Ineligible"	|	"Arkansas"		|	"71730"		|	"1-2 business days"	| "Master Card"	|	#TC-NJSHOP-27
+      | prod  			| price		 | couponCode			| couponType	|	state					|	zipCode		|	deliverBy 					| payment				|   
+			| "Neo"				| "$1850"  | "HIFILAUNCH"		| "Expired"		|	"Arkansas"		|	"71730"		|	"1-2 business days"	| "Master Card"	|	#TC-NJSHOP-27
 			
 #This scenario works with default coupon
 @smokeTest @regressionTest @singleAccessoriesUsingInvalidCoupon @couponValidation
@@ -82,13 +82,13 @@ Feature:
     
     @TC-NJSHOP-27 @HIFILAUNCH
     Examples: 
-      | acc  					| price	 | couponCode			| couponType		|	state					|	zipCode		|	deliverBy 					| payment				|
-      | "Wax"					| "$25"  | "HIFILAUNCH"		| "Ineligible"	|	"Arkansas"		|	"71730"		|	"1-2 business days"	| "Master Card"	|	#TC-NJSHOP-27
+      | acc  					| price	 | couponCode			| couponType	|	state					|	zipCode		|	deliverBy 					| payment				|
+      | "Wax"					| "$25"  | "HIFILAUNCH"		| "Expired"		|	"Arkansas"		|	"71730"		|	"1-2 business days"	| "Master Card"	|	#TC-NJSHOP-27
 		
 		@TC-NJSHOP-27 @HIFILAUNCH
     Examples: 
-      | acc  					| price	 | couponCode			| couponType		|	state					|	zipCode		|	deliverBy 					| payment				|
-			| "Flexi Domes"	| "$25"  | "HIFILAUNCH"		| "Ineligible"	|	"Arkansas"		|	"71730"		|	"1-2 business days"	| "Master Card"	|	#TC-NJSHOP-27
+      | acc  					| price	 | couponCode			| couponType	|	state					|	zipCode		|	deliverBy 					| payment				|
+			| "Flexi Domes"	| "$25"  | "HIFILAUNCH"		| "Expired"		|	"Arkansas"		|	"71730"		|	"1-2 business days"	| "Master Card"	|	#TC-NJSHOP-27
 
 #This scenario works with default coupon
 @smokeTest @regressionTest @multipleAccessoriestUsingInvalidCoupon @couponValidation
@@ -113,6 +113,6 @@ Feature:
     
     @TC-NJSHOP-26 
     Examples: 
-      | accessory1  	| accessory2 		| accessory3 					| accessory4 			| price	| couponCode		| couponType		|	state				|	zipCode		|	deliverBy 					| payment		| 
-      | "Flexi Palms"	| "Flexi Domes"	| "Flexi TetraPalms"	| "Flexi Fibers"	| "$25" | "HIFILAUNCH"	| "Ineligible"	|	"Virginia"	|	"20101"		|	"3-5 business days"	| "Paypal"	|	#TC-NJSHOP-26
+      | accessory1  	| accessory2 		| accessory3 					| accessory4 			| price	| couponCode		| couponType	|	state				|	zipCode		|	deliverBy 					| payment		| 
+      | "Flexi Palms"	| "Flexi Domes"	| "Flexi TetraPalms"	| "Flexi Fibers"	| "$25" | "HIFILAUNCH"	| "Expired"		|	"Virginia"	|	"20101"		|	"3-5 business days"	| "Paypal"	|	#TC-NJSHOP-26
       

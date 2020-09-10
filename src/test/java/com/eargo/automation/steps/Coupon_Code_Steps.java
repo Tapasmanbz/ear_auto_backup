@@ -62,7 +62,8 @@ public class Coupon_Code_Steps extends TestBase {
 	@When("I applied coupon code {string} on review page")
 	public void i_applied_coupon_code_on_review_page(String couponCode) throws InterruptedException {
 
-		reviewPage = checkoutPage.clickContinueToReviewButton();
+		reviewPage = new ReviewPage();
+		//	reviewPage = checkoutPage.clickContinueToReviewButton();
 
 		if (cartPage.isCouponApplied()) {
 			cartPage.removeCoupon();
@@ -109,19 +110,19 @@ public class Coupon_Code_Steps extends TestBase {
 
 		switch(couponType.toUpperCase()) {
 		case "EXPIRED":
-			Assert.assertEquals("Error message doesn't matched.", "Coupon not found", cartPage.getCouponErrorMessage());
-			Assert.assertEquals("Error message doesn't matched.", "Coupon not found", checkoutPage.getCouponErrorMessage());
-			Assert.assertEquals("Error message doesn't matched.", "Coupon not found", reviewPage.getCouponErrorMessage());
+			Assert.assertEquals("Error message doesn't matched on Cart Page.", "Coupon Expired!", cartPage.getCouponErrorMessage());
+			Assert.assertEquals("Error message doesn't matched on Checkout Page.", "Coupon Expired!", checkoutPage.getCouponErrorMessage());
+			Assert.assertEquals("Error message doesn't matched on Review Page.", "Coupon Expired!", reviewPage.getCouponErrorMessage());
 			break;
 		case "INVALID":
-			Assert.assertEquals("Error message doesn't matched.", "Coupon not found", cartPage.getCouponErrorMessage());
-			Assert.assertEquals("Error message doesn't matched.", "Coupon not found", checkoutPage.getCouponErrorMessage());
-			Assert.assertEquals("Error message doesn't matched.", "Coupon not found", reviewPage.getCouponErrorMessage());
+			Assert.assertEquals("Error message doesn't matched on Cart Page.", "Coupon not found", cartPage.getCouponErrorMessage());
+			Assert.assertEquals("Error message doesn't matched on Checkout Page.", "Coupon not found", checkoutPage.getCouponErrorMessage());
+			Assert.assertEquals("Error message doesn't matched on Review Page.", "Coupon not found", reviewPage.getCouponErrorMessage());
 			break;
 		case "INELIGIBLE":
-			Assert.assertEquals("Error message doesn't matched.", "Ineligible coupon", cartPage.getCouponErrorMessage());
-			Assert.assertEquals("Error message doesn't matched.", "Ineligible coupon", checkoutPage.getCouponErrorMessage());
-			Assert.assertEquals("Error message doesn't matched.", "Ineligible coupon", reviewPage.getCouponErrorMessage());
+			Assert.assertEquals("Error message doesn't matched on Cart Page.", "Ineligible coupon", cartPage.getCouponErrorMessage());
+			Assert.assertEquals("Error message doesn't matched on Checkout Page.", "Ineligible coupon", checkoutPage.getCouponErrorMessage());
+			Assert.assertEquals("Error message doesn't matched on Review Page.", "Ineligible coupon", reviewPage.getCouponErrorMessage());
 			break;
 		}
 

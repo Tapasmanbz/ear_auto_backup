@@ -1,6 +1,12 @@
 package com.eargo.automation.steps;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.junit.Assert;
 
@@ -52,7 +58,7 @@ public class TC_NJ_SHOP_01 extends TestBase {
 
 		if (driver == null) {
 			// invoking the browser with application URL
-//			initialization();
+			// initialization();
 		}
 
 		salesforcePage = new SalesforcePage();
@@ -67,7 +73,7 @@ public class TC_NJ_SHOP_01 extends TestBase {
 
 		if (driver == null) {
 			// invoking the browser with application URL
-//			initialization();
+			// initialization();
 		}
 
 		salesforcePage = new SalesforcePage();
@@ -86,7 +92,7 @@ public class TC_NJ_SHOP_01 extends TestBase {
 	public void a_user_with() throws InterruptedException {
 
 		basePage = new BasePage();
-		basePage.setDefaultEmail();
+		basePage.setDefaultEmail(prop.getProperty("defaultEmail"));
 		basePage.setFirstName();
 		basePage.setLastName();
 		basePage.setPhoneNumber();
@@ -103,7 +109,6 @@ public class TC_NJ_SHOP_01 extends TestBase {
 			System.out.println("inside neo" + neoPage);
 			neoPage = new NeoPage();
 			neoPage.navigateToProductPage("NEO");
-			Thread.sleep(2000);
 			cartPage = neoPage.click_add_to_cart();
 			break;
 		case "MAX":
@@ -126,7 +131,7 @@ public class TC_NJ_SHOP_01 extends TestBase {
 	@When("I add a accessory {string} in cart")
 	public void i_add_a_accessory_in_cart(String accessories) throws InterruptedException {
 
-		Thread.sleep(5000);
+		// Thread.sleep(5000);
 		accessoriesPage = new AccessoriesPage();
 		accessoriesPage.navigateToProductPage("Accessories");
 		cartPage = accessoriesPage.click_add_Flexi_to_cart(accessories, "regular");
@@ -135,43 +140,42 @@ public class TC_NJ_SHOP_01 extends TestBase {
 	@When("I add a accessory {string} in cart twice")
 	public void i_add_a_accessory_in_cart_twice(String accessories) throws InterruptedException {
 
-		Thread.sleep(3000);
+		// Thread.sleep(3000);
 		accessoriesPage = new AccessoriesPage();
 		accessoriesPage.navigateToProductPage("Accessories");
 		accessoriesPage.click_add_Flexi_to_cart(accessories, "regular");
 		// accessoriesPage.navigateToProductPage("Accessories");
 		cartPage.closeCart();
-		Thread.sleep(2000);
 		cartPage = accessoriesPage.click_add_Flexi_to_cart(accessories, "regular");
 	}
 
 	@When("I add a accessory {string}, {string}, {string}, {string} and {string} in cart")
-	public void i_add_a_accessory_and_in_cart(String acc1, String acc2, String acc3, String acc4, String acc5) throws InterruptedException {
-	    
+	public void i_add_a_accessory_and_in_cart(String acc1, String acc2, String acc3, String acc4, String acc5)
+			throws InterruptedException {
+
 		Thread.sleep(5000);
 		accessoriesPage = new AccessoriesPage();
 		accessoriesPage.navigateToProductPage("Accessories");
-		
+
 		cartPage = accessoriesPage.click_add_Flexi_to_cart(acc1, "regular");
 		cartPage.closeCart();
-		
+
 		Thread.sleep(2000);
 		cartPage = accessoriesPage.click_add_Flexi_to_cart(acc2, "regular");
 		cartPage.closeCart();
-		
+
 		Thread.sleep(2000);
 		cartPage = accessoriesPage.click_add_Flexi_to_cart(acc3, "regular");
 		cartPage.closeCart();
-		
+
 		Thread.sleep(2000);
 		cartPage = accessoriesPage.click_add_Flexi_to_cart(acc4, "regular");
 		cartPage.closeCart();
-		
+
 		Thread.sleep(2000);
 		cartPage = accessoriesPage.click_add_Flexi_to_cart(acc5, "regular");
-		
-	}
 
+	}
 
 	@When("I close the cart")
 	public void i_close_the_cart() throws InterruptedException {
@@ -206,13 +210,14 @@ public class TC_NJ_SHOP_01 extends TestBase {
 	public void i_opt_for_delivery(String deliveryOption) throws InterruptedException {
 
 		if (deliveryOption.equalsIgnoreCase("1-2 business days")) {
-
+			System.out.println("i opt for 1-2 business days");
 			checkoutPage.selectAcceleratedShipping();
+			checkoutPage.calculateEstimatedDeliveryDate("1-2 business days");
 
 		} else {
-
+			System.out.println("i opt for 3-4 business days");
 			checkoutPage.selectNormalShipping();
-
+			checkoutPage.calculateEstimatedDeliveryDate("3-4 business days");
 		}
 	}
 
@@ -224,7 +229,7 @@ public class TC_NJ_SHOP_01 extends TestBase {
 
 		System.out.println("in step defination payment method is = " + paymentType);
 
-		checkoutPage.selectPaymentDeatils(paymentType);
+		checkoutPage.selectPaymentDetails(paymentType);
 		checkoutPage.acceptMedicalWaiver();
 
 		checkoutPage.setIsBreadPaymentMethodDisplayed();
@@ -235,7 +240,8 @@ public class TC_NJ_SHOP_01 extends TestBase {
 
 	// @When("I should be able to place the order on a discounted price")
 	@When("I should be able to place the order with payment {string} on a discounted price")
-	public void i_should_be_able_to_place_the_order_on_a_discounted_price(String paymentMethod) throws InterruptedException {
+	public void i_should_be_able_to_place_the_order_on_a_discounted_price(String paymentMethod)
+			throws InterruptedException {
 
 		// checkoutPage.acceptMedicalWaiver();
 		// reviewPage = checkoutPage.clickContinueToReviewButton();
@@ -292,28 +298,84 @@ public class TC_NJ_SHOP_01 extends TestBase {
 			String productSubtotal = orderConfirmationPage.getProductSubtotalAmt(originalProductPrice,
 					originalProductQuantity);
 
+			HashMap<String, String> orderedProductDetails = orderConfirmationPage.getOrderProducts();
+
+			Set<Entry<String, String>> stockSet = orderedProductDetails.entrySet();
+
+			// Iterator<Entry<String, String>> i = stockSet.iterator();
+			// System.out.println("Iterating over Hashtable in Java");
+			// Iterator begins
+			// while (i.hasNext()) {
+			// Entry<String, String> m = i.next();
+			// String key = m.getKey();
+			// String value = m.getValue();
+			// System.out.println("TCKey :" + key + " TCValue :" + value);
+			// }
+
 			String orderNumber = orderConfirmationPage.getOrderNumber();
+
 			SalesforcePage salesforcePage = new SalesforcePage();
-
 			salesforcePage.salesforceLogin(orderNumber);
-			Assert.assertEquals(orderNumber, salesforcePage.orderNum.getText());
-			Assert.assertEquals(orderSummaryAmount, salesforcePage.finalProductPrice.getText());
-			Assert.assertEquals(productSubtotal, salesforcePage.actualproductPrice.getText());
-			Assert.assertEquals(taxAmount, salesforcePage.sfOrderTax());
-			
-		//----------------------------------------------------------------------------------
-			
-			
-			
-//			ArrayList<String> prods_On_ConfirmationPage = orderConfirmationPage.prodsOnConfirmPage();
-//			ArrayList<String> prods_On_SalesForcePage = salesforcePage.prodsOn_SF_Page();
-//			
-//			boolean prod_list_matched = prods_On_ConfirmationPage.equals(prods_On_SalesForcePage);
-//			
-//			Assert.assertTrue(prod_list_matched);
-			
-			
 
+			// 1. Verify order number
+			Assert.assertEquals("Order Number doesn't displayed on the Salesforce Page", orderNumber,
+					salesforcePage.orderNum.getText());
+			System.out.println("verification 1 passes");
+
+			// 2. Verify Email ID
+			Assert.assertEquals(email, checkoutPage.getEnteredCustomerEmailID());
+			System.out.println("verification 2 passes");
+
+			// 3. Verify shipping address
+			// Assert.assertEquals(shippingAddress, salesforcePage.sfshippingAddress());
+			// System.out.println("verification 3 passes");
+
+			// 4. verify Estimated Delivery Address
+			Assert.assertEquals(deliveryDate, checkoutPage.getExpectedDeliveryDate());
+			System.out.println("verification 4 passes");
+
+			// 5. Verify the order total price
+			Assert.assertEquals("Order summary amount doesn't matched with Order Confirmation Page", orderSummaryAmount,
+					salesforcePage.finalProductPrice.getText());
+			System.out.println("verification 5 passes");
+
+			// 6. Verify product details
+			// Need to be developed
+			HashMap<String, String> orderedProductDetailsSalesforce = salesforcePage.getOrderProductsOnSalesForce();
+
+			// Assert.assertEquals(productSubtotal,
+			// salesforcePage.actualproductPrice.getText());
+
+			// 7. Verify tax (which applied with respect to state address)
+			Assert.assertEquals(taxAmount, salesforcePage.sfOrderTax());
+			System.out.println("verification 7 passes");
+
+			// 8. Verify Shipping Charges
+			Assert.assertEquals(shippingCharges, salesforcePage.sfShippingTax());
+			System.out.println("verification 8 passes");
+
+			// 9. Verify payment type
+			// paymentType = salesforcePage.getGivenPaymentType();
+			Assert.assertEquals(reviewPage.getPaymentMethod(), salesforcePage.sfPaymentType());
+			System.out.println("verification 9 passes");
+			// ----------------------------------------------------------------------------------
+
+			Iterator<Entry<String, String>> stockIterator = stockSet.iterator();
+			System.out.println("Iterating over Hashtable in Java");
+			// Iterator begins
+			while (stockIterator.hasNext()) {
+				Entry<String, String> m = stockIterator.next();
+				String key = m.getKey();
+				String value = m.getValue();
+				System.out.println("TCV_Key :" + key + " TCV_Value :" + value);
+
+				Assert.assertTrue(key + " is not present in the salesforce product list",
+						orderedProductDetailsSalesforce.containsKey(key));
+
+				Assert.assertEquals("Quantity doesn't matched", value, orderedProductDetailsSalesforce.get(key));
+			}
+
+			// ----------------------------------------------------------------------------------
 		}
 
 	}
@@ -324,19 +386,19 @@ public class TC_NJ_SHOP_01 extends TestBase {
 		ArrayList<String> allProductName = cartPage.getAllCartProductName();
 		boolean isCouponRemoved = false;
 
-// Commented as there is no default coupon applied now.		
-//		for (String productName : allProductName) {
-//			switch (productName.toUpperCase().trim()) {
-//			case "EARGO NEO HIFI":
-//				isCouponRemoved = cartPage.removeCoupon();
-//				break;
-//			default:
-//				break;
-//			}
-//
-//			if (isCouponRemoved)
-//				break;
-//		}
+		// Commented as there is no default coupon applied now.
+		// for (String productName : allProductName) {
+		// switch (productName.toUpperCase().trim()) {
+		// case "EARGO NEO HIFI":
+		// isCouponRemoved = cartPage.removeCoupon();
+		// break;
+		// default:
+		// break;
+		// }
+		//
+		// if (isCouponRemoved)
+		// break;
+		// }
 
 		cartPage.applyCoupon(couponCode);
 
@@ -345,13 +407,18 @@ public class TC_NJ_SHOP_01 extends TestBase {
 	@When("I used a friend referral {string}")
 	public void i_used_a_friend_referral(String friendReferral) throws InterruptedException {
 
-		String refreeEmail = basePage.getDefaultEmail();
-		cartPage.removeCoupon();
+		String refreeEmail = BasePage.generateUniqueEmail();
+		basePage.setDefaultEmail(refreeEmail);
+		if (cartPage.checkDefaultCouponApplied()) {
+			cartPage.removeCoupon();
+		}
 		mentionMe = cartPage.clickReferByFriend();
 		mentionMe.findFriend();
 		mentionMe.submitFriendDetails();
 		mentionMe.submitRefreeDetails(refreeEmail);
-
+		mentionMe.continueShopping();
+		String couponCode = cartPage.applyReferralCoupon();
+		salesforcePage.setCoupon(couponCode);
 	}
 
 	@Given("a referal coupon with existing user {string}")
@@ -394,7 +461,6 @@ public class TC_NJ_SHOP_01 extends TestBase {
 			neoPage.click_add_to_cart();
 			cartPage = new CartPage();
 			cartPage.closeCart();
-			Thread.sleep(2000);
 			cartPage = neoPage.click_add_to_cart();
 			Assert.assertEquals("2", cartPage.afterIncrement());
 			break;
@@ -404,7 +470,6 @@ public class TC_NJ_SHOP_01 extends TestBase {
 			maxPage.click_add_to_cart();
 			cartPage = new CartPage();
 			cartPage.closeCart();
-			Thread.sleep(2000);
 			cartPage = maxPage.click_add_to_cart();
 			Assert.assertEquals("2", cartPage.afterIncrement());
 			break;
@@ -415,7 +480,6 @@ public class TC_NJ_SHOP_01 extends TestBase {
 			neoHifiPage.click_add_to_cart();
 			cartPage = new CartPage();
 			cartPage.closeCart();
-			Thread.sleep(2000);
 			cartPage = neoHifiPage.click_add_to_cart();
 			Assert.assertEquals("2", cartPage.afterIncrement());
 			break;
@@ -481,27 +545,28 @@ public class TC_NJ_SHOP_01 extends TestBase {
 
 		// checkoutPage.enterEditedEmail();
 
-		checkoutPage.selectPaymentDeatils(paymentMethod);
+		checkoutPage.selectPaymentDetails(paymentMethod);
 
 		reviewPage = checkoutPage.clickContinueToReviewButton();
 
 	}
 
-//	@Given("I have a product {string}, {string} and {string}")
-//	public void i_have_a_product(String product1, String product2, String product3) throws InterruptedException {
-//
-//		if (driver == null) {
-//			// invoking the browser with application URL
-////			initialization();
-//		}
-//
-//		// Need to develop
-//		System.out.println("After step 1");
-//		// salesforcePage = new SalesforcePage();
-//		// salesforcePage.setNeoHifiProdName(productName);
-//		// salesforcePage.setNeoHifiProdPrice(productPrice);
-//
-//	}
+	// @Given("I have a product {string}, {string} and {string}")
+	// public void i_have_a_product(String product1, String product2, String
+	// product3) throws InterruptedException {
+	//
+	// if (driver == null) {
+	// // invoking the browser with application URL
+	//// initialization();
+	// }
+	//
+	// // Need to develop
+	// System.out.println("After step 1");
+	// // salesforcePage = new SalesforcePage();
+	// // salesforcePage.setNeoHifiProdName(productName);
+	// // salesforcePage.setNeoHifiProdPrice(productPrice);
+	//
+	// }
 
 	@Given("I have a accessory {string} at a price of {string}")
 	public void i_have_a_accessory_at_a_price_of(String accName, String accPrice) {
@@ -510,13 +575,18 @@ public class TC_NJ_SHOP_01 extends TestBase {
 
 		if (driver == null) {
 			// invoking the browser with application URL
-//			initialization();
+			// initialization();
 		}
 
 		salesforcePage = new SalesforcePage();
 		salesforcePage.setAccessoryName(accName);
 		salesforcePage.setAccessoryPrice(accPrice);
 
+	}
+
+	@Given("I have a product {string}, {string} and {string}")
+	public void i_have_a_product_and(String string, String string2, String string3) {
+		// Write code here that turns the phrase above into concrete actions
 	}
 
 	@When("I click on get your rate for {string}")
@@ -544,7 +614,7 @@ public class TC_NJ_SHOP_01 extends TestBase {
 			// Assert.assertTrue(basePage.bread_popup());
 			break;
 
-		case "Max":
+		case "MAX":
 			maxPage = new MaxPage();
 			driver.get(prop.getProperty("maxPageURL"));
 			basePage.waitForPageLoad();
@@ -580,7 +650,7 @@ public class TC_NJ_SHOP_01 extends TestBase {
 			// reviewPage = checkoutPage.clickContinueToReviewButton();
 			reviewPage.breadPaymentCancel();
 
-			checkoutPage = reviewPage.editPaymentInfo();
+			// checkoutPage = reviewPage.editPaymentInfo();
 			// reviewPage = checkoutPage.clickContinueToReviewButton();
 			break;
 		case "PAYPAL":
@@ -588,8 +658,8 @@ public class TC_NJ_SHOP_01 extends TestBase {
 			reviewPage.paypalPaymentCancel();
 			// reviewPage = checkoutPage.clickContinueToReviewButton();
 			Thread.sleep(5000);
-			checkoutPage = reviewPage.editPaymentInfo();
-			reviewPage = checkoutPage.clickContinueToReviewButton();
+			// checkoutPage = reviewPage.editPaymentInfo();
+			// reviewPage = checkoutPage.clickContinueToReviewButton();
 			break;
 		}
 
@@ -617,13 +687,13 @@ public class TC_NJ_SHOP_01 extends TestBase {
 		case "AMEX":
 		case "MASTER":
 			checkoutPage.enterPaymentDetails(enteredPaymentMethod);
-			reviewPage = checkoutPage.clickContinueToReviewButton();
+			// reviewPage = checkoutPage.clickContinueToReviewButton();
 		case "BREAD":
 		case "PAYPAL":
 		default:
 			// reviewPage = checkoutPage.clickContinueToReviewButton();
 		}
-		reviewPage = checkoutPage.clickContinueToReviewButton();
+		// reviewPage = checkoutPage.clickContinueToReviewButton();
 	}
 
 }

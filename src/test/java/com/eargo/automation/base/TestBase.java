@@ -70,21 +70,21 @@ public class TestBase {
 			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + File.separator + "drivers"
 					+ File.separator + "chromedriver_win32" + File.separator + "chromedriver.exe");
 			System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + File.separator + "drivers"
-					+ File.separator + "geckodriver-v0.26.0-win64" + File.separator + "geckodriver.exe");
+					+ File.separator + "geckodriver-v0.27.0-win64" + File.separator + "geckodriver.exe");
 			break;
 
 		case MAC:
 			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + File.separator + "drivers"
 					+ File.separator + "chromedriver_mac64" + File.separator + "chromedriver");
 			System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + File.separator + "drivers"
-					+ File.separator + "geckodriver-v0.26.0-macos" + File.separator + "geckodriver");
+					+ File.separator + "geckodriver-v0.27.0-macos" + File.separator + "geckodriver");
 			break;
 
 		case LINUX:
 			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + File.separator + "drivers"
 					+ File.separator + "chromedriver_linux64" + File.separator + "chromedriver");
 			System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + File.separator + "drivers"
-					+ File.separator + "geckodriver-v0.26.0-linux64" + File.separator + "geckodriver");
+					+ File.separator + "geckodriver-v0.27.0-linux64" + File.separator + "geckodriver");
 			break;
 
 		default:

@@ -6,6 +6,7 @@ import java.util.Set;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -96,10 +97,32 @@ public class ReviewPage extends BasePage {
 	@FindBy(how = How.ID, using = "bread-review-submit-button")
 	public WebElement acceptAndCheckout;
 
+	@FindBy(how = How.XPATH, using = "//div[@id='card-element']/div/iframe")
+	public WebElement iFrameCardNumberBread;
+
+	@FindBy(how = How.NAME, using = "cardnumber")
+	public WebElement inputCardNumberBread;
+
+	@FindBy(how = How.NAME, using = "exp-date")
+	public WebElement inputCardExpDateBread;
+
+	@FindBy(how = How.NAME, using = "cvc")
+	public WebElement inputCardCVCBread;
+
+	@FindBy(how = How.NAME, using = "postal")
+	public WebElement inputZipCodeBread;
+
+	@FindBy(how = How.ID, using = "submit-payment-button")
+	public WebElement btnAddtionalPaymentCheckout;
+
 	@FindBy(how = How.XPATH, using = "//div[@class='checkout_form_left']/div[1]/div[1]/button[1]")
 	public WebElement editAccountInfo;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='paymentContainer']/div[1]/button[1]")
+	// @FindBy(how = How.XPATH, using =
+	// "//div[@class='paymentContainer']/div[1]/button[1]")
+	// public WebElement editPaymentInfo;
+
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'I would like to pay with')]//parent::div//child::button[contains(text(),'Edit')]")
 	public WebElement editPaymentInfo;
 
 	@FindBy(how = How.ID, using = "radio-2")
@@ -154,7 +177,11 @@ public class ReviewPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//button[@id='payment-submit-btn']")
 	public WebElement btnPayNow;
 
+	private String paymentMethod;
+
 	public OrderConfirmationPage clickCompleteOrderButton() {
+
+		setPaymentMethod("Credit Card");
 
 		System.out.println("Inside clickcomplete button");
 		try {
@@ -181,14 +208,18 @@ public class ReviewPage extends BasePage {
 
 	public OrderConfirmationPage payPalPayment() throws InterruptedException {
 
+		setPaymentMethod("PayPal");
+
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		System.out.println("inside payPalPayment method");
 
 		wait.until(ExpectedConditions.visibilityOf(paypalCompleteOrderiFrame));
 		driver.switchTo().frame(paypalCompleteOrderiFrame);
+		Thread.sleep(1000);
 		wait.until(ExpectedConditions.elementToBeClickable(payPalOrderComplete)).click();
 
-		Thread.sleep(5000);
+		wait.until(ExpectedConditions.numberOfWindowsToBe(2));
+		// Thread.sleep(5000);
 
 		String reviewPageMainWindow = driver.getWindowHandle();
 
@@ -262,6 +293,8 @@ public class ReviewPage extends BasePage {
 
 	public OrderConfirmationPage breadPayment() throws InterruptedException {
 
+		setPaymentMethod("Bread Financing");
+
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		System.out.println("before clicking on bread complete order");
 		wait.until(ExpectedConditions.elementToBeClickable(breadOrderComplete)).click();
@@ -277,37 +310,39 @@ public class ReviewPage extends BasePage {
 		breadLastName.sendKeys("Thai");
 		nextToEmail.click();
 
-		breadEmail.sendKeys("test2107@eargo.com");
+		breadEmail.sendKeys("brandon2003@eargo.com");
 		nextToPhone.click();
 
-		breadPhone.sendKeys("6509999778");
+		// breadPhone.sendKeys("6509999778");
+		breadPhone.sendKeys(generatePhoneNumber());
 		viewFinancingOptions.click();
 
 		niceToMeetYouCode.sendKeys("1234");
 		submitToken.click();
 
-		// if(address.isDisplayed()) {
-		// address.sendKeys("Address1");
-		// addressUnit.sendKeys("1");
-		// zipCode.sendKeys("90201");
-		// birthDate.sendKeys("12/12/1990");
-		// sSN.sendKeys("8800");
-		// Thread.sleep(3000);
-		// submitAndContinue.click();
-		// }
+		wait.until(ExpectedConditions.visibilityOf(address)).sendKeys("1234 Oakland road");
+		// addressUnit.sendKeys("12");
+		zipCode.sendKeys("95112");
+		birthDate.sendKeys("10101977");
+		sSN.sendKeys("8800");
+		wait.until(ExpectedConditions.elementToBeClickable(submitAndContinue)).click();
 
 		Thread.sleep(2000);
 		selectTwelveMonths.click();
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", breadContinueToCheckout);
-		breadContinueToCheckout.click();
+		wait.until(ExpectedConditions.elementToBeClickable(breadContinueToCheckout)).click();
 
 		Thread.sleep(2000);
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", termsAndConditions);
-		termsAndConditions.click();
+		wait.until(ExpectedConditions.elementToBeClickable(termsAndConditions)).click();
 
 		Thread.sleep(2000);
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", acceptAndCheckout);
-		acceptAndCheckout.click();
+		wait.until(ExpectedConditions.elementToBeClickable(acceptAndCheckout)).click();
+
+		if (isAdditionalPaymentRequired()) {
+			makeAdditionalPayment();
+		}
 
 		driver.switchTo().defaultContent();
 
@@ -315,6 +350,36 @@ public class ReviewPage extends BasePage {
 
 		return orderConfirmationPage;
 
+	}
+
+	public boolean isAdditionalPaymentRequired() throws InterruptedException {
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		try {
+
+			wait.until(ExpectedConditions.visibilityOf(iFrameCardNumberBread));
+			return iFrameCardNumberBread.isDisplayed();
+
+		} catch (NoSuchElementException | TimeoutException e) {
+			return false;
+		}
+	}
+
+	public void makeAdditionalPayment() throws InterruptedException {
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
+		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(iFrameCardNumberBread));
+		wait.until(ExpectedConditions.elementToBeClickable(inputCardNumberBread)).click();
+		Thread.sleep(500);
+		((JavascriptExecutor) driver).executeScript("arguments[1].value = arguments[0]; ",
+				prop.getProperty("visaCardNumber"), inputCardNumberBread);
+		wait.until(ExpectedConditions.visibilityOf(inputCardExpDateBread))
+				.sendKeys(prop.getProperty("visaCardExpirationDate"));
+		wait.until(ExpectedConditions.visibilityOf(inputCardCVCBread)).sendKeys(prop.getProperty("visaCardCVC"));
+		wait.until(ExpectedConditions.visibilityOf(inputZipCodeBread)).sendKeys("95112");
+		driver.switchTo().parentFrame();
+		wait.until(ExpectedConditions.elementToBeClickable(btnAddtionalPaymentCheckout)).click();
 	}
 
 	public void breadPaymentCancel() throws InterruptedException {
@@ -388,6 +453,7 @@ public class ReviewPage extends BasePage {
 
 	public CheckoutPage editPaymentInfo() throws InterruptedException {
 		CheckoutPage checkoutPage = new CheckoutPage();
+		wait.until(ExpectedConditions.visibilityOf(editPaymentInfo));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", editPaymentInfo);
 		((JavascriptExecutor) driver).executeScript("arguments[0].click();", editPaymentInfo);
 		// editPaymentInfo.click();
@@ -441,6 +507,14 @@ public class ReviewPage extends BasePage {
 
 	public String getCouponErrorMessage() {
 		return this.couponErrorMessage;
+	}
+
+	public String getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
 	}
 
 }

@@ -65,24 +65,24 @@ public class AccessoriesPage extends BasePage {
 			break;
 
 		case "FLEXI FIBERS":
-			// if (cartPage.isCartOpen()) {
-			// 	cartPage.closeCart();
-			// }
+			if (cartPage.isCartOpen()) {
+				cartPage.closeCart();
+			}
 			click_add_FlexiFibers_to_cart(size);
 			break;
 
 		case "FLEXI DOMES":
-			// if (cartPage.isCartOpen()) {
-			// 	cartPage.closeCart();
-			// }
+			if (cartPage.isCartOpen()) {
+				cartPage.closeCart();
+			}
 			click_add_FlexiDomes_to_cart(size);
 			break;
 
 		case "WAX":
 		default:
-			// if (cartPage.isCartOpen()) {
-			// 	cartPage.closeCart();
-			// }
+			if (cartPage.isCartOpen()) {
+				cartPage.closeCart();
+			}
 			click_add_Wax_to_cart();
 			break;
 		}
@@ -141,16 +141,16 @@ public class AccessoriesPage extends BasePage {
 
 	private void click_add_Flexis_to_cart() throws InterruptedException {
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.elementToBeClickable(btnAddToCartFlexis)).click();
-		Thread.sleep(3000);
+		Thread.sleep(500);
 	}
 
 	private void click_add_Wax_to_cart() throws InterruptedException {
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.elementToBeClickable(btnAddToCartWax)).click();
-		Thread.sleep(3000);
+		Thread.sleep(500);
 	}
 
 }

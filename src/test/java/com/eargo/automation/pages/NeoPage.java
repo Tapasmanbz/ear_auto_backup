@@ -25,14 +25,14 @@ public class NeoPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//button[text()='GET YOUR RATE']")
 	public WebElement neoGetYourRate;
 	
-	@FindBy(how = How.XPATH, using = "//div[@id='bread-checkout-btn']")
+	@FindBy(how = How.ID, using = "bread-checkout-btn")
 	public WebElement neoCheckYourRate;
 
 	public CartPage click_add_to_cart() throws InterruptedException {
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		wait.until(ExpectedConditions.elementToBeClickable(btnAddToCart)).click();
-		Thread.sleep(3000);
+		Thread.sleep(2000);
 
 		return cartPage;
 	}
@@ -41,14 +41,15 @@ public class NeoPage extends BasePage {
 	public void neo_get_your_rate() throws InterruptedException {
 
 		System.out.println("inside neo get your rate");	
-		
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		wait.until(ExpectedConditions.elementToBeClickable(neoGetYourRate)).click();
-		Thread.sleep(3000);
+		Thread.sleep(2000);		
 		waitForPageLoad();
 		((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", neoCheckYourRate);
+		Thread.sleep(2000);	
+		wait.until(ExpectedConditions.visibilityOf(nortonPopUp));
 		wait.until(ExpectedConditions.elementToBeClickable(neoCheckYourRate)).click();
-		Thread.sleep(3000);
+		Thread.sleep(5000);
 		
 		
 	}

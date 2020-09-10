@@ -8,7 +8,7 @@ Feature:
 
 #This scenario works with placing order with Tax applied address, 1-2 Business days and with various coupons like : Hear250, HifiLaunch, MothersDay20 using DEBIT CARD
 @smokeTest @regressionTest @multipleProductOrderWithDebitCard
-		Scenario Outline: Place a order with multiple product using debit card and verify the order details in Salesforce
+		Scenario Outline: Place a order with multiple product with coupon using debit card and verify the order details in Salesforce
 			Given I have multiple products <prod1>, <prod2>, <prod3> at a price of <price1>, <price2> and <price3>
 			And I have a accessory <acc> at a price of <accPrice>
 #			And a default coupon <couponCode> is applied
@@ -28,7 +28,7 @@ Feature:
    	@normalOrder @TC-NJSHOP-02
     Examples: 
       | prod1 		| prod2 | prod3 | acc 					| price1	 |price2	 |price3	|accPrice| couponCode			|	state					|	zipCode		|	deliverBy 					| payment	| 
-      | "Neo HIFI"|"Neo"	|"Max"	|"Wax"					| "$2950"  |"$2350"  |"$1850" |	"$25"  | "HIFILAUNCH" 	|	"California"	|	"95112"		|	"3-4 business days"	| "Amex"	|	#TC-NJSHOP-02 (Normal order)		
+      | "Neo HIFI"|"Neo"	|"Max"	|"Wax"					| "$2950"  |"$2350"  |"$1850" |	"$25"  | "HIFILAUNCH" 	|	"California"	|	"95112"		|	"1-2 business days"	| "Amex"	|	#TC-NJSHOP-02 (Normal order)		
 
 		@taxOrder @TC-NJSHOP-09
 		Examples: 
@@ -54,7 +54,7 @@ Feature:
 
 #This scenario works with placing order with multiple accessories
 @smokeTest @regressionTest @multipleProductOrderWithDebitCard @multipleAccessoriesWithDebitCard
-	Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
+	Scenario Outline: Place a normal order with multiple accessories with coupon and verify the order details in Salesforce
 			Given I have multiple accessories <acc1>, <acc2>, <acc3>, <acc4>, <acc5> at a price of <accPrice1>, <accPrice2>, <accPrice3>, <accPrice4> and <accPrice5>
 #			And a default coupon <couponCode> is applied
 			And as a user with a default email
@@ -75,7 +75,7 @@ Feature:
 	    
 #This scenario works with Mention ME (Referal Coupon)
 @smokeTest @regressionTest @multipleProductOrderWithDebitCard @mentionMe 
-		Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
+		Scenario Outline: Place a normal order with multiple product and Mention Me coupon and verify the order details in Salesforce
 			Given I have multiple products <prod1>, <prod2>, <prod3> at a price of <price1>, <price2> and <price3>
 			And I have a accessory <acc> at a price of <accPrice>
 #			And a default coupon <couponCode> is applied
@@ -122,7 +122,7 @@ Feature:
     @TC-NJSHOP-45 
     Examples: 
       | prod1 		| prod2 | prod3 | acc 	| price1	 |price2	 |price3	|accPrice| couponCode			|	state					|	zipCode		|	deliverBy 					| billingState	|	billingZipCode	|	 payment| 
-      | "Neo HIFI"|"Neo"	|"Max"	|"Wax"	| "$2950"  |"$2350"  |"$1850" |	"$25"  | "HIFILAUNCH" 	|	"California"	|	"95112"		|	"3-4 business days"	|  "FLORIDA"		|	"32003"    			|	"Amex"	|	#TC-NJSHOP-45 (Different Shipping Address)
+      | "Neo HIFI"|"Neo"	|"Max"	|"Wax"	| "$2950"  |"$2350"  |"$1850" |	"$25"  | "MothersDay20" |	"California"	|	"95112"		|	"3-4 business days"	|  "FLORIDA"		|	"32003"    			|	"Amex"	|	#TC-NJSHOP-45 (Different Shipping Address)
      
      
 
