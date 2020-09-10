@@ -14,6 +14,6 @@ public class Hooks extends TestBase {
 
 	@After
 	public static void tearDown() {
-//		tearDownTest();
+		tearDownTest();
 	}
 }

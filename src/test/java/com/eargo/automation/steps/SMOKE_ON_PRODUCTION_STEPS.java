@@ -38,20 +38,25 @@ public class SMOKE_ON_PRODUCTION_STEPS extends TestBase  {
 	@Then("verify that the order details are present in review page")
 	public void verify_that_the_order_details_are_present_in_review_page() throws InterruptedException {
 		
-		Assert.assertEquals("User Name doesn't matched", "TestAccountFirst TestAccountLast",  reviewPage.getCouponErrorMessage());
-		Assert.assertEquals("User Phone Number doesn't matched", prop.getProperty("Phone"),  reviewPage.getCouponErrorMessage());
-		Assert.assertEquals("User Eamil doesn't matched", prop.getProperty("defaultEmail"), reviewPage.getCouponErrorMessage());
+		//Validating "Account Info"
+		Assert.assertEquals("User Name doesn't matched", "TestAccountFirst TestAccountLast",  reviewPage.getCustomerName());
+		Assert.assertEquals("User Phone Number doesn't matched", prop.getProperty("Phone"),  reviewPage.getPhoneNumber());
+		Assert.assertEquals("User Eamil doesn't matched", prop.getProperty("defaultEmail"), reviewPage.getEnteredEmailID());
 		
+		//Validating "Shipping Address"
+		Assert.assertEquals("Shipping street doesn't matched", prop.getProperty("shippingStreetAddress"), reviewPage.getEnteredStreetAddress());
 		
-		Assert.assertEquals("Shipping street doesn't matched", prop.getProperty("shippingStreetAddress"), reviewPage.getCouponErrorMessage());
-		Assert.assertEquals("Shipping Address doesn't matched", "Need to develop", reviewPage.getCouponErrorMessage());
+		//Validating "Billing Address"	
+		Assert.assertEquals("Billing street doesn't matched", prop.getProperty("editedShippingStreetAddress"), reviewPage.getEnteredBillingStreetAddress());
+
+		//Validating "Estimated Delivery Date"
+		Assert.assertEquals("Estimated Delivery Date doesn't matched",checkoutPage.getExpectedDeliveryDate(), reviewPage.getDeliveryDate());
 		
-		Assert.assertEquals("Billing street doesn't matched", prop.getProperty("editedShippingStreetAddress"), reviewPage.getCouponErrorMessage());
-		Assert.assertEquals("Billing Address doesn't matched","Need to develop", reviewPage.getCouponErrorMessage());
+		//Validating "Payment type"
+		Assert.assertEquals("Payment type doesn't matched",reviewPage.givenPaymentType, reviewPage.getPaymentType());
 		
-		Assert.assertEquals("Estimated Delivery Date doesn't matched","Need to develope", reviewPage.getCouponErrorMessage());
-		
-		Assert.assertEquals("Payment type doesn't matched","Need to develope", reviewPage.getCouponErrorMessage());
+		//Validating "Order Summary"
+		// Need to discuss with tapas as this requires the array-list way of validating
 						
 	}
 	

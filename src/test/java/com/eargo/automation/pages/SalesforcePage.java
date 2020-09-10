@@ -17,8 +17,9 @@ public class SalesforcePage extends BasePage {
 	String deliveryTaxValue = null;
 	String deliveryTaxValue1 = null;
 	String shippingTaxValue = null;
-	String PaymentType = null;
+	String PaymentType =null;
 	String shippingAddressOnSF = null;
+	
 
 	public SalesforcePage() {
 		PageFactory.initElements(driver, this);
@@ -84,7 +85,7 @@ public class SalesforcePage extends BasePage {
 
 	@FindBy(how = How.ID, using = "00NA000000AiFa4_ileinner")
 	public WebElement billingPaymentType;
-
+	
 	@FindBy(how = How.ID, using = "00N4D000000siMi_ileinner")
 	public WebElement appliedCoupon;
 
@@ -93,10 +94,10 @@ public class SalesforcePage extends BasePage {
 
 	@FindBy(how = How.XPATH, using = "//div[@id='ShippingAddress_ileinner']")
 	public WebElement shippingAddress1;
-
+	
 	@FindBy(how = How.XPATH, using = "//td[@id='ShippingAddress_ilecell']")
 	public WebElement shippingAddress2;
-
+	
 	// Added - 24-08-2020
 	@FindBy(how = How.XPATH, using = "//h3[contains(@id, '_RelatedOrderItemList_title')]")
 	public WebElement sectionOrderProductsSalesforce;
@@ -115,7 +116,6 @@ public class SalesforcePage extends BasePage {
 
 	/**
 	 * Set the value of Neo Hifi Product Name
-	 * 
 	 * @param neoHifiProdName
 	 */
 	public void setNeoHifiProdName(String neoHifiProdName) {
@@ -298,37 +298,39 @@ public class SalesforcePage extends BasePage {
 		shippingAddressOnSF = shippingAddress1.getText();
 		return this.shippingAddressOnSF;
 	}
-
+	
 	public String sfShippingTax() {
 		shippingTaxValue = shippingTax.getText();
 		System.out.println("sfShippingTax=" + shippingTaxValue);
 		return this.shippingTaxValue;
 	}
-
+	
 	public String sfPaymentType() {
 		PaymentType = billingPaymentType.getText();
 		return this.PaymentType;
 	}
-
-	// -----08-09-2020
-
-	// private String patientName;
-	// private String usedHearingAid;
-	// private String insuranceProvider;
+	
+	
+//-------------08-09-2020
+	
+//	private String patientName;
+//	private String usedHearingAid;
+//	private String insuranceProvider;
 
 	public String patientName;
 	public String usedHearingAid;
 	public String insuranceProvider;
-
+	
 	@FindBy(how = How.XPATH, using = "//a[@class='brandPrimaryFgr']")
 	public WebElement leadsTab;
-
+	
 	@FindBy(how = How.XPATH, using = "//tbody[1]/tr[2]/td[3]/span[1]/span[1]")
 	public WebElement defaulfToDate;
-
+	
 	@FindBy(how = How.XPATH, using = "//tbody[1]/tr[1]/td[2]/span[1]/span[1]/a[1]")
 	public WebElement defaultFromDate;
-
+	
+	
 	public String getInsuranceProvider() {
 		return this.insuranceProvider;
 	}
@@ -367,11 +369,14 @@ public class SalesforcePage extends BasePage {
 		SFLogInToSanbox.click();
 
 	}
-
+	
 	public void verify_leads() {
-
+		
 		leadsTab.click();
 		defaulfToDate.click();
-
+		
+		
+		
 	}
+	
 }

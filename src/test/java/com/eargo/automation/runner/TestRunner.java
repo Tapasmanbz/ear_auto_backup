@@ -13,7 +13,7 @@ import io.cucumber.junit.CucumberOptions;
 @RunWith(Cucumber.class)
 @CucumberOptions(features = { "src/test/java/com/eargo/automation/features" }, plugin = { "json:target/cucumber.json",
 		"html:target/site/cucumber-pretty", "rerun:target/rerun.txt" }, glue = "com/eargo/automation/steps", tags = {
-				"@mentionMe" }, monochrome = true, strict = true, dryRun = false)
+				"@federal_form1" }, monochrome = true, strict = true, dryRun = false)
 
 public class TestRunner {
 

@@ -15,6 +15,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ReviewPage extends BasePage {
+	String enteredCustomerName = null;
+	String enteredPhoneNumber = null;
+	String enteredEmailID = null;
+	String enteredStreetAddress = null;
+	String enteredBillingStreetAddress = null;
+	String expectedDeliveryDate = null;
+	String customerPaymentType = null;
 
 	public ReviewPage() {
 
@@ -177,12 +184,12 @@ public class ReviewPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//button[@id='payment-submit-btn']")
 	public WebElement btnPayNow;
 
-	private String paymentMethod;
+	public String givenPaymentType;
 
 	public OrderConfirmationPage clickCompleteOrderButton() {
 
-		setPaymentMethod("Credit Card");
-
+		givenPaymentType = "Credit Card";
+		
 		System.out.println("Inside clickcomplete button");
 		try {
 			// Thread.sleep(5000);
@@ -208,18 +215,16 @@ public class ReviewPage extends BasePage {
 
 	public OrderConfirmationPage payPalPayment() throws InterruptedException {
 
-		setPaymentMethod("PayPal");
-
+		givenPaymentType = "PayPal";
+		
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		System.out.println("inside payPalPayment method");
 
 		wait.until(ExpectedConditions.visibilityOf(paypalCompleteOrderiFrame));
 		driver.switchTo().frame(paypalCompleteOrderiFrame);
-		Thread.sleep(1000);
 		wait.until(ExpectedConditions.elementToBeClickable(payPalOrderComplete)).click();
 
-		wait.until(ExpectedConditions.numberOfWindowsToBe(2));
-		// Thread.sleep(5000);
+		Thread.sleep(5000);
 
 		String reviewPageMainWindow = driver.getWindowHandle();
 
@@ -293,8 +298,8 @@ public class ReviewPage extends BasePage {
 
 	public OrderConfirmationPage breadPayment() throws InterruptedException {
 
-		setPaymentMethod("Bread Financing");
-
+		givenPaymentType = "Bread";
+		
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		System.out.println("before clicking on bread complete order");
 		wait.until(ExpectedConditions.elementToBeClickable(breadOrderComplete)).click();
@@ -374,8 +379,7 @@ public class ReviewPage extends BasePage {
 		Thread.sleep(500);
 		((JavascriptExecutor) driver).executeScript("arguments[1].value = arguments[0]; ",
 				prop.getProperty("visaCardNumber"), inputCardNumberBread);
-		wait.until(ExpectedConditions.visibilityOf(inputCardExpDateBread))
-				.sendKeys(prop.getProperty("visaCardExpirationDate"));
+		wait.until(ExpectedConditions.visibilityOf(inputCardExpDateBread)).sendKeys(prop.getProperty("visaCardExpirationDate"));
 		wait.until(ExpectedConditions.visibilityOf(inputCardCVCBread)).sendKeys(prop.getProperty("visaCardCVC"));
 		wait.until(ExpectedConditions.visibilityOf(inputZipCodeBread)).sendKeys("95112");
 		driver.switchTo().parentFrame();
@@ -509,12 +513,90 @@ public class ReviewPage extends BasePage {
 		return this.couponErrorMessage;
 	}
 
-	public String getPaymentMethod() {
-		return paymentMethod;
-	}
+	
+//-----------03/09/2020-------------------
+	@FindBy(how = How.ID, using = "//div[@class='yourAccount']/div[1]/div[1]/label[1]")
+	public WebElement customerFirstName;
 
-	public void setPaymentMethod(String paymentMethod) {
-		this.paymentMethod = paymentMethod;
-	}
+	@FindBy(how = How.XPATH, using = "//div[@class='yourAccount']/div[1]/div[1]/label[2]")
+	public WebElement customerSecondName;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='yourAccount']/div[1]/label[1]")
+	public WebElement customerPhoneNumber;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='yourAccount']/div[1]/label[2]")
+	public WebElement customerEmailID;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='yourAccount']/div[2]/div[2]/label[1]")
+	public WebElement customerStreetAddress;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='yourAccount']/div[2]/div[3]/div[@class='review_section']/label[1]")
+	public WebElement customerBillingStreetAddress;
+	
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Estimated Delivery Date')]//following::label[1]")
+	public WebElement customerEstimatedDevliverDate;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='paypal_text_container']/img[1]")
+	public WebElement paypalPaymentType;
 
+	@FindBy(how = How.XPATH, using = "//div[@class='bread_text_container']/img[1]")
+	public WebElement breadPaymentType;
+	
+	
+	public String getCustomerName() {
+		enteredCustomerName = customerFirstName.getText() +" "+ customerSecondName.getText();
+		System.out.println("enteredCustomerName = " + enteredCustomerName);
+		return this.enteredCustomerName;
+	}
+	
+	public String getPhoneNumber() {
+		enteredPhoneNumber = customerPhoneNumber.getText();
+		enteredPhoneNumber = enteredPhoneNumber.replaceAll("(-)", " "); 
+		System.out.println("enteredPhoneNumber = " + enteredPhoneNumber);
+		return this.enteredPhoneNumber;
+	}
+	
+	public String getEnteredEmailID() {
+		enteredEmailID = customerEmailID.getText();
+		System.out.println("enteredEmailID = " + enteredEmailID);
+		return this.enteredEmailID;
+	}
+	
+	public String getEnteredStreetAddress() {
+		enteredStreetAddress = customerStreetAddress.getText();
+		System.out.println("enteredStreetAddress = " + enteredStreetAddress);
+		return this.enteredStreetAddress;
+	}
+	
+	public String getEnteredBillingStreetAddress() {
+		enteredBillingStreetAddress = customerBillingStreetAddress.getText();
+		System.out.println("enteredBillingStreetAddress = " + enteredBillingStreetAddress);
+		return this.enteredBillingStreetAddress;
+	}
+	
+	public String getDeliveryDate() {
+		expectedDeliveryDate = customerEstimatedDevliverDate.getText();
+		System.out.println("expectedDeliveryDate = " + expectedDeliveryDate);
+		return this.expectedDeliveryDate;
+	}
+	
+	public String getPaymentType() {
+		
+		if(paypalPaymentType.isDisplayed()) {
+					customerPaymentType = "PayPal";
+					System.out.println("customerPaymentType = " + customerPaymentType);
+		
+		}else if(breadPaymentType.isDisplayed()) {
+					customerPaymentType = "Bread";
+					System.out.println("customerPaymentType = " + customerPaymentType);
+		
+		}else {
+					customerPaymentType = "Credit Card";
+					System.out.println("customerPaymentType = " + customerPaymentType);
+			
+		}
+		
+		return this.customerPaymentType;
+	}
+	
 }

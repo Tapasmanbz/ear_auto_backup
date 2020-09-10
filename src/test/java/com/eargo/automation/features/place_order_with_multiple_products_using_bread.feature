@@ -83,7 +83,7 @@ Feature:
      #
     Examples: 
       | prod	| acc 					| price		|accPrice| mentionMe				|	state					|	zipCode		|	deliverBy 					| payment	| 
-	    | "Neo"	|"Flexi Domes"	| "$2350" |	"$25"  | "FriendReferal" 	|	"NEW JERSEY"	|	"07097"		|	"3-4 business days"	| "Bread"	|	#TC-NJSHOP-39 (Mention Me)
+	    | "Neo"	|"Flexi Domes"	| "$2350" |	"$25"  | "FriendReferal" 	|	"NEW JERSEY"		|	"07097"		|	"3-4 business days"	| "Bread"	|	#TC-NJSHOP-39 (Mention Me)
 	    
 #This scenario works with different billing address
 @smokeTest1 @regressionTest @multipleProductOrder @TC-NJSHOP-47

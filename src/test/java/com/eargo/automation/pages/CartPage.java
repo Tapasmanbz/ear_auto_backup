@@ -28,10 +28,10 @@ public class CartPage extends BasePage {
 
 	@FindBy(how = How.XPATH, using = "//div[contains(@class,'cartContainer')]/parent::div")
 	public WebElement scrollCartContainer;
-
+	
 	@FindBy(how = How.XPATH, using = "//h1[contains(@class,'cart_header')]")
 	public WebElement cartHeader;
-
+	
 	@FindBy(how = How.XPATH, using = "//h1[contains(@class,'productName')]")
 	public List<WebElement> allCartProduct;
 
@@ -68,15 +68,6 @@ public class CartPage extends BasePage {
 
 	@FindBy(how = How.XPATH, using = "//output[contains(text(),'2')]")
 	public WebElement prodAfterIncrement;
-
-	@FindBy(how = How.XPATH, using = "//h1[contains(@class, 'productName') and text()='Eargo Neo HiFi']/parent::div/following-sibling::div/button")
-	public WebElement btnRemoveHifi;
-
-	@FindBy(how = How.XPATH, using = "//h1[contains(@class, 'productName') and text()='Eargo Neo']/parent::div/following-sibling::div/button")
-	public WebElement btnRemoveNeo;
-
-	@FindBy(how = How.XPATH, using = "//h1[contains(@class, 'productName') and text()='Eargo Max']/parent::div/following-sibling::div/button")
-	public WebElement btnRemoveMax;
 
 	public CheckoutPage clickCheckoutButton() throws InterruptedException {
 
@@ -138,7 +129,7 @@ public class CartPage extends BasePage {
 
 		scrollToCartBottom();
 		btnRemoveCoupon.click();
-		Thread.sleep(500);
+		Thread.sleep(1000);
 		return true;
 	}
 
@@ -152,6 +143,8 @@ public class CartPage extends BasePage {
 		Thread.sleep(500);
 		inputCoupon.sendKeys(couponCode);
 		wait.until(ExpectedConditions.elementToBeClickable(btnApplyCoupon)).click();
+		Thread.sleep(3000);
+
 	}
 
 	public MentionMePage clickReferByFriend() throws InterruptedException {
@@ -162,14 +155,13 @@ public class CartPage extends BasePage {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		wait.until(ExpectedConditions.elementToBeClickable(linkOtherAvailableDiscounts)).click();
 		scrollToCartElement(linkReferredByFriend);
-		Thread.sleep(2000);
 		wait.until(ExpectedConditions.elementToBeClickable(linkReferredByFriend)).click();
 		return mentionMe;
 	}
 
 	public String afterIncrement() throws InterruptedException {
 
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 
 		return (prodAfterIncrement.getText());
 
@@ -181,7 +173,7 @@ public class CartPage extends BasePage {
 		Thread.sleep(1000);
 
 	}
-
+	
 	public void scrollToCartElement(WebElement element) throws InterruptedException {
 		String script_string = "arguments[0].scrollIntoView();";
 		((JavascriptExecutor) driver).executeScript(script_string, element);
@@ -219,29 +211,5 @@ public class CartPage extends BasePage {
 
 	public String getCouponErrorMessage() {
 		return this.couponErrorMessage;
-	}
-
-	public String applyReferralCoupon() throws InterruptedException {
-
-		scrollToCartElement(inputCoupon);
-		String referralCoupon = inputCoupon.getAttribute("value");
-		System.out.println("Referal coupon Value:" + referralCoupon);
-		wait.until(ExpectedConditions.elementToBeClickable(btnApplyCoupon)).click();
-		return referralCoupon;
-	}
-
-	public void removeNeoHifi() throws InterruptedException {
-		scrollToCartElement(btnRemoveHifi);
-		wait.until(ExpectedConditions.elementToBeClickable(btnRemoveHifi)).click();
-	}
-
-	public void removeNeo() throws InterruptedException {
-		scrollToCartElement(btnRemoveNeo);
-		wait.until(ExpectedConditions.elementToBeClickable(btnRemoveNeo)).click();
-	}
-
-	public void removeMax() throws InterruptedException {
-		scrollToCartElement(btnRemoveMax);
-		wait.until(ExpectedConditions.elementToBeClickable(btnRemoveMax)).click();
 	}
 }

@@ -320,15 +320,14 @@ public class TC_NJ_SHOP_01 extends TestBase {
 			// 1. Verify order number
 			Assert.assertEquals("Order Number doesn't displayed on the Salesforce Page", orderNumber,
 					salesforcePage.orderNum.getText());
-			System.out.println("verification 1 passes");
 
 			// 2. Verify Email ID
 			Assert.assertEquals(email, checkoutPage.getEnteredCustomerEmailID());
 			System.out.println("verification 2 passes");
 
 			// 3. Verify shipping address
-			// Assert.assertEquals(shippingAddress, salesforcePage.sfshippingAddress());
-			// System.out.println("verification 3 passes");
+//						Assert.assertEquals(shippingAddress, salesforcePage.sfshippingAddress());
+//						System.out.println("verification 3 passes");
 
 			// 4. verify Estimated Delivery Address
 			Assert.assertEquals(deliveryDate, checkoutPage.getExpectedDeliveryDate());
@@ -337,7 +336,6 @@ public class TC_NJ_SHOP_01 extends TestBase {
 			// 5. Verify the order total price
 			Assert.assertEquals("Order summary amount doesn't matched with Order Confirmation Page", orderSummaryAmount,
 					salesforcePage.finalProductPrice.getText());
-			System.out.println("verification 5 passes");
 
 			// 6. Verify product details
 			// Need to be developed
@@ -348,7 +346,6 @@ public class TC_NJ_SHOP_01 extends TestBase {
 
 			// 7. Verify tax (which applied with respect to state address)
 			Assert.assertEquals(taxAmount, salesforcePage.sfOrderTax());
-			System.out.println("verification 7 passes");
 
 			// 8. Verify Shipping Charges
 			Assert.assertEquals(shippingCharges, salesforcePage.sfShippingTax());
@@ -356,7 +353,7 @@ public class TC_NJ_SHOP_01 extends TestBase {
 
 			// 9. Verify payment type
 			// paymentType = salesforcePage.getGivenPaymentType();
-			Assert.assertEquals(reviewPage.getPaymentMethod(), salesforcePage.sfPaymentType());
+			Assert.assertEquals(reviewPage.givenPaymentType, salesforcePage.sfPaymentType());
 			System.out.println("verification 9 passes");
 			// ----------------------------------------------------------------------------------
 
@@ -417,8 +414,7 @@ public class TC_NJ_SHOP_01 extends TestBase {
 		mentionMe.submitFriendDetails();
 		mentionMe.submitRefreeDetails(refreeEmail);
 		mentionMe.continueShopping();
-		String couponCode = cartPage.applyReferralCoupon();
-		salesforcePage.setCoupon(couponCode);
+
 	}
 
 	@Given("a referal coupon with existing user {string}")

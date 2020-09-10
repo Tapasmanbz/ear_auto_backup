@@ -20,8 +20,9 @@ Feature:
 			And I opt for different billing address with state <billingState> and zipCode <billingZipCode>
 			And use <payment> for payment	
 			And I click on Edit under "Account Info" on review page
+			And I edit account info
 			And I edit payment method as <editedPayment>
-#			Then verify that the order details are present in review page
+			Then verify that the order details are present in review page
      
       Examples: 
       | prod				| acc 							| price		|accPrice| couponCode			|	state					|	zipCode		|	deliverBy 					| billingState	|	billingZipCode	|	 payment	|	editedPayment	| 
@@ -45,7 +46,7 @@ Feature:
 			And use <payment> for payment
 			And I edit shipping info with state <editedShippingState> and zipCode <editedShippingZipCode>
 			And I edit payment method as <editedPayment>
-#      Then verify that the order details are present in review page
+      Then verify that the order details are present in review page
     
       Examples: 
       | prod1 		| prod2 | prod3 | acc 							| price1	 |price2	 |price3	|accPrice| couponCode			|	state			|	zipCode		|	deliverBy 					| billingState	|	billingZipCode	|	 payment	|	editedPayment	| editedShippingState	|	editedShippingZipCode	| 
