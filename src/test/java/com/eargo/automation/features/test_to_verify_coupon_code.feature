@@ -17,6 +17,7 @@
 ## (Comments)
 #Sample Feature Definition Template
 
+@shop
 Feature:
 	Place an order with invalid coupon
 	In order to ensure that coupon should not applied using invalid coupons

@@ -3,6 +3,7 @@ package com.eargo.automation.pages;
 import java.time.Duration;
 import java.util.Set;
 
+import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -15,13 +16,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ReviewPage extends BasePage {
-	String enteredCustomerName = null;
-	String enteredPhoneNumber = null;
-	String enteredEmailID = null;
-	String enteredStreetAddress = null;
-	String enteredBillingStreetAddress = null;
-	String expectedDeliveryDate = null;
-	String customerPaymentType = null;
+	
+	CheckoutPage checkoutPage = null;
 
 	public ReviewPage() {
 
@@ -30,6 +26,13 @@ public class ReviewPage extends BasePage {
 	}
 
 	String couponErrorMessage;
+	String enteredCustomerName = null;
+	String enteredPhoneNumber = null;
+	String enteredEmailID = null;
+	String enteredStreetAddress = null;
+	String enteredBillingStreetAddress = null;
+	String expectedDeliveryDate = null;
+	String customerPaymentType = null;
 
 	OrderConfirmationPage orderConfirmationPage = new OrderConfirmationPage();
 
@@ -184,12 +187,12 @@ public class ReviewPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//button[@id='payment-submit-btn']")
 	public WebElement btnPayNow;
 
-	public String givenPaymentType;
+	public static String paymentMethod;
 
 	public OrderConfirmationPage clickCompleteOrderButton() {
 
-		givenPaymentType = "Credit Card";
-		
+		setPaymentMethod("Credit Card");
+
 		System.out.println("Inside clickcomplete button");
 		try {
 			// Thread.sleep(5000);
@@ -215,16 +218,18 @@ public class ReviewPage extends BasePage {
 
 	public OrderConfirmationPage payPalPayment() throws InterruptedException {
 
-		givenPaymentType = "PayPal";
-		
+		setPaymentMethod("PayPal");
+
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		System.out.println("inside payPalPayment method");
 
 		wait.until(ExpectedConditions.visibilityOf(paypalCompleteOrderiFrame));
 		driver.switchTo().frame(paypalCompleteOrderiFrame);
+		Thread.sleep(1000);
 		wait.until(ExpectedConditions.elementToBeClickable(payPalOrderComplete)).click();
 
-		Thread.sleep(5000);
+		wait.until(ExpectedConditions.numberOfWindowsToBe(2));
+		// Thread.sleep(5000);
 
 		String reviewPageMainWindow = driver.getWindowHandle();
 
@@ -298,8 +303,8 @@ public class ReviewPage extends BasePage {
 
 	public OrderConfirmationPage breadPayment() throws InterruptedException {
 
-		givenPaymentType = "Bread";
-		
+		setPaymentMethod("Bread Financing");
+
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		System.out.println("before clicking on bread complete order");
 		wait.until(ExpectedConditions.elementToBeClickable(breadOrderComplete)).click();
@@ -379,7 +384,8 @@ public class ReviewPage extends BasePage {
 		Thread.sleep(500);
 		((JavascriptExecutor) driver).executeScript("arguments[1].value = arguments[0]; ",
 				prop.getProperty("visaCardNumber"), inputCardNumberBread);
-		wait.until(ExpectedConditions.visibilityOf(inputCardExpDateBread)).sendKeys(prop.getProperty("visaCardExpirationDate"));
+		wait.until(ExpectedConditions.visibilityOf(inputCardExpDateBread))
+				.sendKeys(prop.getProperty("visaCardExpirationDate"));
 		wait.until(ExpectedConditions.visibilityOf(inputCardCVCBread)).sendKeys(prop.getProperty("visaCardCVC"));
 		wait.until(ExpectedConditions.visibilityOf(inputZipCodeBread)).sendKeys("95112");
 		driver.switchTo().parentFrame();
@@ -513,90 +519,134 @@ public class ReviewPage extends BasePage {
 		return this.couponErrorMessage;
 	}
 
+	public String getPaymentMethod() {
+		System.out.println("getPaymentMethod:" + paymentMethod);
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(String paymentMethod) {
+		System.out.println("setPaymentMethod:" + paymentMethod);
+		this.paymentMethod = paymentMethod;
+	}
+
+	// -----------03/09/2020-------------------
 	
-//-----------03/09/2020-------------------
 	@FindBy(how = How.ID, using = "//div[@class='yourAccount']/div[1]/div[1]/label[1]")
 	public WebElement customerFirstName;
 
 	@FindBy(how = How.XPATH, using = "//div[@class='yourAccount']/div[1]/div[1]/label[2]")
 	public WebElement customerSecondName;
-	
+
 	@FindBy(how = How.XPATH, using = "//div[@class='yourAccount']/div[1]/label[1]")
 	public WebElement customerPhoneNumber;
-	
+
 	@FindBy(how = How.XPATH, using = "//div[@class='yourAccount']/div[1]/label[2]")
 	public WebElement customerEmailID;
-	
+
 	@FindBy(how = How.XPATH, using = "//div[@class='yourAccount']/div[2]/div[2]/label[1]")
 	public WebElement customerStreetAddress;
-	
+
 	@FindBy(how = How.XPATH, using = "//div[@class='yourAccount']/div[2]/div[3]/div[@class='review_section']/label[1]")
 	public WebElement customerBillingStreetAddress;
-	
+
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Estimated Delivery Date')]//following::label[1]")
 	public WebElement customerEstimatedDevliverDate;
-	
+
 	@FindBy(how = How.XPATH, using = "//div[@class='paypal_text_container']/img[1]")
 	public WebElement paypalPaymentType;
 
 	@FindBy(how = How.XPATH, using = "//div[@class='bread_text_container']/img[1]")
 	public WebElement breadPaymentType;
-	
-	
+
 	public String getCustomerName() {
-		enteredCustomerName = customerFirstName.getText() +" "+ customerSecondName.getText();
+		enteredCustomerName = customerFirstName.getText() + " " + customerSecondName.getText();
 		System.out.println("enteredCustomerName = " + enteredCustomerName);
 		return this.enteredCustomerName;
 	}
-	
+
 	public String getPhoneNumber() {
 		enteredPhoneNumber = customerPhoneNumber.getText();
-		enteredPhoneNumber = enteredPhoneNumber.replaceAll("(-)", " "); 
+		enteredPhoneNumber = enteredPhoneNumber.replaceAll("(-)", " ");
 		System.out.println("enteredPhoneNumber = " + enteredPhoneNumber);
 		return this.enteredPhoneNumber;
 	}
-	
+
 	public String getEnteredEmailID() {
 		enteredEmailID = customerEmailID.getText();
 		System.out.println("enteredEmailID = " + enteredEmailID);
 		return this.enteredEmailID;
 	}
-	
+
 	public String getEnteredStreetAddress() {
 		enteredStreetAddress = customerStreetAddress.getText();
 		System.out.println("enteredStreetAddress = " + enteredStreetAddress);
 		return this.enteredStreetAddress;
 	}
-	
+
 	public String getEnteredBillingStreetAddress() {
 		enteredBillingStreetAddress = customerBillingStreetAddress.getText();
 		System.out.println("enteredBillingStreetAddress = " + enteredBillingStreetAddress);
 		return this.enteredBillingStreetAddress;
 	}
-	
+
 	public String getDeliveryDate() {
 		expectedDeliveryDate = customerEstimatedDevliverDate.getText();
 		System.out.println("expectedDeliveryDate = " + expectedDeliveryDate);
 		return this.expectedDeliveryDate;
 	}
-	
+
 	public String getPaymentType() {
-		
-		if(paypalPaymentType.isDisplayed()) {
-					customerPaymentType = "PayPal";
-					System.out.println("customerPaymentType = " + customerPaymentType);
-		
-		}else if(breadPaymentType.isDisplayed()) {
-					customerPaymentType = "Bread";
-					System.out.println("customerPaymentType = " + customerPaymentType);
-		
-		}else {
-					customerPaymentType = "Credit Card";
-					System.out.println("customerPaymentType = " + customerPaymentType);
-			
+		if (paypalPaymentType.isDisplayed()) {
+			customerPaymentType = "PayPal";
+			System.out.println("customerPaymentType = " + customerPaymentType);
+
+		} else if (breadPaymentType.isDisplayed()) {
+			customerPaymentType = "Bread";
+			System.out.println("customerPaymentType = " + customerPaymentType);
+
+		} else {
+			customerPaymentType = "Credit Card";
+			System.out.println("customerPaymentType = " + customerPaymentType);
+
 		}
-		
+
 		return this.customerPaymentType;
 	}
-	
+
+	public void verifyDetailsOnReviewPage() throws InterruptedException {
+		
+//		Validating "Account Info"		
+		Thread.sleep(10000);
+//		Assert.assertEquals("User Name doesn't matched", "TestAccountFirst TestAccountLast", getCustomerName());
+//		Thread.sleep(2000);
+		Assert.assertEquals("User Phone Number doesn't matched", prop.getProperty("Phone"),  getPhoneNumber());
+		Thread.sleep(2000);
+		
+		Assert.assertEquals("User Eamil doesn't matched", prop.getProperty("EditedEmail"), getEnteredEmailID());
+//		Thread.sleep(2000);		
+
+		//Validating "Shipping Address"
+		
+//		Assert.assertEquals("Shipping street doesn't matched", prop.getProperty("shippingStreetAddress"),getEnteredStreetAddress());
+		Thread.sleep(2000);
+				
+		
+		//Validating "Billing Address"	
+		
+		Assert.assertEquals("Billing street doesn't matched", prop.getProperty("editedShippingStreetAddress"), getEnteredBillingStreetAddress());
+		Thread.sleep(2000);
+
+		//Validating "Estimated Delivery Date"
+		
+//		Assert.assertEquals("Estimated Delivery Date doesn't matched",checkoutPage.getExpectedDeliveryDate(), getDeliveryDate());
+//		Thread.sleep(2000);		
+		//Validating "Payment type"
+		
+//		Assert.assertEquals("Payment type doesn't matched",getPaymentMethod(), getPaymentType());
+		Thread.sleep(2000);		
+		//Validating "Order Summary"
+		// Need to discuss with tapas as this requires the array-list way of validating
+		
+	}
+
 }

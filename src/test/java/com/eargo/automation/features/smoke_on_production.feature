@@ -1,12 +1,13 @@
 # Smoke test on production
 
+@shop
 Feature: 
 	Place an order for multiple product
 	In order to ensure that cart page and address page works
 	As a user
 	I want to run a test to verify the order data in review page
 
-@production
+@production1
 		Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And I have a accessory <acc> at a price of <accPrice>
@@ -29,7 +30,7 @@ Feature:
       | "Neo Hifi"	|"FLEXI TETRAPALMS"	| "$2950" |	"$25"  | "HIFILAUNCH" 	|	"California"	|	"95112"		|	"1-2 business days"	|  "FLORIDA"		|	"32003"    			|	"Bread"		|		"Paypal"    |#TC-NJSHOP-55 
 
       
- @production
+@production11
 		Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have multiple products <prod1>, <prod2>, <prod3> at a price of <price1>, <price2> and <price3>
 			And I have a accessory <acc> at a price of <accPrice>
@@ -44,8 +45,11 @@ Feature:
 			And I opt for <deliverBy> delivery
 			And I opt for different billing address with state <billingState> and zipCode <billingZipCode>
 			And use <payment> for payment
-			And I edit shipping info with state <editedShippingState> and zipCode <editedShippingZipCode>
+			And I click on Edit under "Account Info" on review page
+			And I edit account info
 			And I edit payment method as <editedPayment>
+			And I edit shipping info with state <editedShippingState> and zipCode <editedShippingZipCode>
+#			And I edit payment method as <editedPayment>
       Then verify that the order details are present in review page
     
       Examples: 

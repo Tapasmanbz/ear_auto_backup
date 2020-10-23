@@ -1,5 +1,6 @@
 # Place an Order with one product using payPal
 
+@shop
 Feature: 
 	Place an order for one product using bread financing
 	In order to ensure that checkout works

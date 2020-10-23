@@ -15,6 +15,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
@@ -60,7 +61,6 @@ public class TestBase {
 
 	public static void initialization() {
 
-		
 		System.out.println("Opening the browser: " + prop.getProperty("browserName"));
 		// System.out.println("Running: " + scenario.getName());
 
@@ -70,21 +70,21 @@ public class TestBase {
 			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + File.separator + "drivers"
 					+ File.separator + "chromedriver_win32" + File.separator + "chromedriver.exe");
 			System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + File.separator + "drivers"
-					+ File.separator + "geckodriver-v0.26.0-win64" + File.separator + "geckodriver.exe");
+					+ File.separator + "geckodriver-v0.27.0-win64" + File.separator + "geckodriver.exe");
 			break;
 
 		case MAC:
 			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + File.separator + "drivers"
 					+ File.separator + "chromedriver_mac64" + File.separator + "chromedriver");
 			System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + File.separator + "drivers"
-					+ File.separator + "geckodriver-v0.26.0-macos" + File.separator + "geckodriver");
+					+ File.separator + "geckodriver-v0.27.0-macos" + File.separator + "geckodriver");
 			break;
 
 		case LINUX:
 			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + File.separator + "drivers"
 					+ File.separator + "chromedriver_linux64" + File.separator + "chromedriver");
 			System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + File.separator + "drivers"
-					+ File.separator + "geckodriver-v0.26.0-linux64" + File.separator + "geckodriver");
+					+ File.separator + "geckodriver-v0.27.0-linux64" + File.separator + "geckodriver");
 			break;
 
 		default:
@@ -99,7 +99,9 @@ public class TestBase {
 			break;
 
 		case "CHROME":
-			wbDv = new ChromeDriver();
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--disable-notifications");
+			wbDv = new ChromeDriver(options);
 			break;
 
 		case "SAFARI":
@@ -124,7 +126,7 @@ public class TestBase {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
 	}
-	
+
 	public static void tearDownTest() {
 		System.out.println("--- tearDownTest ---");
 		// if (scenario.isFailed()) {
@@ -147,7 +149,7 @@ public class TestBase {
 
 		driver.close();
 		driver.quit();
-	
+
 	}
 
 	public void BeforeEveryStep(Scenario scenario) {

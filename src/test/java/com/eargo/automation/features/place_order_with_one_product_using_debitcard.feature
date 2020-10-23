@@ -1,5 +1,6 @@
 # Place an Order with one product using debitcard
 
+@shop
 Feature:
 	Place an order normally using discount coupon for a particular state
 	In order to ensure that checkout works
@@ -7,7 +8,7 @@ Feature:
 	I want to run a test to verify the order data in salesforce
 
 #This scenario works with default coupon
-@smokeTest @regressionTest @oneProductWithDebitCard  
+@smokeTest @regressionTest @oneProductWithDebitCard
 		Scenario Outline: Place a normal order with one product, default coupon and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And as a user with a default email
@@ -27,7 +28,7 @@ Feature:
   
 
 #This scenario works with applied coupon
-@smokeTest @regressionTest @oneProductWithDebitCard 
+@smokeTest @regressionTest @oneProductWithDebitCard  
 		Scenario Outline: Place a normal order with one product, default coupon and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			#And a default coupon <couponCode> is applied
@@ -62,25 +63,24 @@ Feature:
       | prod  				| price		 | couponCode			|	state				|	zipCode		|	deliverBy 					| payment				| 			
 			| "Neo HIFI"		| "$2950"  | "HEAR250"			|	"ALABAMA"		|	"35213"		|	"1-2 business days"	| "visa"				|	#TC-NJSHOP-28			 
  
- #failed - mention me is not working
  #This scenario works with Mention ME (Referal Coupon)     
- #@smokeTest @regressionTest @oneProductWithDebitCard @mentionMe 
-#		Scenario Outline: Place a normal order with one product, Hear250 coupon, Visa Payment method and verify the order details in Salesforce
-#			Given I have a product <prod> at a price of <price>
-#			And as a user with a default email
-#			When I add a product <prod> in cart
-#			And I used a friend referral <mentionMe>
-#			And I click on checkout
-#			And I select state as <state> with zipcode <zipCode>
-#			And I opt for <deliverBy> delivery
-#			And use <payment> for payment
-#			And I should be able to place the order with payment <payment> on a discounted price
-#			Then verify that the order details should be present in Salesforce
-    #
-    #@TC-NJSHOP-36
-    #Examples: 
-      #| prod  			| price		 | mentionMe				|	state			|	zipCode		|	deliverBy 					| payment				| 
-      #| "Neo HIFI"	| "$2950"  | "FriendReferal"	|	"FLORIDA"	|	"32003"		|	"1-2 business days"	| "Master Card"	|	#TC-NJSHOP-36
+ @smokeTest @regressionTest @oneProductWithDebitCard @mentionMe 
+		Scenario Outline: Place a normal order with one product, Hear250 coupon, Visa Payment method and verify the order details in Salesforce
+			Given I have a product <prod> at a price of <price>
+			And as a user with a default email
+			When I add a product <prod> in cart
+			And I used a friend referral <mentionMe>
+			And I click on checkout
+			And I select state as <state> with zipcode <zipCode>
+			And I opt for <deliverBy> delivery
+			And use <payment> for payment
+			And I should be able to place the order with payment <payment> on a discounted price
+			Then verify that the order details should be present in Salesforce
+    
+    @TC-NJSHOP-36
+    Examples: 
+      | prod  			| price		 | mentionMe				|	state			|	zipCode		|	deliverBy 					| payment				| 
+      | "Neo HIFI"	| "$2950"  | "FriendReferal"	|	"FLORIDA"	|	"32003"		|	"1-2 business days"	| "Master Card"	|	#TC-NJSHOP-36
       
 #This scenario works with Billing address	        
  @smokeTest @regressionTest @oneProductWithDebitCard @differentShippingAddress 

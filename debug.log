@@ -252,7 +252,25 @@
 [0825/004924.125:ERROR:process_info.cc(329)] VirtualQueryEx: Access is denied. (0x5)
 [0825/004924.192:ERROR:process_info.cc(556)] ReadMemoryInfo failed
 [0825/004924.192:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: An attempt was made to access an exiting process. (0xc000010a)
-[0907/174927.080:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
-[0907/174927.090:ERROR:process_reader_win.cc(123)] NtOpenThread: An invalid Client ID was specified. (0xc000000b)
-[0907/174927.099:ERROR:exception_snapshot_win.cc(99)] thread ID 11968 not found in process
-[0907/174927.099:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: An attempt was made to access an exiting process. (0xc000010a)
+[1009/153909.730:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1009/212927.349:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1012/224733.823:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1013/152435.627:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[1013/152435.628:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[1013/152435.628:ERROR:exception_snapshot_win.cc(99)] thread ID 12992 not found in process
+[1014/210139.809:ERROR:process_info.cc(329)] VirtualQueryEx: Access is denied. (0x5)
+[1014/210139.810:ERROR:process_info.cc(556)] ReadMemoryInfo failed
+[1014/210139.810:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: An attempt was made to access an exiting process. (0xc000010a)
+[1016/164442.789:ERROR:process_info.cc(329)] VirtualQueryEx: Access is denied. (0x5)
+[1016/164442.816:ERROR:process_info.cc(556)] ReadMemoryInfo failed
+[1016/164442.816:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: An attempt was made to access an exiting process. (0xc000010a)
+[1016/165641.883:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[1016/165641.884:ERROR:exception_snapshot_win.cc(99)] thread ID 2256 not found in process
+[1016/165641.884:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: An attempt was made to access an exiting process. (0xc000010a)
+[1016/170559.184:ERROR:process_info.cc(329)] VirtualQueryEx: Access is denied. (0x5)
+[1016/170559.185:ERROR:process_info.cc(556)] ReadMemoryInfo failed
+[1016/170559.185:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: An attempt was made to access an exiting process. (0xc000010a)
+[1016/170846.645:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[1016/170846.646:ERROR:exception_snapshot_win.cc(99)] thread ID 10984 not found in process
+[1016/170846.646:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: An attempt was made to access an exiting process. (0xc000010a)
+[1019/160332.615:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
