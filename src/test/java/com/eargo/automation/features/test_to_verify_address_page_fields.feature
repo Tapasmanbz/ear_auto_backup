@@ -17,6 +17,7 @@
 ## (Comments)
 #Sample Feature Definition Template
 
+@shop
 Feature:
 	Place an order with invalid card using discount coupon for a particular state
 	In order to ensure that order should not place using invalid debit card
@@ -25,7 +26,7 @@ Feature:
 
 #This scenario works with default coupon
 @smokeTest @regressionTest @verifyAddresPageFields @singleProductUsingInvalidCC 
-		Scenario Outline: Place a normal order with one product, default coupon and verify error messsage is displayed on checkout page
+		Scenario Outline: [TC-NJSHOP-58, TC-NJSHOP-59] Place a normal order with one product, default coupon and verify error messsage is displayed on checkout page
 			Given I have a product <prod> at a price of <price>
 #			And a default coupon <couponCode> is applied
 			And as a user with a default email
@@ -49,7 +50,7 @@ Feature:
 
 #This scenario works with default coupon
 @smokeTest @regressionTest @verifyAddresPageFields @singleProductUsingInvalidPhone 
-		Scenario Outline: Place a normal order with one product, default coupon and verify error messsage is displayed on checkout page
+		Scenario Outline: [TC-NJSHOP-61] Place a normal order with one product, default coupon and verify error messsage is displayed on checkout page
 			Given I have a product <prod> at a price of <price>
 #			And a default coupon <couponCode> is applied
 			And as a user with a default email
@@ -69,7 +70,7 @@ Feature:
 
 #This scenario works with default coupon
 @smokeTest @regressionTest @verifyAddresPageFields @singleProductUsingInvalidStateZipCodeCombo 
-		Scenario Outline: Place a normal order with one product, default coupon and verify error messsage is displayed on checkout page
+		Scenario Outline: [TC-NJSHOP-64] Place a normal order with one product, default coupon and verify error messsage is displayed on checkout page
 			Given I have a accessory <acc> at a price of <accPrice>
 			And as a user with a default email
 			When I add a accessory <acc> in cart
@@ -88,7 +89,7 @@ Feature:
 
 #This scenario works with default coupon
 @smokeTest @regressionTest @verifyAddresPageFields 
-    Scenario Outline: Place a normal order with one product, default coupon and verify the order details in Salesforce
+    Scenario Outline: [TC-NJSHOP-03] Place a normal order with one product, default coupon and verify the order details in Salesforce
       Given I have a accessory <acc> at a price of <price>
       And as a user with a default email
       When I add a accessory <acc> in cart

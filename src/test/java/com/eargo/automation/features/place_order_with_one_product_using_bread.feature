@@ -1,3 +1,4 @@
+
 Feature: 
 	Place an order for one product using bread financing
 	In order to ensure that checkout works
@@ -6,34 +7,36 @@ Feature:
   I want to use this template for my feature file
 
 #This scenario works with default coupon
-#@smokeTest @regressionTest @oneProductWithBread @tc_njshop_07 
-		Scenario Outline: TC-NJSHOP-07
+#@smokeTest @regressionTest @oneProductWithBread @production @tc_njshop_07 
+		Scenario Outline: [TC-NJSHOP-07]
 			Given I have a product <prod> at a price of <price>
 #			And a default coupon <couponCode> is applied
 			And as a user with a default email
 			When I add a product <prod> in cart
 			And I click on checkout
 			And I select state as <state> with zipcode <zipCode>
+			And I opt for <deliverBy> delivery
 			And use <payment> for payment
 			And I should be able to place the order with payment <payment> on a discounted price
 			Then verify that the order details should be present in Salesforce
      
     @normalOrder @TC-NJSHOP-07
     Examples: 
-      | prod  	| price		 | couponCode		|	state	|	zipCode		|payment	| 
-      | "NEO"		| "$2350"  | "HIFILAUNCH"	|	"WA"	|	"98101"		|"Bread"	|	#TC-NJSHOP-07
+      | prod  	| price		 | couponCode		|	state	|	zipCode		|  deliverBy           	|payment	| 
+      | "NEO"		| "$2350"  | "HIFILAUNCH"	|	"WA"	|	"98101"		|  "1-2 business days"	|"Bread"	|	#TC-NJSHOP-07
 
 
 
 #This scenario works with default coup#This scenario works with default coupon
-#@smokeTest @regressionTest @oneProductWithBread @testOne 
-    Scenario Outline: TC-NJSHOP-51
+#@smokeTest @regressionTest @oneProductWithBread @production @testOne 
+    Scenario Outline: [TC-NJSHOP-51]
       Given I have a product <prod> at a price of <price>
 #			And a default coupon <couponCode> is applied
 			And as a user with a default email
 			When I add a product <prod> in cart
 			And I click on checkout
 			And I select state as <state> with zipcode <zipCode>
+      And I opt for <deliverBy> delivery
       And use <payment> for payment
       And I click on Edit under "Account Info" on review page
       And I edit account info
@@ -43,13 +46,13 @@ Feature:
      
     @TC-NJSHOP-51 @verifyEdit
     Examples: 
-      | prod  | price   | couponCode    |  state        |  zipCode    | payment  			|	editedPayment	| 
-      | "Neo"	| "$2350"	| "HIFILAUNCH"  |  "California"	|  "95112"    | "MASTERCARD"  |	"BREAD"      	|#TC-NJSHOP-51
+      | prod  | price   | couponCode    |  state        |  zipCode    |  deliverBy           	| payment  			|	editedPayment	| 
+      | "Neo"	| "$2350"	| "HIFILAUNCH"  |  "California"	|  "95112"    |  "1-2 business days"	| "MASTERCARD"  |	"BREAD"      	|#TC-NJSHOP-51
     
 
 #This scenario works with default coup#This scenario works with default coupon
-#@smokeTest @regressionTest @oneProductWithBread @tc_njshop_69
-    Scenario Outline: TC-NJSHOP-69
+#@smokeTest @regressionTest @oneProductWithBread @production @tc_njshop_69
+    Scenario Outline: [TC-NJSHOP-69]
       Given I have a product <prod> at a price of <price>
 #			And a default coupon <couponCode> is applied
 			And as a user with a default email
@@ -69,7 +72,7 @@ Feature:
 
 
 #This scenario works with default coupon
-#@smokeTest @regressionTest @oneProductWithBread @TC-NJSHOP-57
+#@smokeTest @regressionTest @oneProductWithBread @production @TC-NJSHOP-57
     Scenario Outline: Test to verify functionality of check your rate button
       Given I have a product <prod1>, <prod2> and <prod3>
       When I click on get your rate for <prod1>

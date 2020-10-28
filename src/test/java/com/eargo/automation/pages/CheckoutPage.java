@@ -1119,11 +1119,11 @@ public class CheckoutPage extends BasePage {
 			
 			int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
 			
-			if(dayOfWeek > 4 ) {
+			if(dayOfWeek > 2 ) {
 				
 				cal.add(Calendar.DATE, 6);
 				
-				//Date after adding 4 day to the current date
+				//Date after adding 6 day to the current date
 				String newDate = sdf.format(cal.getTime());  
 				
 				//Displaying the new Date after addition of 1 Day
@@ -1131,10 +1131,10 @@ public class CheckoutPage extends BasePage {
 				
 				setExpectedDeliveryDate(newDate);
 				
-			}else if(dayOfWeek <= 4 ) {
+			}else if(dayOfWeek <= 2 ) {
 				
 				cal.add(Calendar.DATE, 5);
-				//Date after adding 4 day to the current date
+				//Date after adding 5 day to the current date
 				String newDate = sdf.format(cal.getTime());  
 				
 				//Displaying the new Date after addition of 1 Day

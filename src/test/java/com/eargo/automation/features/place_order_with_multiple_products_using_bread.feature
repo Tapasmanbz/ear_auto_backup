@@ -8,7 +8,7 @@ Feature:
 	
 #This scenario works with different billing address
 @smokeTest @regressionTest @multipleProductOrderWithBread @bread
-		Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
+		Scenario Outline: [TC-NJSHOP-54] Place a normal order with multiple product, default coupon using bread payment method and verify the order details in Salesforce
 			Given I have multiple products <prod1>, <prod2>, <prod3> at a price of <price1>, <price2> and <price3>
 			And I have a accessory <acc> at a price of <accPrice>
 #			And a default coupon <couponCode> is applied
@@ -38,7 +38,7 @@ Feature:
 
 #This scenario works with default coupon
 @smokeTest @regressionTest @multipleProductOrderUsingBread @TC-NJSHOP-31
-		Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
+		Scenario Outline: [TC-NJSHOP-05, TC-NJSHOP-12, TC-NJSHOP-17, TC-NJSHOP-23, TC-NJSHOP-31] Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And I have a accessory <acc> at a price of <accPrice>
 			And a default coupon <couponCode> is applied
@@ -65,7 +65,7 @@ Feature:
 			
      	
 @smokeTest @regressionTest @multipleProductOrderUsingBread @TC-NJSHOP-39 @mentionMe
-		Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
+		Scenario Outline: [TC-NJSHOP-39] Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And I have a accessory <acc> at a price of <accPrice>
 			# And a default coupon <couponCode> is applied
@@ -83,11 +83,11 @@ Feature:
      #
     Examples: 
       | prod	| acc 					| price		|accPrice| mentionMe				|	state					|	zipCode		|	deliverBy 					| payment	| 
-	    | "Neo"	|"Flexi Domes"	| "$2350" |	"$25"  | "FriendReferal" 	|	"NEW JERSEY"		|	"07097"		|	"3-4 business days"	| "Bread"	|	#TC-NJSHOP-39 (Mention Me)
+	    | "Neo"	|"Flexi Domes"	| "$2350" |	"$25"  | "FriendReferal" 	|	"NEW JERSEY"	|	"07097"		|	"3-4 business days"	| "Bread"	|	#TC-NJSHOP-39 (Mention Me)
 	    
 #This scenario works with different billing address
 @smokeTest1 @regressionTest @multipleProductOrder @TC-NJSHOP-47
-		Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
+		Scenario Outline: [TC-NJSHOP-47] Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And I have a accessory <acc> at a price of <accPrice>
 #			And a default coupon <couponCode> is applied
@@ -111,7 +111,7 @@ Feature:
 
 #This scenario works with different billing address
 		@smokeTest1 @regressionTest @multipleProductOrder @TC-NJSHOP-54
-		Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
+		Scenario Outline: [TC-NJSHOP-54] Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have multiple products <prod1>, <prod2>, <prod3> at a price of <price1>, <price2> and <price3>
 			And I have a accessory <acc> at a price of <accPrice>
 #			And a default coupon <couponCode> is applied

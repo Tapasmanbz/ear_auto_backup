@@ -53,7 +53,7 @@ public class SMOKE_ON_PRODUCTION_STEPS extends TestBase  {
 		Assert.assertEquals("Estimated Delivery Date doesn't matched",checkoutPage.getExpectedDeliveryDate(), reviewPage.getDeliveryDate());
 		
 		//Validating "Payment type"
-		Assert.assertEquals("Payment type doesn't matched",reviewPage.givenPaymentType, reviewPage.getPaymentType());
+		Assert.assertEquals("Payment type doesn't matched",reviewPage.getPaymentMethod(), reviewPage.getPaymentType());
 		
 		//Validating "Order Summary"
 		// Need to discuss with tapas as this requires the array-list way of validating

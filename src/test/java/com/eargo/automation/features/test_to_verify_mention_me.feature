@@ -17,6 +17,7 @@
 ## (Comments)
 #Sample Feature Definition Template
 
+@shop
 Feature:
 	Place an order with multiple product using discount coupon for a particular state
 	In order to ensure that checkout works
@@ -25,7 +26,7 @@ Feature:
 
  #This scenario works with Mention ME (Referal Coupon)     
  @smokeTest @regressionTest @oneProductWithDebitCard @mentionMe 
-		Scenario Outline: Place a normal order with one product, Hear250 coupon, Visa Payment method and verify the order details in Salesforce
+		Scenario Outline: [TC-NJSHOP-62] Place a normal order with one product, Hear250 coupon, Visa Payment method and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And as a user with a default email
 			When I add a product <prod> in cart
@@ -40,7 +41,7 @@ Feature:
       
 #This scenario works with Mention ME (Referal Coupon)     
  @smokeTest @regressionTest @oneProductWithDebitCard @mentionMe 
-		Scenario Outline: Place a normal order with one product, Hear250 coupon, Visa Payment method and verify the order details in Salesforce
+		Scenario Outline: [TC-NJSHOP-63] Place a normal order with one product, Hear250 coupon, Visa Payment method and verify the order details in Salesforce
 			Given I have multiple products <prod1>, <prod2>, <prod3> at a price of <price1>, <price2> and <price3>
 			And I have a accessory <acc> at a price of <accPrice>
 			And as a user with a default email

@@ -28,7 +28,7 @@ public class MaxPage extends BasePage {
 	public WebElement maxCheckYourRate;
 
 	public CartPage click_add_to_cart() throws InterruptedException {
-
+		Thread.sleep(1000);
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		wait.until(ExpectedConditions.elementToBeClickable(btnAddToCart)).click();
 		Thread.sleep(2000);
