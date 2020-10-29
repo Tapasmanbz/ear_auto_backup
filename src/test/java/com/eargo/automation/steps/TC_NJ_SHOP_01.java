@@ -261,6 +261,7 @@ public class TC_NJ_SHOP_01 extends TestBase {
 			case "VISA":
 			case "AMEX":
 			case "MASTER":
+			case "MASTER CARD":
 			case "JCB":
 			default:
 				orderConfirmationPage = reviewPage.clickCompleteOrderButton();
@@ -282,7 +283,7 @@ public class TC_NJ_SHOP_01 extends TestBase {
 		orderConfirmationPage = new OrderConfirmationPage();
 
 		if (prop.getProperty("environment").equalsIgnoreCase("staging")) {
-
+			
 			discountValue = orderConfirmationPage.getDiscountValue();
 			orderNumber = orderConfirmationPage.getOrderNumber();
 			email = orderConfirmationPage.getEmailID();
@@ -318,34 +319,40 @@ public class TC_NJ_SHOP_01 extends TestBase {
 			salesforcePage.salesforceLogin(orderNumber);
 
 			// 1. Verify order number
-			Assert.assertEquals("Order Number doesn't displayed on the Salesforce Page", orderNumber,
-					salesforcePage.orderNum.getText());
+//			if (prop.getProperty("SFUserName").contains(".eargopc1")) {
+//				Assert.assertEquals("Order Number doesn't displayed on the Salesforce Page", orderNumber,
+//						salesforcePage.orderNumPC1.getText());
+//			} else if (prop.getProperty("SFUserName").contains(".webstore")) {
+				Assert.assertEquals("Order Number doesn't displayed on the Salesforce Page", orderNumber,
+						salesforcePage.orderNum.getText());
+//			}
+			System.out.println("verification 1 passes");
 
 			// 2. Verify Email ID
 			Assert.assertEquals(email, checkoutPage.getEnteredCustomerEmailID());
 			System.out.println("verification 2 passes");
 
 			// 3. Verify shipping address
-//						Assert.assertEquals(shippingAddress, salesforcePage.sfshippingAddress());
-//						System.out.println("verification 3 passes");
+			// Assert.assertEquals(shippingAddress, salesforcePage.sfshippingAddress());
+			// System.out.println("verification 3 passes");
 
-			// 4. verify Estimated Delivery Address
-			Assert.assertEquals(deliveryDate, checkoutPage.getExpectedDeliveryDate());
-			System.out.println("verification 4 passes");
-
+			
 			// 5. Verify the order total price
-			Assert.assertEquals("Order summary amount doesn't matched with Order Confirmation Page", orderSummaryAmount,
-					salesforcePage.finalProductPrice.getText());
-
-			// 6. Verify product details
-			// Need to be developed
-			HashMap<String, String> orderedProductDetailsSalesforce = salesforcePage.getOrderProductsOnSalesForce();
+//			if (prop.getProperty("SFUserName").contains(".eargopc1")) {
+//				Assert.assertEquals("Order summary amount doesn't matched with Order Confirmation Page",
+//						orderSummaryAmount, salesforcePage.finalProductPricePC1.getText());
+//			} else if (prop.getProperty("SFUserName").contains(".webstore")) {
+				Assert.assertEquals("Order summary amount doesn't matched with Order Confirmation Page",
+						orderSummaryAmount, salesforcePage.finalProductPrice.getText());
+//			}
+			System.out.println("verification 5 passes");
 
 			// Assert.assertEquals(productSubtotal,
 			// salesforcePage.actualproductPrice.getText());
 
 			// 7. Verify tax (which applied with respect to state address)
 			Assert.assertEquals(taxAmount, salesforcePage.sfOrderTax());
+			System.out.println("verification 7 passes");
 
 			// 8. Verify Shipping Charges
 			Assert.assertEquals(shippingCharges, salesforcePage.sfShippingTax());
@@ -353,9 +360,23 @@ public class TC_NJ_SHOP_01 extends TestBase {
 
 			// 9. Verify payment type
 			// paymentType = salesforcePage.getGivenPaymentType();
-			Assert.assertEquals(reviewPage.givenPaymentType, salesforcePage.sfPaymentType());
+			Assert.assertEquals(reviewPage.getPaymentMethod(), salesforcePage.sfPaymentType());
 			System.out.println("verification 9 passes");
+
 			// ----------------------------------------------------------------------------------
+
+			// 6. Verify product details
+			// Need to be developed
+			HashMap<String, String> orderedProductDetailsSalesforce = null;
+//			if (prop.getProperty("SFUserName").contains(".eargopc1")) {
+//				// Navigate to Related Tab
+//				// salesforcePage.navigateToOrderRelatedTabSalesForcePC1();
+//
+//				orderedProductDetailsSalesforce = salesforcePage.getOrderProductsOnSalesForcePC1();
+//				orderedProductDetailsSalesforce = salesforcePage.getOrderProductsOnSalesForce();
+//			} else if (prop.getProperty("SFUserName").contains(".webstore")) {
+				orderedProductDetailsSalesforce = salesforcePage.getOrderProductsOnSalesForce();
+//			}
 
 			Iterator<Entry<String, String>> stockIterator = stockSet.iterator();
 			System.out.println("Iterating over Hashtable in Java");
@@ -373,6 +394,11 @@ public class TC_NJ_SHOP_01 extends TestBase {
 			}
 
 			// ----------------------------------------------------------------------------------
+			
+			// 4. verify Estimated Delivery Address
+						Assert.assertEquals(checkoutPage.getExpectedDeliveryDate(), deliveryDate);
+						System.out.println("verification 4 passes");
+
 		}
 
 	}
@@ -414,7 +440,8 @@ public class TC_NJ_SHOP_01 extends TestBase {
 		mentionMe.submitFriendDetails();
 		mentionMe.submitRefreeDetails(refreeEmail);
 		mentionMe.continueShopping();
-
+		String couponCode = cartPage.applyReferralCoupon();
+		salesforcePage.setCoupon(couponCode);
 	}
 
 	@Given("a referal coupon with existing user {string}")
@@ -506,6 +533,8 @@ public class TC_NJ_SHOP_01 extends TestBase {
 		// CheckoutPage checkoutPage = new CheckoutPage();
 		Thread.sleep(2000);
 		checkoutPage.editPersonalDeatils();
+		
+	//	checkoutPage.accountInfoEdited();
 
 		String enteredPaymentMethod = checkoutPage.getGivenPaymentMethod();
 
@@ -688,6 +717,16 @@ public class TC_NJ_SHOP_01 extends TestBase {
 		case "PAYPAL":
 		default:
 			// reviewPage = checkoutPage.clickContinueToReviewButton();
+		}
+	
+		try {
+			
+			if(checkoutPage.btnContinueToReview.isDisplayed()) {
+				reviewPage = checkoutPage.clickContinueToReviewButton();
+			}
+			
+		}catch(Exception e) {
+			
 		}
 		// reviewPage = checkoutPage.clickContinueToReviewButton();
 	}

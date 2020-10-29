@@ -17,6 +17,7 @@
 ## (Comments)
 #Sample Feature Definition Template
 
+@shop
 Feature:
 	Place an order with invalid card using discount coupon for a particular state
 	In order to ensure that order should not place using invalid debit card

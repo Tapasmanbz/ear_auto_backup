@@ -1,5 +1,6 @@
 # Place an Order with multiple product using debitcard
 
+@shop
 Feature:
 	Place an order with multiple product using discount coupon for a particular state
 	In order to ensure that checkout works

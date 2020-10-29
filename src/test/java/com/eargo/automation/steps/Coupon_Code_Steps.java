@@ -95,9 +95,11 @@ public class Coupon_Code_Steps extends TestBase {
 			case "VISA":
 			case "AMEX":
 			case "MASTER":
+			case "MASTER CARD":
 			case "JCB":
 			default:
 				orderConfirmationPage = reviewPage.clickCompleteOrderButton();
+				System.out.println("I place the order with payment method:" + reviewPage.getPaymentMethod());
 
 			}
 
@@ -130,7 +132,7 @@ public class Coupon_Code_Steps extends TestBase {
 
 	@Then("I should be able to place the order with coupon code {string}")
 	public void i_should_be_able_to_place_the_order_with_coupon_code(String couponCode) throws InterruptedException {
-
+		System.out.println("i_should_be_able_to_place_the_order_with_coupon_code:" + reviewPage.getPaymentMethod());
 	}
 
 }

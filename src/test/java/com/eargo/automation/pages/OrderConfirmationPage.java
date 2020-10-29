@@ -148,7 +148,7 @@ public class OrderConfirmationPage extends BasePage {
 			String pSize = productSize.get(i).getText();
 
 			if (pName.equalsIgnoreCase("Eargo Neo HiFi"))
-				key = "NEO_ HIFI";
+				key = "NEO_HIFI";
 			else if (pName.equalsIgnoreCase("Eargo Max"))
 				key = "MAX";
 			else if (pName.equalsIgnoreCase("Eargo Neo"))

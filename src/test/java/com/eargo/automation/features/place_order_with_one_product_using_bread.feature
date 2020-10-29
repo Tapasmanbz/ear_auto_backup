@@ -1,3 +1,4 @@
+@shop
 Feature: 
 	Place an order for one product using bread financing
 	In order to ensure that checkout works
@@ -6,7 +7,7 @@ Feature:
   I want to use this template for my feature file
 
 #This scenario works with default coupon
-#@smokeTest @regressionTest @oneProductWithBread @tc_njshop_07 
+#@smokeTest @regressionTest @oneProductWithBread @production @tc_njshop_07 
 		Scenario Outline: TC-NJSHOP-07
 			Given I have a product <prod> at a price of <price>
 #			And a default coupon <couponCode> is applied
@@ -26,7 +27,7 @@ Feature:
 
 
 #This scenario works with default coup#This scenario works with default coupon
-#@smokeTest @regressionTest @oneProductWithBread @testOne 
+#@smokeTest @regressionTest @oneProductWithBread @production @testOne 
     Scenario Outline: TC-NJSHOP-51
       Given I have a product <prod> at a price of <price>
 #			And a default coupon <couponCode> is applied
@@ -48,7 +49,7 @@ Feature:
     
 
 #This scenario works with default coup#This scenario works with default coupon
-#@smokeTest @regressionTest @oneProductWithBread @tc_njshop_69
+#@smokeTest @regressionTest @oneProductWithBread @production @tc_njshop_69
     Scenario Outline: TC-NJSHOP-69
       Given I have a product <prod> at a price of <price>
 #			And a default coupon <couponCode> is applied
@@ -69,7 +70,7 @@ Feature:
 
 
 #This scenario works with default coupon
-#@smokeTest @regressionTest @oneProductWithBread @TC-NJSHOP-57
+#@smokeTest @regressionTest @oneProductWithBread @production @TC-NJSHOP-57
     Scenario Outline: Test to verify functionality of check your rate button
       Given I have a product <prod1>, <prod2> and <prod3>
       When I click on get your rate for <prod1>
