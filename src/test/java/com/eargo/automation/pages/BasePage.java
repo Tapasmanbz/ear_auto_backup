@@ -1,5 +1,6 @@
 package com.eargo.automation.pages;
 
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -171,4 +172,9 @@ public class BasePage extends TestBase {
 
 	}
 
+	public double getFormattedAmount(String amount, int decimalPlace) {
+		double formattedAmount = Double.parseDouble(amount.replaceAll("[^.0-9]", ""));
+		int scale = (int) Math.pow(10, decimalPlace);
+	    return (double) Math.round(formattedAmount * scale) / scale;
+	}
 }

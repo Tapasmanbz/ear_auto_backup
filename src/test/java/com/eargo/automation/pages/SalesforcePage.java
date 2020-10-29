@@ -2,9 +2,13 @@ package com.eargo.automation.pages;
 
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+
+import java.text.DecimalFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,7 +28,7 @@ public class SalesforcePage extends BasePage {
 	String PaymentType = null;
 	String shippingAddressOnSF = null;
 	String orderNumber = null;
-	
+
 	FederalForm federalForm = null;
 
 	public SalesforcePage() {
@@ -180,6 +184,30 @@ public class SalesforcePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//h1[contains(text(),'Order Products')]/ancestor::div[contains(@class,'test-listViewManager')]//table/tbody/tr/td[6]")
 	public List<WebElement> productPriceSalesforcePC1;
 
+	@FindBy(how = How.ID, using = "helpBubble")
+	public WebElement searchGotSmaterPopUP;
+
+	@FindBy(how = How.ID, using = "helpBubbleCloseX")
+	public WebElement btnCloseSearchGotSmaterPopUP;
+
+	@FindBy(how = How.XPATH, using = "//td[text()='Order Status']/following-sibling::td/div")
+	public WebElement orderStatus;
+
+	@FindBy(how = How.XPATH, using = "//td[contains(text(),'Store Order Total')]/following-sibling::td/div")
+	public WebElement storeOrderTotal;
+
+	@FindBy(how = How.XPATH, using = "//td[contains(text(),'Subtotal')]/following-sibling::td/div")
+	public WebElement storeSubTotal;
+
+	@FindBy(how = How.XPATH, using = "//td[contains(text(),'Store Shipping & Handling Cost')]/following-sibling::td/div")
+	public WebElement storeShippingAndHandlingCost;
+
+	@FindBy(how = How.XPATH, using = "//td[contains(text(),'Store Tax')]/following-sibling::td/div")
+	public WebElement storeTax;
+
+	@FindBy(how = How.XPATH, using = "//td[contains(text(),'Store Promo Discount')]/following-sibling::td/div")
+	public WebElement storePromoDiscount;
+
 	/**
 	 * Set the value of Neo Hifi Product Name
 	 * 
@@ -261,7 +289,11 @@ public class SalesforcePage extends BasePage {
 
 			}
 
-			lnkRemindMeLater.click();
+			try {
+				lnkRemindMeLater.click();
+			} catch (Exception e) {
+
+			}
 
 			Thread.sleep(3000);
 
@@ -270,10 +302,19 @@ public class SalesforcePage extends BasePage {
 			Thread.sleep(2000);
 			searchOrderNumber.sendKeys(orderNumber);
 			wait.until(ExpectedConditions.elementToBeClickable(searchOrderButton)).click();
-			Thread.sleep(3000);
+			// Thread.sleep(2000);
+			//
+			// try {
+			// WebDriverWait searchGotSmaterPopUPWait = new WebDriverWait(driver,
+			// Duration.ofSeconds(5));
+			// searchGotSmaterPopUPWait.until(ExpectedConditions.visibilityOf(searchGotSmaterPopUP));
+			// searchGotSmaterPopUPWait.until(ExpectedConditions.elementToBeClickable(btnCloseSearchGotSmaterPopUP)).click();
+			// } catch (TimeoutException e) {
+			//
+			// }
 
 			System.out.println("in order details");
-			Thread.sleep(3000);
+			Thread.sleep(2000);
 
 			wait.until(ExpectedConditions.elementToBeClickable(openOrderDetails)).click();
 
@@ -361,11 +402,80 @@ public class SalesforcePage extends BasePage {
 			String prodName = productNameSalesforce.get(i).getText();
 
 			if (prodName.contains("SYSTEM")) {
-				
+
 				if (prodName.contains("NEO"))
 					key = "NEO";
 				if (prodName.contains("HIFI"))
-					key = "NEO_HIFI";				
+					key = "NEO_HIFI";
+				if (prodName.contains("MAX"))
+					key = "MAX";
+			} else {
+
+				if (prodName.contains("Flexi Fiber Bundle, Size Large"))
+					key = "FLEXI_FIBERS_LARGE";
+				else if (prodName.contains("Flexi Fiber Bundle, Size Regular"))
+					key = "FLEXI_FIBERS_REGULAR";
+				else if (prodName.contains("TETRA FLEXI PALM, SIZE LARGE"))
+					key = "FLEXI_TETRA_PALMS_LARGE";
+				else if (prodName.contains("TETRA FLEXI PALM, SIZE REGULAR"))
+					key = "FLEXI_TETRA_PALMS_REGULAR";
+				else if (prodName.contains("Flexi Palm Accessory Kit, Large")
+						|| prodName.contains("PALM FLEXI FIBER, LARGE"))
+					key = "FLEXI_PALMS_LARGE";
+				else if (prodName.contains("Flexi Palm Accessory Kit, Regular")
+						|| prodName.contains("PALM FLEXI FIBER, REGULAR"))
+					key = "FLEXI_PALMS_REGULAR";
+				else if (prodName.contains("FLEXI DOME, LARGE"))
+					key = "FLEXI_DOMES_LARGE";
+				else if (prodName.contains("FLEXI DOME, REGULAR"))
+					key = "FLEXI_DOMES_REGULAR";
+				else if (prodName.contains("Wax Guard Replacement Tool"))
+					key = "WAX";
+				else
+					key = "UNKNOWN";
+			}
+
+			String quantity = productQuantitySalesforce.get(i).getText();
+			System.out.println("quantity" + quantity);
+			String value = quantity.split("[.]")[0];
+			String price = productPriceSalesforce.get(i).getText();
+			System.out.println("SKey :" + key + " SQuantity :" + value + "  SPrice :" + price);
+			productOrderTableSalesforce.put(key, value);
+		}
+
+		System.out.println("productOrderTableSalesforce:" + productOrderTableSalesforce.size());
+		return productOrderTableSalesforce;
+	}
+
+	public HashMap<String, String> getOrderProductsOnSalesForcePC1() throws InterruptedException {
+
+		HashMap<String, String> productOrderTableSalesforce = new HashMap<String, String>();
+		wait.until(ExpectedConditions.visibilityOf(sectionOrderProductsSalesforcePC1));
+		scrollToElement(sectionOrderProductsSalesforcePC1);
+		wait.until(ExpectedConditions.visibilityOfAllElements(allProductsSummarySalesforcePC1));
+		Iterator productIterator = allProductsSummarySalesforcePC1.iterator();
+
+		// while(productIterator.hasNext()){
+		// WebElement productRow = (WebElement) productIterator.next();
+		// String key = productRow.findElement(by)
+		// String value =
+		// productOrderTable.put(key, value)
+		// int key = m.getKey();
+		// String value=m.getValue();
+		// System.out.println("Key :"+key+" value :"+value);
+		// }
+
+		for (int i = 0; i < allProductsSummarySalesforcePC1.size(); i++) {
+			String key = null;
+
+			String prodName = productNameSalesforcePC1.get(i).getText();
+
+			if (prodName.contains("SYSTEM")) {
+
+				if (prodName.contains("NEO"))
+					key = "NEO";
+				if (prodName.contains("HIFI"))
+					key = "NEO_HIFI";
 				if (prodName.contains("MAX"))
 					key = "MAX";
 			} else {
@@ -392,10 +502,10 @@ public class SalesforcePage extends BasePage {
 					key = "UNKNOWN";
 			}
 
-			String quantity = productQuantitySalesforce.get(i).getText();
+			String quantity = productQuantitySalesforcePC1.get(i).getText();
 			System.out.println("quantity" + quantity);
 			String value = quantity.split("[.]")[0];
-			String price = productPriceSalesforce.get(i).getText();
+			String price = productPriceSalesforcePC1.get(i).getText();
 			System.out.println("SKey :" + key + " SQuantity :" + value + "  SPrice :" + price);
 			productOrderTableSalesforce.put(key, value);
 		}
@@ -507,9 +617,9 @@ public class SalesforcePage extends BasePage {
 
 	// -----08-09-2020
 
-	public String patientName;
-	public String usedHearingAid;
-	public String insuranceProvider;
+	private String patientName;
+	private String usedHearingAid;
+	private String insuranceProvider;
 
 	// public String patientName;
 	// public String usedHearingAid;
@@ -587,14 +697,35 @@ public class SalesforcePage extends BasePage {
 		SFLogInToSanbox.click();
 
 		// Added on 22-09-2020
-		try {
-				if (prop.getProperty("SFUserName").contains(".eargopc1")) {
-					wait.until(ExpectedConditions.elementToBeClickable(lnkRemindMeLater));
-					}
-			}catch(Exception e) {
-				System.out.println(e);
-			}
-		
+		if (prop.getProperty("SFUserName").contains(".eargopc1")) {
+			wait.until(ExpectedConditions.elementToBeClickable(lnkRemindMeLater));
+		}
+
+	}
+
+	public double getStoreOrderTotal() {
+		String amount = storeOrderTotal.getText();
+		return getFormattedAmount(amount, 1);
+	}
+
+	public double getStoreSubTotal() {
+		String amount = storeSubTotal.getText();
+		return getFormattedAmount(amount, 1);
+	}
+
+	public double getStoreShippingAndHandlingCost() {
+		String amount = storeShippingAndHandlingCost.getText();
+		return getFormattedAmount(amount, 1);
+	}
+
+	public double getStoreTax() {
+		String amount = storeTax.getText();
+		return getFormattedAmount(amount, 1);
+	}
+
+	public double getStorePromoDiscount() {
+		String amount = storePromoDiscount.getText();
+		return getFormattedAmount(amount, 1);
 	}
 
 	public void verify_leads() {
@@ -1008,7 +1139,5 @@ public class SalesforcePage extends BasePage {
 		this.given_state = given_state;
 	}
 
-	
-	
 }
 

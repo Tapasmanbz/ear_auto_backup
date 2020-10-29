@@ -16,8 +16,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ReviewPage extends BasePage {
-	
-	CheckoutPage checkoutPage = null;
 
 	public ReviewPage() {
 
@@ -187,6 +185,9 @@ public class ReviewPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//button[@id='payment-submit-btn']")
 	public WebElement btnPayNow;
 
+	// @FindBy(how = How.ID, using = "page-checkout-confirmation-standard")
+	// public WebElement breadPurchaseConfirmationPopUp;
+
 	public static String paymentMethod;
 
 	public OrderConfirmationPage clickCompleteOrderButton() {
@@ -195,11 +196,10 @@ public class ReviewPage extends BasePage {
 
 		System.out.println("Inside clickcomplete button");
 		try {
-			// Thread.sleep(5000);
 			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 			System.out.println("before clicking on complete order");
 			wait.until(ExpectedConditions.elementToBeClickable(visaOrderComplete)).click();
-
+			Thread.sleep(1000);
 			System.out.println("Clicked on complete order button");
 
 		} catch (Exception e) {
@@ -225,11 +225,11 @@ public class ReviewPage extends BasePage {
 
 		wait.until(ExpectedConditions.visibilityOf(paypalCompleteOrderiFrame));
 		driver.switchTo().frame(paypalCompleteOrderiFrame);
-		Thread.sleep(1000);
+		Thread.sleep(2500);
 		wait.until(ExpectedConditions.elementToBeClickable(payPalOrderComplete)).click();
 
 		wait.until(ExpectedConditions.numberOfWindowsToBe(2));
-		// Thread.sleep(5000);
+		Thread.sleep(3000);
 
 		String reviewPageMainWindow = driver.getWindowHandle();
 
@@ -245,14 +245,16 @@ public class ReviewPage extends BasePage {
 
 		wait.until(ExpectedConditions.elementToBeClickable(PayPalLogin)).click();
 
-		Thread.sleep(2000);
+		Thread.sleep(3500);
 		wait.until(ExpectedConditions.visibilityOf(payPalLogo));
 
 		wait.until(ExpectedConditions.visibilityOf(btnPayNow));
-		scrollToElement(btnPayNow);
+		// scrollToElement(btnPayNow);
+		//
+		// Thread.sleep(2000);
 
-		// Thread.sleep(5000);
 		wait.until(ExpectedConditions.visibilityOf(linkAddDebitOrCreditCard));
+		scrollToElement(btnPayNow);
 		wait.until(ExpectedConditions.elementToBeClickable(btnPayNow)).click();
 
 		Thread.sleep(3000);
@@ -356,7 +358,7 @@ public class ReviewPage extends BasePage {
 
 		driver.switchTo().defaultContent();
 
-		Thread.sleep(3000);
+		Thread.sleep(7000);
 
 		return orderConfirmationPage;
 
@@ -430,8 +432,12 @@ public class ReviewPage extends BasePage {
 
 		switchToPayPalWindow();
 
-		wait.until(ExpectedConditions.invisibilityOfAllElements(paypalSpinnerImg));
-		wait.until(ExpectedConditions.visibilityOf(inputPayPalEmail)).sendKeys(prop.getProperty("PaypalUserID"));
+		try {
+			wait.until(ExpectedConditions.invisibilityOfAllElements(paypalSpinnerImg));
+		} catch (TimeoutException e) {
+			wait.until(ExpectedConditions.visibilityOf(inputPayPalEmail)).sendKeys(prop.getProperty("PaypalUserID"));
+		}
+
 		driver.close();
 
 		driver.switchTo().window(reviewPageMainWindow);
@@ -530,7 +536,7 @@ public class ReviewPage extends BasePage {
 	}
 
 	// -----------03/09/2020-------------------
-	
+
 	@FindBy(how = How.ID, using = "//div[@class='yourAccount']/div[1]/div[1]/label[1]")
 	public WebElement customerFirstName;
 
@@ -611,6 +617,7 @@ public class ReviewPage extends BasePage {
 		}
 
 		return this.customerPaymentType;
+
 	}
 
 	public void verifyDetailsOnReviewPage() throws InterruptedException {
@@ -646,7 +653,7 @@ public class ReviewPage extends BasePage {
 		Thread.sleep(2000);		
 		//Validating "Order Summary"
 		// Need to discuss with tapas as this requires the array-list way of validating
-		
+
 	}
 
 }

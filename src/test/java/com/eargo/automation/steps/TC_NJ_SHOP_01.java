@@ -52,6 +52,7 @@ public class TC_NJ_SHOP_01 extends TestBase {
 	String taxAmount = null;
 	String shippingCharges = null;
 	private String enteredProd1 = null;
+	private boolean isUserOptDifferentBilling = false;
 
 	@Given("I have a product {string} at a price of {string}")
 	public void i_have_a_product_at_a_price_of(String productName, String productPrice) throws InterruptedException {
@@ -203,6 +204,7 @@ public class TC_NJ_SHOP_01 extends TestBase {
 			throws InterruptedException {
 
 		checkoutPage.enterBillingDeatils(state, zipCode);
+		isUserOptDifferentBilling = true;
 
 	}
 
@@ -319,64 +321,73 @@ public class TC_NJ_SHOP_01 extends TestBase {
 			salesforcePage.salesforceLogin(orderNumber);
 
 			// 1. Verify order number
-//			if (prop.getProperty("SFUserName").contains(".eargopc1")) {
-//				Assert.assertEquals("Order Number doesn't displayed on the Salesforce Page", orderNumber,
-//						salesforcePage.orderNumPC1.getText());
-//			} else if (prop.getProperty("SFUserName").contains(".webstore")) {
-				Assert.assertEquals("Order Number doesn't displayed on the Salesforce Page", orderNumber,
-						salesforcePage.orderNum.getText());
-//			}
+			// if (prop.getProperty("SFUserName").contains(".eargopc1")) {
+			// Assert.assertEquals("Order Number doesn't displayed on the Salesforce Page",
+			// orderNumber,
+			// salesforcePage.orderNumPC1.getText());
+			// } else if (prop.getProperty("SFUserName").contains(".webstore")) {
+			Assert.assertEquals("Order Number doesn't displayed on the Salesforce Page", orderNumber,
+					salesforcePage.orderNum.getText());
+			// }
 			System.out.println("verification 1 passes");
 
 			// 2. Verify Email ID
-			Assert.assertEquals(email, checkoutPage.getEnteredCustomerEmailID());
+			Assert.assertEquals("Email ID doesn't match for order no: " + orderNumber, email,
+					checkoutPage.getEnteredCustomerEmailID());
 			System.out.println("verification 2 passes");
 
 			// 3. Verify shipping address
 			// Assert.assertEquals(shippingAddress, salesforcePage.sfshippingAddress());
 			// System.out.println("verification 3 passes");
 
-			
-			// 5. Verify the order total price
-//			if (prop.getProperty("SFUserName").contains(".eargopc1")) {
-//				Assert.assertEquals("Order summary amount doesn't matched with Order Confirmation Page",
-//						orderSummaryAmount, salesforcePage.finalProductPricePC1.getText());
-//			} else if (prop.getProperty("SFUserName").contains(".webstore")) {
-				Assert.assertEquals("Order summary amount doesn't matched with Order Confirmation Page",
-						orderSummaryAmount, salesforcePage.finalProductPrice.getText());
-//			}
-			System.out.println("verification 5 passes");
+			// 4. Verify the order total price
+			// if (prop.getProperty("SFUserName").contains(".eargopc1")) {
+			// Assert.assertEquals("Order summary amount doesn't matched with Order
+			// Confirmation Page",
+			// orderSummaryAmount, salesforcePage.finalProductPricePC1.getText());
+			// } else if (prop.getProperty("SFUserName").contains(".webstore")) {
+			Assert.assertEquals(
+					"Order summary amount doesn't match with Order Confirmation Page for order no: " + orderNumber,
+					orderSummaryAmount, salesforcePage.finalProductPrice.getText());
+			// }
+			System.out.println("verification 4 passes");
 
 			// Assert.assertEquals(productSubtotal,
 			// salesforcePage.actualproductPrice.getText());
 
-			// 7. Verify tax (which applied with respect to state address)
-			Assert.assertEquals(taxAmount, salesforcePage.sfOrderTax());
-			System.out.println("verification 7 passes");
+			// 5. Verify tax (which applied with respect to state address)
+			Assert.assertEquals("Tax amount doesn't match for order no: " + orderNumber, taxAmount,
+					salesforcePage.sfOrderTax());
+			System.out.println("verification 5 passes");
 
-			// 8. Verify Shipping Charges
-			Assert.assertEquals(shippingCharges, salesforcePage.sfShippingTax());
-			System.out.println("verification 8 passes");
+			// 6. Verify Shipping Charges
+			Assert.assertEquals("Shipping charges doesn't match for order no: " + orderNumber, shippingCharges,
+					salesforcePage.sfShippingTax());
+			System.out.println("verification 6 passes");
 
-			// 9. Verify payment type
+			// 7. Verify payment type
 			// paymentType = salesforcePage.getGivenPaymentType();
-			Assert.assertEquals(reviewPage.getPaymentMethod(), salesforcePage.sfPaymentType());
-			System.out.println("verification 9 passes");
+			Assert.assertEquals("Payment type doesn't match for order no: " + orderNumber,
+					reviewPage.getPaymentMethod(), salesforcePage.sfPaymentType());
+			System.out.println("verification 7 passes");
 
 			// ----------------------------------------------------------------------------------
 
-			// 6. Verify product details
+			// 8. Verify product details
 			// Need to be developed
 			HashMap<String, String> orderedProductDetailsSalesforce = null;
-//			if (prop.getProperty("SFUserName").contains(".eargopc1")) {
-//				// Navigate to Related Tab
-//				// salesforcePage.navigateToOrderRelatedTabSalesForcePC1();
-//
-//				orderedProductDetailsSalesforce = salesforcePage.getOrderProductsOnSalesForcePC1();
-//				orderedProductDetailsSalesforce = salesforcePage.getOrderProductsOnSalesForce();
-//			} else if (prop.getProperty("SFUserName").contains(".webstore")) {
-				orderedProductDetailsSalesforce = salesforcePage.getOrderProductsOnSalesForce();
-//			}
+			// if (prop.getProperty("SFUserName").contains(".eargopc1")) {
+			// // Navigate to Related Tab
+			// // salesforcePage.navigateToOrderRelatedTabSalesForcePC1();
+			//
+			// orderedProductDetailsSalesforce =
+			// salesforcePage.getOrderProductsOnSalesForcePC1();
+			// orderedProductDetailsSalesforce =
+			// salesforcePage.getOrderProductsOnSalesForce();
+			// } else if (prop.getProperty("SFUserName").contains(".webstore")) {
+			orderedProductDetailsSalesforce = salesforcePage.getOrderProductsOnSalesForce();
+			// }
+
 
 			Iterator<Entry<String, String>> stockIterator = stockSet.iterator();
 			System.out.println("Iterating over Hashtable in Java");
@@ -390,14 +401,31 @@ public class TC_NJ_SHOP_01 extends TestBase {
 				Assert.assertTrue(key + " is not present in the salesforce product list",
 						orderedProductDetailsSalesforce.containsKey(key));
 
-				Assert.assertEquals("Quantity doesn't matched", value, orderedProductDetailsSalesforce.get(key));
+				Assert.assertEquals("Quantity doesn't matched for order no: " + orderNumber, value,
+						orderedProductDetailsSalesforce.get(key));
 			}
 
 			// ----------------------------------------------------------------------------------
-			
-			// 4. verify Estimated Delivery Address
-						Assert.assertEquals(checkoutPage.getExpectedDeliveryDate(), deliveryDate);
-						System.out.println("verification 4 passes");
+
+			// 9. verify Estimated Delivery Date
+			Assert.assertEquals("Estimated delivery date doesn't matched for order no: " + orderNumber,
+					checkoutPage.getExpectedDeliveryDate(), deliveryDate);
+			System.out.println("verification 9 passes");
+
+			// 10. Verify 'Order Status'
+			if (isUserOptDifferentBilling) {
+				Assert.assertEquals("Order status doesn't matched for order no: " + orderNumber, "Pending Approval",
+						salesforcePage.orderStatus.getText());
+				System.out.println("verification 10 passes");
+
+			}
+
+			// 11. Verify Store Orders Total
+			double calculatedTotal = salesforcePage.getStoreSubTotal()
+					+ salesforcePage.getStoreShippingAndHandlingCost() + salesforcePage.getStoreTax()
+					- salesforcePage.getStorePromoDiscount();
+			Assert.assertEquals("Store order total and calculated total are not matched for order no: " + orderNumber,
+					salesforcePage.getStoreOrderTotal(), calculatedTotal, 0);
 
 		}
 

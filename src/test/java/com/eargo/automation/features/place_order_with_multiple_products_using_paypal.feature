@@ -10,7 +10,7 @@ Feature:
 
 #This scenario works with placing order with default coupon using PAYPAL
 @smokeTest @regressionTest @multipleProductOrderWithPaypal 
-	Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
+	Scenario Outline: [TC-NJSHOP-04] Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And I have a accessory <acc> at a price of <accPrice>
 			And as a user with a default email
@@ -31,7 +31,7 @@ Feature:
 
 #This scenario works with placing order with Tax applied address, 1-2 Business days and with various coupons like : Hear250, HifiLaunch, MothersDay20 using PAYPAL
 @smokeTest @regressionTest @multipleProductOrderWithPaypal 
-	Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
+	Scenario Outline: [TC-NJSHOP-11, TC-NJSHOP-16, TC-NJSHOP-22, TC-NJSHOP-30] Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And I have a accessory <acc> at a price of <accPrice>
 			And as a user with a default email
@@ -70,8 +70,8 @@ Feature:
 	
 
 #This scenario works with Mention ME		
-@smokeTest @regressionTest @multipleProductOrderWithPaypal @mentionMe 
-	Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
+@smokeTest @regressionTest @multipleProductOrderWithPaypal @mentionMe
+	Scenario Outline: [TC-NJSHOP-38] Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And I have a accessory <acc> at a price of <accPrice>
 			And as a user with a default email
@@ -93,7 +93,7 @@ Feature:
 
 #This scenario works with different billing address
 @smokeTest @regressionTest @multipleProductOrderWithPaypal @differentShippingAddress
-		Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
+		Scenario Outline: [TC-NJSHOP-46] Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And I have a accessory <acc> at a price of <accPrice>
 			And as a user with a default email
@@ -116,7 +116,7 @@ Feature:
 
 #This scenario works with different billing address with edited payment method
 @smokeTest @regressionTest @multipleProductOrderWithPaypal @differentShippingAddress
-		Scenario Outline: Place a normal order with multiple product, default coupon and verify the order details in Salesforce
+		Scenario Outline: [TC-NJSHOP-55] Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And I have a accessory <acc> at a price of <accPrice>
 			And as a user with a default email

@@ -2,6 +2,7 @@ package com.eargo.automation.pages;
 
 import java.time.Duration;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -38,7 +39,7 @@ public class InsuranceCheckoutPage extends BasePage {
 
 	@FindBy(how = How.ID, using = "address2")
 	public WebElement inputShippingAptSuite;
-	
+
 	@FindBy(how = How.ID, using = "city")
 	public WebElement inputShippingCity;
 
@@ -219,6 +220,43 @@ public class InsuranceCheckoutPage extends BasePage {
 	@FindBy(how = How.ID, using = "continue-to-review-button")
 	public WebElement btnPlaceOrder;
 
+	// Order Summary
+	@FindBy(how = How.XPATH, using = "//div[@id='fixed']//div[text()='Order Summary']")
+	public WebElement sectionOrderSummary;
+
+	@FindBy(how = How.XPATH, using = "//h1[contains(@class,'productName')]")
+	public WebElement productName;
+
+	@FindBy(how = How.XPATH, using = "//label[text()='Subtotal']/parent::div")
+	public WebElement productSubTotal;
+
+	@FindBy(how = How.XPATH, using = "//label[text()='Discount']/parent::div")
+	public WebElement eargoDiscount;
+
+	@FindBy(how = How.XPATH, using = "//label[text()='FEHB Benefit']/parent::div")
+	public WebElement fehbBenefit;
+
+	@FindBy(how = How.XPATH, using = "//label[text()='Shipping']/parent::div")
+	public WebElement shippingCharges;
+
+	@FindBy(how = How.XPATH, using = "//label[text()='Tax']/parent::div")
+	public WebElement taxApplied;
+
+	@FindBy(how = How.XPATH, using = "//label[text()='Estimated Total']/parent::div")
+	public WebElement estimatedTotal;
+
+	@FindBy(how = How.XPATH, using = "//button[@id='continue-to-review-button']/following-sibling::div/div/div[1]")
+	public WebElement packageContains;
+
+	@FindBy(how = How.XPATH, using = "//button[@id='continue-to-review-button']/following-sibling::div/div/div[2]")
+	public WebElement returnDuration;
+
+	@FindBy(how = How.XPATH, using = "//button[@id='continue-to-review-button']/following-sibling::div/div/div[3]")
+	public WebElement productWarranty;
+
+	@FindBy(how = How.XPATH, using = "//button[@id='continue-to-review-button']/following-sibling::div/div/div[4]")
+	public WebElement productSupport;
+
 	public String getAcccountName() {
 
 		wait.until(ExpectedConditions.visibilityOf(accountName));
@@ -247,7 +285,7 @@ public class InsuranceCheckoutPage extends BasePage {
 	public boolean isShippingStreetDisplayed() {
 		return inputShippingAddress.isDisplayed();
 	}
-	
+
 	public void enterShippingStreet() {
 
 		inputShippingAddress.sendKeys(prop.getProperty("shippingStreetAddress"));
@@ -257,16 +295,28 @@ public class InsuranceCheckoutPage extends BasePage {
 	public boolean isShippingAptSuiteDisplayed() {
 		return inputShippingAptSuite.isDisplayed();
 	}
-	
-	
+
+
+	public boolean isShippingCityDisplayed() {
+		return inputShippingCity.isDisplayed();
+	}
+
 	public void enterShippingCity() {
 
 		inputShippingCity.sendKeys(prop.getProperty("shippingCity"));
 	}
 
+	public boolean isShippingZipcodeDisplayed() {
+		return dropdownShippingZipCode.isDisplayed();
+	}
+
 	public void enterShippingZipCode(String zipCode) {
 
 		dropdownShippingZipCode.sendKeys(zipCode);
+	}
+
+	public boolean isShippingStateDropDownDisplayed() {
+		return dropdownShippingState.isDisplayed();
 	}
 
 	public void clickShippingStateDropdown() throws InterruptedException {
@@ -293,9 +343,46 @@ public class InsuranceCheckoutPage extends BasePage {
 
 	}
 
-	public boolean isAcceleratedShippingDisplayed() throws InterruptedException {
+	public boolean isAcceleratedShippingDisplayed() {
+		try {
+			return tabAcceleratedShipping.isDisplayed();
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
 
-		return tabAcceleratedShipping.isDisplayed();
+	public boolean isCoveredByDisplayed(String insuranceProvider) {
+		boolean isCoveredByDisplayed = false;
+		try {
+			scrollToElement(coveredBy);
+			System.out.println("coveredBy:" + coveredBy.getText());
+			switch (insuranceProvider.toLowerCase()) {
+
+			case "bcbs":
+				isCoveredByDisplayed = coveredBy.getText().contains("Blue Cross / Blue Shield FEP");
+				break;
+			default:
+				isCoveredByDisplayed = coveredBy.getText().contains(insuranceProvider);
+			}
+		} catch (NoSuchElementException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		return isCoveredByDisplayed;
+	}
+
+	public boolean isMedicalWaiverDisplayed() {
+		try {
+			scrollToElement(sectionMedicalWaiver);
+			return radioBtnAcceptWaiver.isDisplayed();
+		} catch (NoSuchElementException e) {
+
+		} catch (InterruptedException e) {
+
+		}
+		return false;
 
 	}
 
@@ -578,6 +665,35 @@ public class InsuranceCheckoutPage extends BasePage {
 
 		}
 
+	}
+
+	// Order Summary
+	public boolean isOrderSummarySectionDisplayed() {
+		return sectionOrderSummary.isDisplayed();
+	}
+
+	public String getProduct() {
+		return productName.getText();
+	}
+
+	public String getProductSubTotal() {
+		return productSubTotal.getText().split("\n")[1];
+	}
+
+	public boolean isEargoDiscountPresent() {
+		return eargoDiscount.isDisplayed();
+	}
+
+	public String getFEHBDiscount() {
+		return fehbBenefit.getText().split("\n")[1];
+	}
+
+	public boolean isTaxPresent() {
+		return taxApplied.isDisplayed();
+	}
+
+	public String getEstimatedTotal() {
+		return estimatedTotal.getText().split("\n")[1];
 	}
 
 }
