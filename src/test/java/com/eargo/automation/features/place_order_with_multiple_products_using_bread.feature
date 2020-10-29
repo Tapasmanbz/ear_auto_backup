@@ -1,5 +1,6 @@
 # Place an Order with multiple product using bread
 
+@shop
 Feature:
 	Place an order with multiple product using Bread financing
 	In order to ensure that checkout works

@@ -64,7 +64,7 @@ Feature:
 			| "Neo HIFI"		| "$2950"  | "HEAR250"			|	"ALABAMA"		|	"35213"		|	"1-2 business days"	| "visa"				|	#TC-NJSHOP-28			 
  
  #This scenario works with Mention ME (Referal Coupon)     
- @smokeTest @regressionTest @oneProductWithDebitCard @mentionMe 
+ @smokeTest @regressionTest @oneProductWithDebitCard @mentionMe
 		Scenario Outline: [TC-NJSHOP-36] Place a normal order with one product, Hear250 coupon, Visa Payment method and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And as a user with a default email

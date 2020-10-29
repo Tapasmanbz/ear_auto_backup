@@ -337,18 +337,28 @@ public class InsuranceForm extends BasePage {
 
 	WebDriverWait dropDownWait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
-	public void for_maximum_benifits_i_select(String nothanks_or_continue) {
+
+	public void for_maximum_benifits_i_select(String nothanks_or_continue) throws InterruptedException {
 
 		if (nothanks_or_continue.equals("CONTINUE")) {
+			scrollToElement(continueButton);
+			Thread.sleep(2000);
 			continueButton.click();
 		} else {
 			noThanksButton.click();
 		}
 	}
 
+	
+//	public void fill_given_data(String givenMemberID, String givenGroupNumber, String givenDOB, String givenState,
+//			String givenInsuranceType) throws InterruptedException {
+	
 	public void fill_given_data(String givenMemberID, String givenGroupNumber, String givenDOB, String givenState,
-			String givenInsuranceType) throws InterruptedException {
+			String givenZipCode, String givenInsuranceType ) throws InterruptedException {
 
+		setgivenPatientState(givenState);
+		setGivenPatientZipCode(givenZipCode);
+		
 		dateOfBirth.sendKeys(givenDOB);
 
 		// selecting state of residence need to be developed
@@ -374,8 +384,11 @@ public class InsuranceForm extends BasePage {
 
 	}
 
-	public void fill_bcbs_data(String givenMemberID, String givenEnrollmentCode, String givenGroupNumber,
-			String givenDOB) throws InterruptedException {
+//	public void fill_bcbs_data(String givenMemberID, String givenEnrollmentCode, String givenGroupNumber,
+//			String givenDOB) throws InterruptedException {
+
+	public void fill_bcbs_data(String givenMemberID, String givenEnrollmentCode,String givenGroupNumber,String givenDOB,
+			String givenState,String givenZipCode) throws InterruptedException {
 
 		wait.until(ExpectedConditions.visibilityOf(memberID));
 		scrollToElement(memberID);
@@ -455,7 +468,9 @@ public class InsuranceForm extends BasePage {
 	// ----------10/09/2020---------------------------
 
 	public void check_Your_Benifits() throws InterruptedException {
-
+		
+		Thread.sleep(2000);
+    
 		wait.until(ExpectedConditions.visibilityOf(checkYourBenifits));
 		scrollToElement(checkYourBenifits);
 
@@ -776,8 +791,11 @@ public class InsuranceForm extends BasePage {
 
 	// Added on 16-09-2020
 	public void clickNothanksAndGiveMeCall() throws InterruptedException {
+
+		Thread.sleep(10000);
 		wait.until(ExpectedConditions.visibilityOf(giveMeCallInstead));
 		scrollToElement(giveMeCallInstead);
+		Thread.sleep(1000);
 		wait.until(ExpectedConditions.elementToBeClickable(giveMeCallInstead)).click();
 	}
 
@@ -947,5 +965,122 @@ public class InsuranceForm extends BasePage {
 		}
 
 	}
+	
+//-----------------09/10/2020---------------------------------
+	
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'My Information:')]")
+	public WebElement myInformation;
+		
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'My Information:')]/following-sibling::div[1]/p[1]")
+	public WebElement displayedPatientName;
+	
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'My Information:')]/following-sibling::div[1]/p[2]")
+	public WebElement displayedPatientEmail;
+	
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'My Information:')]/following-sibling::div[1]/p[3]")
+	public WebElement displayedPatientPhone;
+	
+	@FindBy(how = How.XPATH, using = "//input[@name='address1']")
+	public WebElement fillAddressFieldWith;
+	
+	@FindBy(how = How.XPATH, using = "//input[@name='city']")
+	public WebElement fillCityWith;
+	
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'State')]")
+	public WebElement stateDropdown;
+	
+	@FindBy(how = How.XPATH, using = "//input[@name='zipcode']")
+	public WebElement fillZipCodeWith;
+	
+	@FindBy(how = How.XPATH, using = "//span[@class='iagree']/preceding-sibling::img[1]")
+	public WebElement medicalWaiver;
+		
+	@FindBy(how = How.XPATH, using = "//button[contains(text(),'PLACE ORDER')]")
+	public WebElement placeOrderButton;
+	
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Thanks for your order!')]")
+	public WebElement thanksMessage;
+	
+	@FindBy(how = How.XPATH, using = "//input[@name='zipcode']")
+	public WebElement patientZipcode;
+
+	
+	private String givenPatientState;
+	private String givenPatientZipCode;
+		
+	public String getGivenPatientZipCode() {
+		return givenPatientZipCode;
+	}
+
+	public void setGivenPatientZipCode(String givenPatientZipCode) {
+		this.givenPatientZipCode = givenPatientZipCode;
+	}
+
+	public String getgivenPatientState() {
+		return givenPatientState;
+	}
+
+	public void setgivenPatientState(String givenPatientState) {
+		this.givenPatientState = givenPatientState;
+	}
+	
+	
+public void fillInCheckoutPage() throws InterruptedException {
+		
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+		wait.until(ExpectedConditions.visibilityOf(myInformation));
+		
+		fillAddressFieldWith.click();
+		Thread.sleep(1000);
+		fillAddressFieldWith.sendKeys(prop.getProperty("patientAddress"));
+		Thread.sleep(1000);
+		
+		
+		scrollToElement(fillCityWith);
+		fillCityWith.click();
+		Thread.sleep(1000);
+		fillCityWith.sendKeys(prop.getProperty("patientCity"));
+		Thread.sleep(1000);
+		
+		stateDropdown.click();
+		Thread.sleep(1000);
+		
+		CheckoutPage checkoutPage = new CheckoutPage();
+		checkoutPage.selectState(getgivenPatientState());
+		Thread.sleep(1000);
+		
+		patientZipcode.sendKeys(getGivenPatientZipCode());
+		Thread.sleep(1000);
+		
+		scrollToElement(medicalWaiver);
+		medicalWaiver.click();
+		
+		placeOrderButton.click();
+		
+		try {
+			wait.until(ExpectedConditions.visibilityOf(thanksMessage));
+			
+			if(thanksMessage.isDisplayed()) {
+				Assert.assertTrue(true);
+			}
+		}catch(Exception e) {
+			System.out.println("No Thanks message is displayed");
+			
+		}
+		
+		
+		Thread.sleep(2000);
+	}
+	
+//-----------------12/10/2020-----------------	
+
+@FindBy(how = How.XPATH, using = "//button[contains(text(),'Checkout')]")
+public WebElement InsuranceFromCheckout;
+
+public void checkout() throws InterruptedException {
+	
+	clickCheckoutButton();
+	
+}
 
 }

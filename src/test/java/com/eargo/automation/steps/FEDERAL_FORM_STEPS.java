@@ -1,5 +1,6 @@
 package com.eargo.automation.steps;
 
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 
 import com.eargo.automation.base.TestBase;
@@ -39,7 +40,9 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 	FederalForm federalForm = null;
 	InsuranceForm insuranceForm = null;
 	InsuranceCheckoutPage insuranceCheckoutPage = null;
+
 	MasterInsurancePage masterInsurancePage = null;
+
 	boolean isTimeoutPopUpDisplayed = false;
 	boolean isUnableToVerifyMessageDisplayed = false;
 	String unableToVerifyMessage = null;
@@ -71,7 +74,7 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 		salesforcePage.setPatientName(patientName);
 
 	}
-
+	
 	@When("I submit the federal form with insurance provider as {string} and for ever used hearing aids option as {string}")
 	public void i_submit_the_federal_form_with_insurance_provider_as_and_for_ever_used_hearing_aids_option_as(
 			String insuranceProvider, String usedHearingAid) throws InterruptedException {
@@ -83,51 +86,276 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 		federalForm.fillFedForm(patientName, insuranceProvider, usedHearingAid);
 		salesforcePage.setUsedHearingAid(usedHearingAid);
 		salesforcePage.setInsuranceProvider(insuranceProvider);
+
+	}
+
+
+//-----[21-10-2020]---------
+			
+	private String allow_verify_eligibility;
+	
+	
+	public String getAllow_verify_eligibility() {
+		return allow_verify_eligibility;
+	}
+
+	public void setAllow_verify_eligibility(String allow_verify_eligibility) {
+		this.allow_verify_eligibility = allow_verify_eligibility;
 	}
 
 	@When("I select {string} for maximum benefits for health insurance")
-	public void i_select_for_maximum_benefits_for_health_insurance(String nothanks_or_continue) {
+	public void i_select_for_maximum_benefits_for_health_insurance(String nothanks_or_continue) throws InterruptedException {
 
 		// Need to develop
 		insuranceForm = new InsuranceForm();
-		insuranceForm.for_maximum_benifits_i_select(nothanks_or_continue);
+
+		Thread.sleep(2000);
+		insuranceForm.for_maximum_benifits_i_select(nothanks_or_continue);	
+	
+		//21_10_2020
+		setAllow_verify_eligibility(nothanks_or_continue);
 
 	}
 
 	@Then("Submitted details should be present in Salesforce")
-	public void submitted_details_should_be_present_in_Salesforce() {
-
-		// Need to develop
-		salesforcePage = new SalesforcePage();
+	public void submitted_details_should_be_present_in_Salesforce() throws InterruptedException {
+		
 		salesforcePage.salesForceLogin();
-	}
+		
+		//15_10_2020
+		
+		if(allow_verify_eligibility.equals("NO THANKS")) {
+			
+			salesforcePage.verify_leads_for_pc1();
+			
+			Thread.sleep(2000);
+			
+		}else {
+			
+			salesforcePage.verify_leads_for_pc1();
+			Thread.sleep(2000);
+			salesforcePage.select_recordFrom_lead_report(federalForm.getTimeStampEmail());
+			salesforcePage.validate_lead_info();
+			wait.until(ExpectedConditions.visibilityOf(salesforcePage.lead_name));
+			
+			Assert.assertEquals(salesforcePage.lead_name.getText(), salesforcePage.getPatientName());
+			
+			Assert.assertEquals(salesforcePage.lead_email.getText(), federalForm.getTimeStampEmail());
+			
+			Assert.assertEquals(salesforcePage.lead_phoneNumber.getText(), prop.getProperty("patientPhoneNumber"));
+			
+			switch (salesforcePage.insuranceProvider.toUpperCase()) {
+			case "AETNA":
+				Assert.assertEquals(salesforcePage.lead_insuranceProvider.getText(), "Aetna");
+				break;
+					
+			case "APWU HEALTH PLAN":
+				Assert.assertEquals(salesforcePage.lead_insuranceProvider.getText(), "APWU Health Plan");
+				break;
+				
+				
+			case "GEHA":
+				Assert.assertEquals(salesforcePage.lead_insuranceProvider.getText(), "GEHA");
+				break;
+				
+			case "MHBP":
+				Assert.assertEquals(salesforcePage.lead_insuranceProvider.getText(), "MHBP");
+				break;
+				
+			case "NALC":
+				Assert.assertEquals(salesforcePage.lead_insuranceProvider.getText(), "NALC Health Benefit Plan");
+				break;
+
+			case "OTHERS":
+				Assert.assertEquals(salesforcePage.lead_insuranceProvider.getText(), "Others");
+				break;
+
+			case "BCBS":
+			default:
+				Assert.assertEquals(salesforcePage.lead_insuranceProvider.getText(), "Blue Cross / Blue Shield FEP");
+				break;
+
+			}
+
+			Thread.sleep(2000);
+//			salesforcePage.validate_preQual_info(benifits_Used);
+		
+			salesforcePage.validate_preQual_info();
+			
+			Thread.sleep(5000);
+			
+//			salesforcePage.select_preQual_id();
+			
+			Thread.sleep(2000);
+			
+			if(benifits_Used.equalsIgnoreCase("YES") || benifits_Used.equalsIgnoreCase("NOT SURE") ) {
+				
+				switch (salesforcePage.insuranceProvider.toUpperCase()) {
+				case "BCBS":
+				case "GEHA":
+				case "NALC":	
+					try {
+				//		Assert.assertEquals(salesforcePage.preQual_verification_status(federalForm.timeStampEmail), "Processed");
+					}catch(Exception e) {
+						System.out.println(e);
+					}
+					
+					break;
+				
+				case "AETNA":
+				case "MHBP":
+				case "OTHERS":
+					try {
+						Assert.assertEquals(salesforcePage.preQual_verification_status(federalForm.timeStampEmail), "Unable to Verify");
+					}catch(Exception e) {
+						System.out.println(e);
+					}
+					break;
+				}
+				
+			}else{
+				switch (salesforcePage.insuranceProvider.toUpperCase()) {
+				case "BCBS":
+				case "GEHA":
+				case "NALC":	
+					try {
+						Assert.assertEquals(salesforcePage.preQual_verification_status(federalForm.timeStampEmail), "Processed");
+					}catch(Exception e) {
+						System.out.println(e);
+					}					
+					break;
+					
+				case "AETNA":
+				case "MHBP":
+				case "OTHERS":	
+					try {
+						Assert.assertEquals(salesforcePage.preQual_verification_status(federalForm.timeStampEmail), "Unable to Verify");
+					}catch(Exception e) {
+						System.out.println(e);
+					}					
+					break;
+				}
+			}
+			
+//			Assert.assertEquals(preQual_patientFirstName.getText(),"" );
+			
+//			Assert.assertEquals(preQual_patientLastName.getText(),"" );
+			
+			salesforcePage.select_preQual_id(federalForm.timeStampEmail);
+			
+			Assert.assertEquals(salesforcePage.preQual_patientDOB.getText(), salesforcePage.getGiven_DOB());
+			
+			Assert.assertEquals(salesforcePage.preQual_patientState.getText(),salesforcePage.getGiven_state() );
+		
+			switch (salesforcePage.insuranceProvider.toUpperCase()) {
+			
+			case "BCBS":
+				Assert.assertEquals(salesforcePage.preQual_payerName.getText(),"Blue Cross / Blue Shield FEP");
+				break;
+				
+			case "GEHA":
+				Assert.assertEquals(salesforcePage.preQual_payerName.getText(),"GEHA");
+				break;
+				
+			case "NALC":	
+				Assert.assertEquals(salesforcePage.preQual_payerName.getText(),"NALC Health Benefit Plan");
+				break;
+				
+			case "AETNA":
+				Assert.assertEquals(salesforcePage.preQual_payerName.getText(),"Aetna");
+				break;
+				
+			case "MHBP":
+				Assert.assertEquals(salesforcePage.preQual_payerName.getText(),"MHBP");
+				break;
+				
+			case "OTHERS":
+				Assert.assertEquals(salesforcePage.preQual_payerName.getText(),"");
+				break;
+				
+			}
+					
+			Assert.assertEquals(salesforcePage.preQual_phone.getText(),prop.getProperty("patientPhoneNumber"));
+			
+			if(benifits_Used.equalsIgnoreCase("YES")) {
+				
+				Assert.assertEquals(salesforcePage.preQual_verificationStatus.getText(),"YES");
+				
+			}else if (benifits_Used.equalsIgnoreCase("NO")) {
+				
+				Assert.assertEquals(salesforcePage.preQual_verificationStatus.getText(),"NO" );
+				
+			}else {
+				
+				Assert.assertEquals(salesforcePage.preQual_verificationStatus.getText(),"NOT SURE");
+				
+			}
+			
+			Assert.assertEquals(salesforcePage.preQual_memberID.getText(),salesforcePage.getGiven_MemberID());
+			
+			Assert.assertEquals(salesforcePage.preQual_enrollmentCode.getText(),salesforcePage.getGiven_EnrollmentCode() );
+			
+			Assert.assertEquals(salesforcePage.preQual_groupNumber.getText(),salesforcePage.getGiven_GroupNumber());
+			
+			Assert.assertEquals(salesforcePage.preQual_usedBenifits.getText(),salesforcePage.getGiven_BenifitsUsed());
+		
+			if(!salesforcePage.insuranceProvider.equals("NALC")) {
+				Assert.assertEquals(salesforcePage.preQual_patientZipCode.getText(),salesforcePage.getGiven_ZipCode());  //not for NALC		
+			}
+			
+			if(!salesforcePage.insuranceProvider.equals("BCBS")) {
+					Assert.assertEquals(salesforcePage.preQual_primaryOrDependent.getText(),salesforcePage.getGiven_PrimaryOrDependent() ); //not for bcbs
+			}
+		
+			if(salesforcePage.insuranceProvider.equals("NALC")) {
+					Assert.assertEquals(salesforcePage.preQual_medicalCare.getText(),salesforcePage.getGiven_MedicalCare()); // available for NALC		
+			}
+			
+			
+			
+			}
+			
+		}
+		
 
 	// -----------Newly added--------------------------------
-
-	@When("I enter Member ID as {string}, Enrollment code as {string}, Group Number as {string}, Medicare Number as {string}, Date of Birth as {string} State of resident as {string} and Insurance type as {string}")
+//	@When("I enter Member ID as {string}, Enrollment code as {string}, Group Number as {string}, Date of Birth as {string} State of resident as {string} and Insurance type as {string}")
+	@When("I enter Member ID as {string}, Enrollment code as {string}, Group Number as {string}, Medicare Number as {string}, Date of Birth as {string} State of resident as {string} with zipcode {string} and Insurance type as {string}")
 	public void i_enter_Member_ID_as_Enrollment_code_as_Group_Number_as_Date_of_Birth_as_and_State_of_resident_as(
 			String givenMemberID, String givenEnrollmentCode, String givenGroupNumber, String givenMedicareNumber,
-			String givenDOB, String givenState, String givenInsuranceType) throws InterruptedException {
+			String givenDOB, String givenState,String givenZipCode, String givenInsuranceType) throws InterruptedException {
 
+//---[22-10-2020]------		
+		
+		salesforcePage.setGiven_DOB(givenDOB);
+		salesforcePage.setGiven_MemberID(givenMemberID);
+		salesforcePage.setGiven_EnrollmentCode(givenEnrollmentCode);
+		salesforcePage.setGiven_GroupNumber(givenGroupNumber);
+		salesforcePage.setGiven_ZipCode(givenZipCode);
+		salesforcePage.setGiven_PrimaryOrDependent(givenInsuranceType);
+		salesforcePage.setGiven_MedicalCare(givenMedicareNumber);
+		salesforcePage.setGiven_state(givenState);
+		
 		// Need to develop
 		// salesforcePage = new SalesforcePage();
 		insuranceForm = new InsuranceForm();
 
 		givenInsuranceProvider = salesforcePage.getInsuranceProvider();
-
-		// givenInsuranceProvider = "GEHA";
+		
+		System.out.println("givenInsuranceProvider");
 
 		switch (givenInsuranceProvider.toUpperCase()) {
 		case "AETNA":
 		case "APWU HEALTH PLAN":
 		case "GEHA":
 		case "MHBP":
-			insuranceForm.fill_given_data(givenMemberID, givenGroupNumber, givenDOB, givenState, givenInsuranceType);
+//			insuranceForm.fill_given_data(givenMemberID, givenGroupNumber, givenDOB, givenState, givenInsuranceType);
+			insuranceForm.fill_given_data(givenMemberID,givenGroupNumber, givenDOB, givenState, givenZipCode,givenInsuranceType);
+
 			break;
 
 		case "NALC":
-			insuranceForm.fill_nalc_data(givenMemberID, givenGroupNumber, givenMedicareNumber, givenDOB, givenState,
-					givenInsuranceType);
+			insuranceForm.fill_nalc_data(givenMemberID, givenGroupNumber, givenMedicareNumber, givenDOB, givenState,givenInsuranceType);
 			break;
 
 		case "OTHERS":
@@ -136,11 +364,25 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 
 		case "BCBS":
 		default:
-			insuranceForm.fill_bcbs_data(givenMemberID, givenEnrollmentCode, givenGroupNumber, givenDOB);
+//			insuranceForm.fill_bcbs_data(givenMemberID, givenEnrollmentCode, givenGroupNumber, givenDOB);
+			insuranceForm.fill_bcbs_data(givenMemberID, givenEnrollmentCode, givenGroupNumber, givenDOB , givenState, givenZipCode);
+
 			break;
 
 		}
 
+	}
+
+	
+// ----------[21-10-2020]--------	
+	public String benifits_Used;
+	
+	public String getBenifits_Used() {
+		return benifits_Used;
+	}
+
+	public void setBenifits_Used(String benifits_Used) {
+		this.benifits_Used = benifits_Used;
 	}
 
 	@When("I select {string} for using Hearing Aid insurance benefits in last {int} months")
@@ -150,6 +392,10 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 		// Need to develop
 		insuranceForm.benifits_Used_In_Last36Month(yes_no_notsure);
 
+// [21-10-2020]	
+		setBenifits_Used(yes_no_notsure);
+		salesforcePage.setGiven_BenifitsUsed(yes_no_notsure);
+	
 	}
 
 	@When("I agree to trems and conditions and click on check you benifits")
@@ -350,6 +596,7 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 		Assert.assertTrue(insuranceCheckoutPage.isTaxPresent(), "[Tax] doesn't displayed.");
 
 		Assert.assertEquals(insuranceCheckoutPage.getEstimatedTotal(), "$0.00", "Estimated Total doesn't matched.");
+
 	}
 
 	@Then("Verify Terms and Conditions radio button should display for insurance {string}")
@@ -367,8 +614,9 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 	@When("I change the insurance provider as {string}")
 	public void i_change_the_insurance_provider_as(String changedInsuranceProvider) throws InterruptedException {
 		setGivenInsuranceProvider(changedInsuranceProvider);
+    insuranceForm = new InsuranceForm();
+		salesforcePage.setInsuranceProvider(changedInsuranceProvider);
 		insuranceForm.changeInsuranceProvide(changedInsuranceProvider);
-
 	}
 
 	@When("I submit the master insurance form of insurance category {string} with insurance provider as {string}")
@@ -381,6 +629,20 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 		masterInsurancePage.selectMasterInsurance(insuranceCategory, insuranceProvider);
 		masterInsurancePage.submitContactInfo(patientName, insuranceProvider);
 		salesforcePage.setInsuranceProvider(insuranceProvider);
+
+	}
+	
+//--------12-10-2020-------------	
+
+	@When("I click on Checkout and enter required details to place an order")
+	public void i_click_on_Checkout_and_enter_required_details_to_place_an_order() throws InterruptedException {
+		
+		Thread.sleep(3000);
+		insuranceForm.clickCheckoutButton();
+//		insuranceForm.checkout();
+		Thread.sleep(3000);
+		insuranceForm.fillInCheckoutPage(); 
+
 	}
 
 }

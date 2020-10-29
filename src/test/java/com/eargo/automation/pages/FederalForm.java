@@ -1,5 +1,7 @@
 package com.eargo.automation.pages;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 
 import org.openqa.selenium.WebElement;
@@ -72,6 +74,19 @@ public class FederalForm extends BasePage {
 		driver.get("https://web-staging2.eargo.com/fedform");
 	}
 
+	// [20_10_2020]
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+	public String currentTimeStamp;
+	public String timeStampEmail;
+	
+	public String getTimeStampEmail() {
+		return timeStampEmail;
+	}
+
+	public void setTimeStampEmail(String timeStampEmail) {
+		this.timeStampEmail = timeStampEmail;
+	}
+
 	public void fillFedForm(String patientName, String insuranceProvider, String usedHearingAid)
 			throws InterruptedException {
 
@@ -87,12 +102,21 @@ public class FederalForm extends BasePage {
 		patientZipcode.sendKeys(prop.getProperty("patientZipCode"));
 
 		// Enter Patient Email
+		// [20_10_2020]
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		currentTimeStamp = sdf.format(timestamp);
+		timeStampEmail = currentTimeStamp +"@eargoautomation.com";
+		setTimeStampEmail(timeStampEmail);
+
 		switch (insuranceProvider.toLowerCase()) {
 
 		case "bcbs":
 			patientEmail.click();
-			patientEmail.sendKeys(prop.getProperty("bcbsEmail"));
-			setPatientEmailAddress(prop.getProperty("bcbsEmail"));
+//			patientEmail.sendKeys(prop.getProperty("bcbsEmail"));
+			patientEmail.sendKeys(timeStampEmail);
+			System.out.println(timeStampEmail);
+//			setPatientEmailAddress(prop.getProperty("bcbsEmail"));
+			setPatientEmailAddress(timeStampEmail);			
 			Thread.sleep(1000);
 			insuranceProviderDropDown.click();
 			Thread.sleep(1000);
@@ -101,8 +125,11 @@ public class FederalForm extends BasePage {
 			break;
 		case "geha":
 			patientEmail.click();
-			patientEmail.sendKeys(prop.getProperty("gehaEamil"));
-			setPatientEmailAddress(prop.getProperty("gehaEamil"));
+
+//			patientEmail.sendKeys(prop.getProperty("gehaEamil"));
+//			setPatientEmailAddress(prop.getProperty("gehaEamil"));
+			patientEmail.sendKeys(timeStampEmail);
+			setPatientEmailAddress(timeStampEmail);	
 			Thread.sleep(1000);
 			insuranceProviderDropDown.click();
 			Thread.sleep(1000);
@@ -113,8 +140,10 @@ public class FederalForm extends BasePage {
 
 		case "nalc":
 			patientEmail.click();
-			patientEmail.sendKeys(prop.getProperty("nalcEmail"));
-			setPatientEmailAddress(prop.getProperty("nalcEmail"));
+//			patientEmail.sendKeys(prop.getProperty("nalcEmail"));
+//			setPatientEmailAddress(prop.getProperty("nalcEmail"));
+			patientEmail.sendKeys(timeStampEmail);
+			setPatientEmailAddress(timeStampEmail);	
 			Thread.sleep(1000);
 			insuranceProviderDropDown.click();
 			Thread.sleep(1000);
@@ -123,8 +152,10 @@ public class FederalForm extends BasePage {
 
 		case "aetna":
 			patientEmail.click();
-			patientEmail.sendKeys(prop.getProperty("aetnaEmail"));
-			setPatientEmailAddress(prop.getProperty("aetnaEmail"));
+//			patientEmail.sendKeys(prop.getProperty("aetnaEmail"));
+//			setPatientEmailAddress(prop.getProperty("aetnaEmail"));
+			patientEmail.sendKeys(timeStampEmail);
+			setPatientEmailAddress(timeStampEmail);
 			Thread.sleep(1000);
 			insuranceProviderDropDown.click();
 			Thread.sleep(1000);
@@ -132,8 +163,10 @@ public class FederalForm extends BasePage {
 			break;
 
 		case "apwu health plan":
-			patientEmail.sendKeys(prop.getProperty("apwuEmail"));
-			setPatientEmailAddress(prop.getProperty("apwuEmail"));
+//			patientEmail.sendKeys(prop.getProperty("apwuEmail"));
+//			setPatientEmailAddress(prop.getProperty("apwuEmail"));
+			patientEmail.sendKeys(timeStampEmail);
+			setPatientEmailAddress(timeStampEmail);	
 			Thread.sleep(1000);
 			insuranceProviderDropDown.click();
 			Thread.sleep(1000);
@@ -142,8 +175,10 @@ public class FederalForm extends BasePage {
 
 		case "mhbp":
 			patientEmail.click();
-			patientEmail.sendKeys(prop.getProperty("mhbpEmail"));
-			setPatientEmailAddress(prop.getProperty("mhbpEmail"));
+//			patientEmail.sendKeys(prop.getProperty("mhbpEmail"));
+//			setPatientEmailAddress(prop.getProperty("mhbpEmail"));
+			patientEmail.sendKeys(timeStampEmail);
+			setPatientEmailAddress(timeStampEmail);
 			Thread.sleep(1000);
 			insuranceProviderDropDown.click();
 			Thread.sleep(1000);
@@ -152,8 +187,10 @@ public class FederalForm extends BasePage {
 			
 		default:
 			patientEmail.click();
-			patientEmail.sendKeys(prop.getProperty("othersEmail"));
-			setPatientEmailAddress(prop.getProperty("othersEmail"));
+//			patientEmail.sendKeys(prop.getProperty("othersEmail"));
+//			setPatientEmailAddress(prop.getProperty("othersEmail"));
+			patientEmail.sendKeys(timeStampEmail);
+			setPatientEmailAddress(timeStampEmail);	
 			Thread.sleep(1000);
 
 			insuranceProviderDropDown.click();

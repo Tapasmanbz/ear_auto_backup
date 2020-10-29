@@ -507,7 +507,7 @@ public class CheckoutPage extends BasePage {
 		selectDifferentBillingAddress.click();
 		inputDiffShippingFirstName.sendKeys("TestBillingFirst");
 		inputDiffShippingLastName.sendKeys("TestBillingLast");
-		inputDiffShippingAddress.sendKeys("295 N Bernardo Ave Suite 100");
+		inputDiffShippingAddress.sendKeys("296 E Bernardo Ave Suite 100 Edited");
 		inputDiffShippingCity.sendKeys("Mountain View");
 
 		clickBillingStateDropdown();
@@ -615,7 +615,7 @@ public class CheckoutPage extends BasePage {
 		return reviewPage;
 	}
 
-	private void selectState(String state) throws InterruptedException {
+	public void selectState(String state) throws InterruptedException {
 
 		// Thread.sleep(1500);
 		WebDriverWait stateWait = new WebDriverWait(driver, Duration.ofSeconds(3));
@@ -896,6 +896,8 @@ public class CheckoutPage extends BasePage {
 
 		// Entering Personal Details for the User
 		enterEditedEmail();
+		
+		accountInfoEdited();
 
 		// Will develop when required
 
@@ -1148,4 +1150,21 @@ public class CheckoutPage extends BasePage {
 		}
 	
 	}
+	
+//----------------------------08-10-2020------------
+	private String accountInfo;
+	
+	public String getAccountInfo() {
+		return accountInfo;
+	}
+
+	public void setAccountInfo(String accountInfo) {
+		this.accountInfo = accountInfo;
+	}
+
+	public String accountInfoEdited() {
+		setAccountInfo("Edited");
+		return getAccountInfo();
+	}
+	
 }

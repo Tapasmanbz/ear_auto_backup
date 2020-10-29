@@ -70,7 +70,7 @@ Feature:
 	
 
 #This scenario works with Mention ME		
-@smokeTest @regressionTest @multipleProductOrderWithPaypal @mentionMe 
+@smokeTest @regressionTest @multipleProductOrderWithPaypal @mentionMe
 	Scenario Outline: [TC-NJSHOP-38] Place a normal order with multiple product, default coupon and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And I have a accessory <acc> at a price of <accPrice>

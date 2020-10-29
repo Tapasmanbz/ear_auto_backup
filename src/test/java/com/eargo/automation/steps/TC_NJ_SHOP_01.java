@@ -285,7 +285,7 @@ public class TC_NJ_SHOP_01 extends TestBase {
 		orderConfirmationPage = new OrderConfirmationPage();
 
 		if (prop.getProperty("environment").equalsIgnoreCase("staging")) {
-
+			
 			discountValue = orderConfirmationPage.getDiscountValue();
 			orderNumber = orderConfirmationPage.getOrderNumber();
 			email = orderConfirmationPage.getEmailID();
@@ -387,6 +387,7 @@ public class TC_NJ_SHOP_01 extends TestBase {
 			// } else if (prop.getProperty("SFUserName").contains(".webstore")) {
 			orderedProductDetailsSalesforce = salesforcePage.getOrderProductsOnSalesForce();
 			// }
+
 
 			Iterator<Entry<String, String>> stockIterator = stockSet.iterator();
 			System.out.println("Iterating over Hashtable in Java");
@@ -560,6 +561,8 @@ public class TC_NJ_SHOP_01 extends TestBase {
 		// CheckoutPage checkoutPage = new CheckoutPage();
 		Thread.sleep(2000);
 		checkoutPage.editPersonalDeatils();
+		
+	//	checkoutPage.accountInfoEdited();
 
 		String enteredPaymentMethod = checkoutPage.getGivenPaymentMethod();
 
@@ -742,6 +745,16 @@ public class TC_NJ_SHOP_01 extends TestBase {
 		case "PAYPAL":
 		default:
 			// reviewPage = checkoutPage.clickContinueToReviewButton();
+		}
+	
+		try {
+			
+			if(checkoutPage.btnContinueToReview.isDisplayed()) {
+				reviewPage = checkoutPage.clickContinueToReviewButton();
+			}
+			
+		}catch(Exception e) {
+			
 		}
 		// reviewPage = checkoutPage.clickContinueToReviewButton();
 	}

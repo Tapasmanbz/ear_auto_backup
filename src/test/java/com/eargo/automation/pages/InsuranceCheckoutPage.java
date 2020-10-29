@@ -296,6 +296,7 @@ public class InsuranceCheckoutPage extends BasePage {
 		return inputShippingAptSuite.isDisplayed();
 	}
 
+
 	public boolean isShippingCityDisplayed() {
 		return inputShippingCity.isDisplayed();
 	}
@@ -382,6 +383,7 @@ public class InsuranceCheckoutPage extends BasePage {
 
 		}
 		return false;
+
 	}
 
 	public void acceptMedicalWaiver() throws InterruptedException {

@@ -1,4 +1,3 @@
-
 Feature: 
 	Place an order for one product using bread financing
 	In order to ensure that checkout works
@@ -7,7 +6,7 @@ Feature:
   I want to use this template for my feature file
 
 #This scenario works with default coupon
-#@smokeTest @regressionTest @oneProductWithBread @production @tc_njshop_07 
+#@smokeTest @regressionTest @oneProductWithBread @production @tc_njshop_07
 		Scenario Outline: [TC-NJSHOP-07]
 			Given I have a product <prod> at a price of <price>
 #			And a default coupon <couponCode> is applied
@@ -28,7 +27,7 @@ Feature:
 
 
 #This scenario works with default coup#This scenario works with default coupon
-#@smokeTest @regressionTest @oneProductWithBread @production @testOne 
+#@smokeTest @regressionTest @oneProductWithBread @production @testOne
     Scenario Outline: [TC-NJSHOP-51]
       Given I have a product <prod> at a price of <price>
 #			And a default coupon <couponCode> is applied

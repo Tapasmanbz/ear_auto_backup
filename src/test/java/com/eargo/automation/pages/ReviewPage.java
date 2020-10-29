@@ -3,6 +3,7 @@ package com.eargo.automation.pages;
 import java.time.Duration;
 import java.util.Set;
 
+import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -616,6 +617,43 @@ public class ReviewPage extends BasePage {
 		}
 
 		return this.customerPaymentType;
+
+	}
+
+	public void verifyDetailsOnReviewPage() throws InterruptedException {
+		
+//		Validating "Account Info"		
+		Thread.sleep(10000);
+//		Assert.assertEquals("User Name doesn't matched", "TestAccountFirst TestAccountLast", getCustomerName());
+//		Thread.sleep(2000);
+		Assert.assertEquals("User Phone Number doesn't matched", prop.getProperty("Phone"),  getPhoneNumber());
+		Thread.sleep(2000);
+		
+		Assert.assertEquals("User Eamil doesn't matched", prop.getProperty("EditedEmail"), getEnteredEmailID());
+//		Thread.sleep(2000);		
+
+		//Validating "Shipping Address"
+		
+//		Assert.assertEquals("Shipping street doesn't matched", prop.getProperty("shippingStreetAddress"),getEnteredStreetAddress());
+		Thread.sleep(2000);
+				
+		
+		//Validating "Billing Address"	
+		
+		Assert.assertEquals("Billing street doesn't matched", prop.getProperty("editedShippingStreetAddress"), getEnteredBillingStreetAddress());
+		Thread.sleep(2000);
+
+		//Validating "Estimated Delivery Date"
+		
+//		Assert.assertEquals("Estimated Delivery Date doesn't matched",checkoutPage.getExpectedDeliveryDate(), getDeliveryDate());
+//		Thread.sleep(2000);		
+		//Validating "Payment type"
+		
+//		Assert.assertEquals("Payment type doesn't matched",getPaymentMethod(), getPaymentType());
+		Thread.sleep(2000);		
+		//Validating "Order Summary"
+		// Need to discuss with tapas as this requires the array-list way of validating
+
 	}
 
 }

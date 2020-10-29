@@ -2,6 +2,7 @@ package com.eargo.automation.steps;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Scanner;
@@ -20,5 +21,6 @@ public class Test {
 		int scale = (int) Math.pow(10, 1);
 	    double b = (double) Math.round(3272.95 * scale) / scale;
 	    System.out.println(b);
+
 	}
 }
