@@ -11,6 +11,7 @@ import com.eargo.automation.pages.CheckoutPage;
 import com.eargo.automation.pages.FederalForm;
 import com.eargo.automation.pages.InsuranceCheckoutPage;
 import com.eargo.automation.pages.InsuranceForm;
+import com.eargo.automation.pages.MasterInsurancePage;
 import com.eargo.automation.pages.MaxPage;
 import com.eargo.automation.pages.MentionMePage;
 import com.eargo.automation.pages.NeoHifiPage;
@@ -39,6 +40,9 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 	FederalForm federalForm = null;
 	InsuranceForm insuranceForm = null;
 	InsuranceCheckoutPage insuranceCheckoutPage = null;
+
+	MasterInsurancePage masterInsurancePage = null;
+
 	boolean isTimeoutPopUpDisplayed = false;
 	boolean isUnableToVerifyMessageDisplayed = false;
 	String unableToVerifyMessage = null;
@@ -82,7 +86,7 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 		federalForm.fillFedForm(patientName, insuranceProvider, usedHearingAid);
 		salesforcePage.setUsedHearingAid(usedHearingAid);
 		salesforcePage.setInsuranceProvider(insuranceProvider);
-		
+
 	}
 
 
@@ -104,12 +108,13 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 
 		// Need to develop
 		insuranceForm = new InsuranceForm();
+
 		Thread.sleep(2000);
 		insuranceForm.for_maximum_benifits_i_select(nothanks_or_continue);	
 	
 		//21_10_2020
 		setAllow_verify_eligibility(nothanks_or_continue);
-		
+
 	}
 
 	@Then("Submitted details should be present in Salesforce")
@@ -331,7 +336,6 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 		salesforcePage.setGiven_MedicalCare(givenMedicareNumber);
 		salesforcePage.setGiven_state(givenState);
 		
-		
 		// Need to develop
 		// salesforcePage = new SalesforcePage();
 		insuranceForm = new InsuranceForm();
@@ -362,7 +366,7 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 		default:
 //			insuranceForm.fill_bcbs_data(givenMemberID, givenEnrollmentCode, givenGroupNumber, givenDOB);
 			insuranceForm.fill_bcbs_data(givenMemberID, givenEnrollmentCode, givenGroupNumber, givenDOB , givenState, givenZipCode);
-			
+
 			break;
 
 		}
@@ -387,11 +391,11 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 
 		// Need to develop
 		insuranceForm.benifits_Used_In_Last36Month(yes_no_notsure);
-		
+
 // [21-10-2020]	
 		setBenifits_Used(yes_no_notsure);
 		salesforcePage.setGiven_BenifitsUsed(yes_no_notsure);
-		
+	
 	}
 
 	@When("I agree to trems and conditions and click on check you benifits")
@@ -402,14 +406,13 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 
 	}
 
-//	@Then("Submitted details should be present in Salesforce #\\(if No on 36month question then order will be placed)")
-//	public void submitted_details_should_be_present_in_Salesforce_if_No_on_36month_question_then_order_will_be_placed() {
-//
-//		// Need to develop
-//
-//	}
-	
-	
+	@Then("Submitted details should be present in Salesforce #\\(if No on 36month question then order will be placed)")
+	public void submitted_details_should_be_present_in_Salesforce_if_No_on_36month_question_then_order_will_be_placed() {
+
+		// Need to develop
+
+	}
+
 	@When("I click on No thanks,give me a call instead")
 	public void i_click_on_No_thanks_give_me_a_call_instead() throws InterruptedException {
 
@@ -535,41 +538,97 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 		insuranceCheckoutPage = new InsuranceCheckoutPage();
 		Assert.assertEquals(insuranceCheckoutPage.getAcccountName(), federalForm.getPatientName());
 		Assert.assertEquals(insuranceCheckoutPage.getAccountEmail(), federalForm.getPatientEmailAddress());
-		Assert.assertEquals(insuranceCheckoutPage.getPhoneNumber(), federalForm.getPatientPhoneNumber());
+		Assert.assertEquals(insuranceCheckoutPage.getAccountPhoneNumber(), federalForm.getPatientPhoneNumber());
 	}
 
 	@Then("Verify 'Ship my eargo to' sub-section details for insurance {string}")
 	public void verify_ship_my_eargo_to_sub_section_details_for_insurance(String insuranceProvider) {
 		Assert.assertEquals(insuranceCheckoutPage.getShippingName(), federalForm.getPatientName());
-
+		Assert.assertTrue(insuranceCheckoutPage.isShippingStreetDisplayed(), "[Street] input field doesn't displayed.");
+		Assert.assertTrue(insuranceCheckoutPage.isShippingAptSuiteDisplayed(),
+				"[Apt/Suite] input field doesn't displayed.");
+		Assert.assertTrue(insuranceCheckoutPage.isShippingCityDisplayed(), "[City] input field doesn't displayed.");
+		Assert.assertTrue(insuranceCheckoutPage.isShippingStateDropDownDisplayed(),
+				"[State] dropdown list doesn't displayed.");
+		Assert.assertTrue(insuranceCheckoutPage.isShippingZipcodeDisplayed(),
+				"[Zipcode] input field doesn't displayed.");
 	}
 
 	@Then("Verify 'Covered by' sub-section details for insurance {string}")
 	public void verify_covered_by_sub_section_details_for_insurance(String insuranceProvider) {
-
+		Assert.assertTrue(insuranceCheckoutPage.isCoveredByDisplayed(insuranceProvider),
+				"[Covered By] section doesn't matched or displayed.");
 	}
 
 	@Then("Verify 'Order summary' sub-section details for insurance {string}")
 	public void verify_order_summary_sub_section_details_for_insurance(String insuranceProvider) {
+		Assert.assertTrue(insuranceCheckoutPage.isOrderSummarySectionDisplayed(),
+				"[Order Summary] section doesn't matched or displayed.");
+
+		switch (insuranceProvider.toLowerCase()) {
+		case "nalc":
+			Assert.assertEquals(insuranceCheckoutPage.getProduct(), "Eargo Neo", "Product Name doesn't matched.");
+			Assert.assertEquals(insuranceCheckoutPage.getProductSubTotal(), "$2,350.00",
+					"Product Subtotal doesn't matched.");
+			break;
+		default:
+			Assert.assertEquals(insuranceCheckoutPage.getProduct(), "Eargo Neo HiFi", "Product Name doesn't matched.");
+			Assert.assertEquals(insuranceCheckoutPage.getProductSubTotal(), "$2,950.00",
+					"Product Subtotal doesn't matched.");
+			break;
+
+		}
+
+		Assert.assertTrue(insuranceCheckoutPage.isEargoDiscountPresent(), "[Eargo Discount] doesn't displayed.");
+
+		switch (insuranceProvider.toLowerCase()) {
+		case "nalc":
+			Assert.assertEquals(insuranceCheckoutPage.getFEHBDiscount(), "-$2,000.00",
+					"FEHB Benefit amount doesn't matched.");
+			break;
+		default:
+			Assert.assertEquals(insuranceCheckoutPage.getFEHBDiscount(), "-$2,500.00",
+					"FEHB Benefit amount doesn't matched.");
+			break;
+
+		}
+
+		Assert.assertTrue(insuranceCheckoutPage.isTaxPresent(), "[Tax] doesn't displayed.");
+
+		Assert.assertEquals(insuranceCheckoutPage.getEstimatedTotal(), "$0.00", "Estimated Total doesn't matched.");
 
 	}
 
 	@Then("Verify Terms and Conditions radio button should display for insurance {string}")
 	public void verify_Terms_and_Conditions_radio_button_should_display_for_insurance(String insuranceProvider) {
-
+		Assert.assertTrue(insuranceCheckoutPage.isMedicalWaiverDisplayed(),
+				"[Medical Waiver Terms and Conditions] radio button doesn't displayed.");
 	}
 
 	@Then("Verify 1-2 business day delivery option should not be present for insurance {string}")
 	public void verify_business_day_delivery_option_should_not_be_present_for_insurance(String insuranceProvider) {
-
+		Assert.assertFalse(insuranceCheckoutPage.isAcceleratedShippingDisplayed(),
+				"1-2 business day delivery option displayed.");
 	}
 
 	@When("I change the insurance provider as {string}")
 	public void i_change_the_insurance_provider_as(String changedInsuranceProvider) throws InterruptedException {
 		setGivenInsuranceProvider(changedInsuranceProvider);
-		insuranceForm = new InsuranceForm();
+    insuranceForm = new InsuranceForm();
 		salesforcePage.setInsuranceProvider(changedInsuranceProvider);
 		insuranceForm.changeInsuranceProvide(changedInsuranceProvider);
+	}
+
+	@When("I submit the master insurance form of insurance category {string} with insurance provider as {string}")
+	public void i_submit_the_master_insurance_form_of_insurance_category_with_insurance_provider_as(
+			String insuranceCategory, String insuranceProvider) throws Exception {
+
+		masterInsurancePage = new MasterInsurancePage();
+		String patientName = salesforcePage.getPatientName();
+		masterInsurancePage.navigateToInsurancePage();
+		masterInsurancePage.selectMasterInsurance(insuranceCategory, insuranceProvider);
+		masterInsurancePage.submitContactInfo(patientName, insuranceProvider);
+		salesforcePage.setInsuranceProvider(insuranceProvider);
 
 	}
 	
@@ -583,7 +642,7 @@ public class FEDERAL_FORM_STEPS extends TestBase {
 //		insuranceForm.checkout();
 		Thread.sleep(3000);
 		insuranceForm.fillInCheckoutPage(); 
-		
+
 	}
 
 }

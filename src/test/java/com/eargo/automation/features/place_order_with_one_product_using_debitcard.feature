@@ -8,8 +8,8 @@ Feature:
 	I want to run a test to verify the order data in salesforce
 
 #This scenario works with default coupon
-@smokeTest @regressionTest @oneProductWithDebitCard
-		Scenario Outline: Place a normal order with one product, default coupon and verify the order details in Salesforce
+@smokeTest @regressionTest @oneProductWithDebitCard @production  
+		Scenario Outline: [TC-NJSHOP-01] Place a normal order with one product, default coupon and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And as a user with a default email
 			When I add a product <prod> in cart
@@ -28,8 +28,8 @@ Feature:
   
 
 #This scenario works with applied coupon
-@smokeTest @regressionTest @oneProductWithDebitCard  
-		Scenario Outline: Place a normal order with one product, default coupon and verify the order details in Salesforce
+@smokeTest @regressionTest @oneProductWithDebitCard @production  
+		Scenario Outline: [TC-NJSHOP-08, TC-NJSHOP-14, TC-NJSHOP-20, TC-NJSHOP-28] Place a normal order with one product, default coupon and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			#And a default coupon <couponCode> is applied
 			And as a user with a default email
@@ -64,8 +64,8 @@ Feature:
 			| "Neo HIFI"		| "$2950"  | "HEAR250"			|	"ALABAMA"		|	"35213"		|	"1-2 business days"	| "visa"				|	#TC-NJSHOP-28			 
  
  #This scenario works with Mention ME (Referal Coupon)     
- @smokeTest @regressionTest @oneProductWithDebitCard @mentionMe 
-		Scenario Outline: Place a normal order with one product, Hear250 coupon, Visa Payment method and verify the order details in Salesforce
+ @smokeTest @regressionTest @oneProductWithDebitCard @mentionMe
+		Scenario Outline: [TC-NJSHOP-36] Place a normal order with one product, Hear250 coupon, Visa Payment method and verify the order details in Salesforce
 			Given I have a product <prod> at a price of <price>
 			And as a user with a default email
 			When I add a product <prod> in cart
@@ -84,7 +84,7 @@ Feature:
       
 #This scenario works with Billing address	        
  @smokeTest @regressionTest @oneProductWithDebitCard @differentShippingAddress 
-    Scenario Outline: Place a normal order with one product, Hear250 coupon, Visa Payment method and verify the order details in Salesforce
+    Scenario Outline: [TC-NJSHOP-44] Place a normal order with one product, Hear250 coupon, Visa Payment method and verify the order details in Salesforce
       Given I have a product <prod> at a price of <price>
 	  	#And a default coupon <couponCode> is applied
 	  	And as a user with a default email
@@ -106,7 +106,7 @@ Feature:
 
 #This scenario works Verifying "EDIT" option after going Review page	
 @smokeTest @regressionTest @oneProductWithDebitCard 
-    Scenario Outline: place_order_with_one_product_using_debitcard
+    Scenario Outline: [TC-NJSHOP-52] place_order_with_one_product_using_debitcard
       Given I have a product <prod> at a price of <price>
 #			And a default coupon <couponCode> is applied
 			And as a user with a default email

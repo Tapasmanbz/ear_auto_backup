@@ -337,6 +337,7 @@ public class InsuranceForm extends BasePage {
 
 	WebDriverWait dropDownWait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
+
 	public void for_maximum_benifits_i_select(String nothanks_or_continue) throws InterruptedException {
 
 		if (nothanks_or_continue.equals("CONTINUE")) {
@@ -469,6 +470,7 @@ public class InsuranceForm extends BasePage {
 	public void check_Your_Benifits() throws InterruptedException {
 		
 		Thread.sleep(2000);
+    
 		wait.until(ExpectedConditions.visibilityOf(checkYourBenifits));
 		scrollToElement(checkYourBenifits);
 
@@ -789,6 +791,7 @@ public class InsuranceForm extends BasePage {
 
 	// Added on 16-09-2020
 	public void clickNothanksAndGiveMeCall() throws InterruptedException {
+
 		Thread.sleep(10000);
 		wait.until(ExpectedConditions.visibilityOf(giveMeCallInstead));
 		scrollToElement(giveMeCallInstead);
@@ -802,6 +805,7 @@ public class InsuranceForm extends BasePage {
 	}
 
 	public void clickCheckoutButton() throws InterruptedException {
+		scrollToElement(insuranceFromCheckout);
 		wait.until(ExpectedConditions.elementToBeClickable(insuranceFromCheckout)).click();
 	}
 
@@ -961,7 +965,6 @@ public class InsuranceForm extends BasePage {
 		}
 
 	}
-
 	
 //-----------------09/10/2020---------------------------------
 	
@@ -1079,6 +1082,5 @@ public void checkout() throws InterruptedException {
 	clickCheckoutButton();
 	
 }
-	
 
 }

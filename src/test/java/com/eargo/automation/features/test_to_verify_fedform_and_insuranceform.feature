@@ -19,14 +19,14 @@ Feature:
       | "Do not call"			|"GEHA"						|		"YES"				|			"NO THANKS"			| #TC_Fed_01
        
 		
-@federal_form1
+		@federal_form1 
 		Scenario Outline: Submit a federal form to verify get maximum benifits on health insurance and verify the details on Salesforce
 			Given With a patient name <patientName>
 			When I submit the federal form with insurance provider as <insuranceProvider> and for ever used hearing aids option as <usedHearingAid>
 			And I select <Nothanks_or_Continue> for maximum benefits for health insurance
 			And I enter Member ID as <MemberID>, Enrollment code as <EnrollmentCode>, Group Number as <GroupNumber>, Medicare Number as <MedicareNumber>, Date of Birth as <DOB> State of resident as <Residence> with zipcode <zipCode> and Insurance type as <InsuranceType>
 			And I select <BenifitsInLast36Months> for using Hearing Aid insurance benefits in last 36 months
-			And I agree to trems and conditions and click on check you benifits 
+			And I agree to trems and conditions and click on check you benifits
 			Then Submitted details should be present in Salesforce
 		
 		@TC_Fed_02	@TC_Fed_03
@@ -124,7 +124,7 @@ Feature:
       And I enter Member ID as <MemberID>, Enrollment code as <EnrollmentCode>, Group Number as <GroupNumber>, Medicare Number as <MedicareNumber>, Date of Birth as <DOB> State of resident as <Residence> with zipcode <zipCode> and Insurance type as <InsuranceType>
 			And I select <BenifitsInLast36Months> for using Hearing Aid insurance benefits in last 36 months
       And I agree to trems and conditions and click on check you benifits
-     Then Submitted details should be present in Salesforce 
+      Then Submitted details should be present in Salesforce 
       
      @TC_Fed_10	
      Examples: 
@@ -209,7 +209,6 @@ Feature:
   #   | "Bcbs Test"				|			"BCBS"				|		"YES"				|			"CONTINUE"			|		"R12345678"	|		"104"				|	"65006500"	|	"01/28/1970"|		"N/A"	|"N/A"		|	"PRIMARY"			|						"NO"				|"N/A"							|#TC_Fed_14.0 
       | "Geha Test"				|			"GEHA"				|		"YES"				|			"CONTINUE"			|		"R87654321"	|		"N/A"				|	"78360001"	|	"01/30/1970"|		"CA"	|"90201"	|	"PRIMARY"			|						"NO"				|"N/A"							|#TC_Fed_14.1 
   #   | "Nalc Test"				|			"NALC"				|		"YES"				|			"CONTINUE"			|		"N12345678"	|		"N/A"				|	"32"				|	"01/30/1947"|		"CA"	|"90201"	|	"PRIMARY"			|						"NO"				|"med-123-02"				|#TC_Fed_14.2       
-     
-     
+  
       
       

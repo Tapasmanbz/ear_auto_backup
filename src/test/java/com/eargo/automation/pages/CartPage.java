@@ -145,6 +145,10 @@ public class CartPage extends BasePage {
 	public void applyCoupon(String couponCode) throws InterruptedException {
 
 		// btnAddCoupon.click();
+		if(checkDefaultCouponApplied()) {
+			removeCoupon();
+		}
+		
 		System.out.println("#" + inputCoupon.getText());
 		scrollToCartElement(inputCoupon);
 		wait.until(ExpectedConditions.elementToBeClickable(inputCoupon)).click();
@@ -169,7 +173,7 @@ public class CartPage extends BasePage {
 
 	public String afterIncrement() throws InterruptedException {
 
-		Thread.sleep(2000);
+		Thread.sleep(2500);
 
 		return (prodAfterIncrement.getText());
 

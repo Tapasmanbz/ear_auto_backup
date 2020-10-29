@@ -107,7 +107,7 @@ public class FederalForm extends BasePage {
 		currentTimeStamp = sdf.format(timestamp);
 		timeStampEmail = currentTimeStamp +"@eargoautomation.com";
 		setTimeStampEmail(timeStampEmail);
-		
+
 		switch (insuranceProvider.toLowerCase()) {
 
 		case "bcbs":
@@ -125,6 +125,7 @@ public class FederalForm extends BasePage {
 			break;
 		case "geha":
 			patientEmail.click();
+
 //			patientEmail.sendKeys(prop.getProperty("gehaEamil"));
 //			setPatientEmailAddress(prop.getProperty("gehaEamil"));
 			patientEmail.sendKeys(timeStampEmail);
@@ -154,7 +155,7 @@ public class FederalForm extends BasePage {
 //			patientEmail.sendKeys(prop.getProperty("aetnaEmail"));
 //			setPatientEmailAddress(prop.getProperty("aetnaEmail"));
 			patientEmail.sendKeys(timeStampEmail);
-			setPatientEmailAddress(timeStampEmail);	
+			setPatientEmailAddress(timeStampEmail);
 			Thread.sleep(1000);
 			insuranceProviderDropDown.click();
 			Thread.sleep(1000);
@@ -177,7 +178,7 @@ public class FederalForm extends BasePage {
 //			patientEmail.sendKeys(prop.getProperty("mhbpEmail"));
 //			setPatientEmailAddress(prop.getProperty("mhbpEmail"));
 			patientEmail.sendKeys(timeStampEmail);
-			setPatientEmailAddress(timeStampEmail);	
+			setPatientEmailAddress(timeStampEmail);
 			Thread.sleep(1000);
 			insuranceProviderDropDown.click();
 			Thread.sleep(1000);
@@ -231,7 +232,7 @@ public class FederalForm extends BasePage {
 		return patientEmailAddress;
 	}
 
-	public void setPatientEmailAddress(String patientPhoneNumber) {
+	public void setPatientEmailAddress(String patientEmailAddress) {
 		this.patientEmailAddress = patientEmailAddress;
 	}
 	

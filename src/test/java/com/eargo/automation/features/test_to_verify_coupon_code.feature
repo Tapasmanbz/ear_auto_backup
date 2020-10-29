@@ -26,7 +26,7 @@ Feature:
 	
 #This scenario works with default coupon
 @smokeTest @regressionTest @singleProductUsingInvalidCoupon @couponValidation
-		Scenario Outline: Place a normal order with one product, invalid coupon and verify error messsage is displayed on cart page
+		Scenario Outline: [TC-NJSHOP-65, TC-NJSHOP-66, TC-NJSHOP-67, TC-NJSHOP-27] Place a normal order with one product, invalid coupon and verify error messsage is displayed on cart page
 			Given I have a product <prod> at a price of <price>
 #			And a default coupon <couponCode> is applied
 			And as a user with a default email
@@ -65,7 +65,7 @@ Feature:
 			
 #This scenario works with default coupon
 @smokeTest @regressionTest @singleAccessoriesUsingInvalidCoupon @couponValidation
-		Scenario Outline: Place a normal order with one accessory, invalid coupon and verify error messsage is displayed on cart page
+		Scenario Outline: [TC-NJSHOP-27] Place a normal order with one accessory, invalid coupon and verify error messsage is displayed on cart page
 			Given I have a accessory <acc> at a price of <price>
 			And as a user with a default email
 			When I add a accessory <acc> in cart
@@ -93,7 +93,7 @@ Feature:
 
 #This scenario works with default coupon
 @smokeTest @regressionTest @multipleAccessoriestUsingInvalidCoupon @couponValidation
-		Scenario Outline: Place a normal order with multiple accessories, invalid coupon and verify error messsage is displayed on cart page
+		Scenario Outline: [TC-NJSHOP-26] Place a normal order with multiple accessories, invalid coupon and verify error messsage is displayed on cart page
 			Given I have a accessory <accessory1> at a price of <price>
 			And as a user with a default email
 			When I add a accessory <accessory1> in cart

@@ -21,33 +21,46 @@ public class AccessoriesPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//h2[text()='Flexis']")
 	public WebElement sectionFlexis;
 
-	@FindBy(how = How.XPATH, using = "//div[@id='root']/div[2]/div[2]/div[2]/div[3]/button[1]")
-	public WebElement btnAddToCartFlexis;
-
 	@FindBy(how = How.XPATH, using = "//div[@id='root']/div[2]/div[2]/div[3]/div[2]/div[1]/button[1]")
 	public WebElement btnAddToCartWax;
 
 	// -------- Radio buttons ---------------
 
-	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Flexi TetraPalms')]/preceding-sibling::span/img[@class='check_image']")
-	public WebElement radioBtnTetraPalms;
+	@FindBy(how = How.XPATH, using = "//span[text()='Flexi TetraPalms']/following-sibling::div/div[2]/div[@class='flexis-buttons_container']/button[1]")
+	public WebElement btnRegularTetraPalms;
 
-	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Flexi Palms')]/preceding-sibling::span/img[@class='check_image']")
-	public WebElement radioBtnFlexiPalms;
+	@FindBy(how = How.XPATH, using = "//span[text()='Flexi TetraPalms']/following-sibling::div/div[2]/div[@class='flexis-buttons_container']/button[2]")
+	public WebElement btnLargeTetraPalms;
 
-	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Flexi Fibers')]/preceding-sibling::span/img[@class='check_image']")
-	public WebElement radioBtnFlexiFibers;
+	@FindBy(how = How.XPATH, using = "//span[text()='Flexi TetraPalms']/following-sibling::div/div[2]/div[@class='add_to_cart_button_container']/button")
+	public WebElement btnAddToCartTetraPalms;
 
-	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Flexi Domes')]/preceding-sibling::span/img[@class='check_image']")
-	public WebElement radioBtnFlexiDomes;
+	@FindBy(how = How.XPATH, using = "//span[text()='Flexi Palms']/following-sibling::div/div[2]/div[@class='flexis-buttons_container']/button[1]")
+	public WebElement btnRegularPalms;
 
-	// ------Regular & Large ------------------
+	@FindBy(how = How.XPATH, using = "//span[text()='Flexi Palms']/following-sibling::div/div[2]/div[@class='flexis-buttons_container']/button[2]")
+	public WebElement btnLargePalms;
 
-	@FindBy(how = How.XPATH, using = "//button[@type='button' and text()='Regular']")
-	public WebElement btnRegularFlexiFibers;
+	@FindBy(how = How.XPATH, using = "//span[text()='Flexi Palms']/following-sibling::div/div[2]/div[@class='add_to_cart_button_container']/button")
+	public WebElement btnAddToCartPalms;
 
-	@FindBy(how = How.XPATH, using = "//button[@type='button' and text()='Large']")
-	public WebElement btnLargeFlexiFibers;
+	@FindBy(how = How.XPATH, using = "//span[text()='Flexi Fibers']/following-sibling::div/div[2]/div[@class='flexis-buttons_container']/button[1]")
+	public WebElement btnRegularFibers;
+
+	@FindBy(how = How.XPATH, using = "//span[text()='Flexi Fibers']/following-sibling::div/div[2]/div[@class='flexis-buttons_container']/button[2]")
+	public WebElement btnLargeFibers;
+
+	@FindBy(how = How.XPATH, using = "//span[text()='Flexi Fibers']/following-sibling::div/div[2]/div[@class='add_to_cart_button_container']/button")
+	public WebElement btnAddToCartFibers;
+
+	@FindBy(how = How.XPATH, using = "//span[text()='Flexi Domes']/following-sibling::div/div[2]/div[@class='flexis-buttons_container']/button[1]")
+	public WebElement btnRegularDomes;
+
+	@FindBy(how = How.XPATH, using = "//span[text()='Flexi Domes']/following-sibling::div/div[2]/div[@class='flexis-buttons_container']/button[2]")
+	public WebElement btnLargeDomes;
+
+	@FindBy(how = How.XPATH, using = "//span[text()='Flexi Domes']/following-sibling::div/div[2]/div[@class='add_to_cart_button_container']/button")
+	public WebElement btnAddToCartDomes;
 
 	public CartPage click_add_Flexi_to_cart(String accessories, String size) throws InterruptedException {
 
@@ -61,13 +74,16 @@ public class AccessoriesPage extends BasePage {
 			break;
 
 		case "FLEXI PALMS":
+			if (cartPage.isCartOpen()) {
+				cartPage.closeCart();
+			}
 			click_add_FlexiPalms_to_cart(size);
 			break;
 
 		case "FLEXI FIBERS":
-			if (cartPage.isCartOpen()) {
-				cartPage.closeCart();
-			}
+			// if (cartPage.isCartOpen()) {
+			// cartPage.closeCart();
+			// }
 			click_add_FlexiFibers_to_cart(size);
 			break;
 
@@ -92,58 +108,47 @@ public class AccessoriesPage extends BasePage {
 
 	public void click_add_FlexiTetraPalms_to_cart(String size) throws InterruptedException {
 
-		wait.until(ExpectedConditions.elementToBeClickable(radioBtnTetraPalms)).click();
 		if (size.equalsIgnoreCase("large")) {
-			wait.until(ExpectedConditions.elementToBeClickable(btnLargeFlexiFibers)).click();
+			wait.until(ExpectedConditions.elementToBeClickable(btnLargeTetraPalms)).click();
 		} else {
-			wait.until(ExpectedConditions.elementToBeClickable(btnRegularFlexiFibers)).click();
+			wait.until(ExpectedConditions.elementToBeClickable(btnRegularTetraPalms)).click();
 		}
-		click_add_Flexis_to_cart();
+
+		wait.until(ExpectedConditions.elementToBeClickable(btnAddToCartTetraPalms)).click();
 	}
 
 	public void click_add_FlexiPalms_to_cart(String size) throws InterruptedException {
 
-		wait.until(ExpectedConditions.elementToBeClickable(radioBtnFlexiPalms)).click();
 		if (size.equalsIgnoreCase("large")) {
-			wait.until(ExpectedConditions.elementToBeClickable(btnLargeFlexiFibers)).click();
+			wait.until(ExpectedConditions.elementToBeClickable(btnLargePalms)).click();
 		} else {
-			wait.until(ExpectedConditions.elementToBeClickable(btnRegularFlexiFibers)).click();
+			wait.until(ExpectedConditions.elementToBeClickable(btnRegularPalms)).click();
 		}
-		click_add_Flexis_to_cart();
+
+		wait.until(ExpectedConditions.elementToBeClickable(btnAddToCartPalms)).click();
 	}
 
 	public void click_add_FlexiFibers_to_cart(String size) throws InterruptedException {
 
-		wait.until(ExpectedConditions.elementToBeClickable(radioBtnFlexiFibers)).click();
-
 		if (size.equalsIgnoreCase("large")) {
-			wait.until(ExpectedConditions.elementToBeClickable(btnLargeFlexiFibers)).click();
+			wait.until(ExpectedConditions.elementToBeClickable(btnLargeFibers)).click();
 		} else {
-			wait.until(ExpectedConditions.elementToBeClickable(btnRegularFlexiFibers)).click();
+			wait.until(ExpectedConditions.elementToBeClickable(btnRegularFibers)).click();
 		}
 
-		click_add_Flexis_to_cart();
+		wait.until(ExpectedConditions.elementToBeClickable(btnAddToCartFibers)).click();
 	}
 
 	public void click_add_FlexiDomes_to_cart(String size) throws InterruptedException {
 
-		wait.until(ExpectedConditions.elementToBeClickable(radioBtnFlexiDomes)).click();
-
 		if (size.equalsIgnoreCase("large")) {
-			wait.until(ExpectedConditions.elementToBeClickable(btnLargeFlexiFibers)).click();
+			wait.until(ExpectedConditions.elementToBeClickable(btnLargeDomes)).click();
 		} else {
-			wait.until(ExpectedConditions.elementToBeClickable(btnRegularFlexiFibers)).click();
+			wait.until(ExpectedConditions.elementToBeClickable(btnRegularDomes)).click();
 		}
 
-		click_add_Flexis_to_cart();
+		wait.until(ExpectedConditions.elementToBeClickable(btnAddToCartDomes)).click();
 
-	}
-
-	private void click_add_Flexis_to_cart() throws InterruptedException {
-
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.elementToBeClickable(btnAddToCartFlexis)).click();
-		Thread.sleep(500);
 	}
 
 	private void click_add_Wax_to_cart() throws InterruptedException {
